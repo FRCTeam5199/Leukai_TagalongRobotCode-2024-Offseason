@@ -21,17 +21,17 @@ public class IndexerParser {
 
       intakeSideParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/indexer"),
-          intakeConf.pivotFile
+          intakeConf.intakeFile
       );
 
       shooterSideParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/indexer"),
-          intakeConf.rollerFile
+          intakeConf.shooterFile
       );
 
       amptrapParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/indexer"),
-          intakeConf.rollerFile
+          intakeConf.ampTrapFile
       );
 
     } catch (Exception err) {

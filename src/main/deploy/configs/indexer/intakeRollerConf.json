@@ -2,10 +2,10 @@
   "name": "Intake Roller",
   "rollerMotor": {
     "type": "kraken",
-    "id": 41,
+    "id": 20,
     "canbus": "rio"
   },
-  "gearRatio": [[24, 12]],
+  "gearRatio": [[1, 1]],
   "feedforward": {
     "s": 0.0,
     "v": 0.0,
