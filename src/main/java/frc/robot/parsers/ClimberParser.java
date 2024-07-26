@@ -10,7 +10,8 @@ import frc.robot.tagalong.FileUtils;
 
 public class ClimberParser {
   public ClimberConfJson climberConf;
-  public ElevatorParser elevatorParser;
+  public ElevatorParser elevatorParserRight;
+  public ElevatorParser elevatorParserLeft;
 
   public ClimberParser(File dir, String filename) {
     try {
@@ -18,7 +19,11 @@ public class ClimberParser {
       FileUtils.checkForFile(notevatorFile);
       climberConf = new ObjectMapper().readValue(notevatorFile, ClimberConfJson.class);
 
-      elevatorParser = new ElevatorParser(
+      elevatorParserRight = new ElevatorParser(
+          new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/climber"),
+          climberConf.elevatorFile
+      );
+      elevatorParserLeft = new ElevatorParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/climber"),
           climberConf.elevatorFile
       );

@@ -9,21 +9,20 @@ import frc.robot.tagalong.TagalongSubsystemBase;
 
 public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
   public static final class ElevatorConstants {
-    public static final int ELEVATOR_ID = 0;
+    public static final int ELEVATOR_RIGHT_ID = 0;
+    public static final int ELEVATOR_LEFT_ID = 1;
 
     public static final double ELEVATOR_ZEROING_SPEED_MPS = -0.06;
     public static final double ELEVATOR_PREP_SPEED_MPS = -0.01;
     public static final double ELEVATOR_ZEROING_STALL_TOLERANCE = 50;
     public static final int ELEVATOR_ZEROING_STALL_LOOPS = 6;
-
-    public static final double ELEVATOR_AMP_MPS = 1.0;
-    public static final double ELEVATOR_TRAP_MPS = 1.0;
   }
 
-  private final TagalongElevator _elevatorLeft;
   private final TagalongElevator _elevatorRight;
+  private final TagalongElevator _elevatorLeft;
   public final ClimberParser _climberParser;
-  public final ClimberConfJson _climberConf;
+  public final ClimberConfJson _climberConfRight;
+  public final ClimberConfJson _climberConfLeft;
 
   /* -------- Logging: utilities and configs -------- */
   // private final ClimberIOTalonFX _io;
@@ -55,15 +54,17 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
 
     if (_configuredDisable) {
       // _io = null;
-      _climberConf = null;
+      _climberConfRight = null;
+      _climberConfLeft = null;
       _elevatorRight = new TagalongElevator(null);
       _elevatorLeft = new TagalongElevator(null);
       return;
     }
 
-    _climberConf = _climberParser.climberConf;
-    _elevatorRight = new TagalongElevator(parser.elevatorParser);
-    _elevatorLeft = new TagalongElevator(parser.elevatorParser);
+    _climberConfRight = _climberParser.climberConf;
+    _climberConfLeft = _climberParser.climberConf;
+    _elevatorRight = new TagalongElevator(parser.elevatorParserRight);
+    _elevatorLeft = new TagalongElevator(parser.elevatorParserLeft);
 
     int counter = 0;
     while (!checkInitStatus() && counter < 100) {
@@ -91,8 +92,8 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
     if (_isSubsystemDisabled) {
       return;
     }
-    _elevatorLeft.onEnable();
     _elevatorRight.onEnable();
+    _elevatorLeft.onEnable();
     // for testing
     // _elevator.getElevatorMotor().setControl(
     //     new VelocityVoltage(0.000001).withFeedForward(_elevator._elevatorFF.ks)
