@@ -63,8 +63,8 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
 
     _climberConfRight = _climberParser.climberConf;
     _climberConfLeft = _climberParser.climberConf;
-    _elevatorRight = new TagalongElevator(parser.elevatorParserRight);
-    _elevatorLeft = new TagalongElevator(parser.elevatorParserLeft);
+    _elevatorRight = new TagalongElevator(parser.elevatorRightParser);
+    _elevatorLeft = new TagalongElevator(parser.elevatorLeftParser);
 
     int counter = 0;
     while (!checkInitStatus() && counter < 100) {
