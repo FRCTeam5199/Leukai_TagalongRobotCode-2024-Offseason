@@ -18,37 +18,37 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         super(parser);
         shooterParser = parser;
         if (isShooterSubsystemDisabled) {
-          shooter1 = new TagalongFlywheel(null);
-          shooter2 = new TagalongFlywheel(null);
+          shooterLeft = new TagalongFlywheel(null);
+          shooterRight = new TagalongFlywheel(null);
           arm = new TagalongPivot(null);
           return;
         }
-        shooter1 = new TagalongFlywheel(shooterParser.flywheel1Parser);
-        shooter2 = new TagalongFlywheel(shooterParser.flywheel2Parser);
+        shooterLeft = new TagalongFlywheel(shooterParser.flywheelLeftParser);
+        shooterRight = new TagalongFlywheel(shooterParser.flywheelRightParser);
         arm = new TagalongPivot(shooterParser.pivotParser);
     }
 
     public final ShooterParser shooterParser;
 
-    private final TagalongFlywheel shooter1;
-    private final TagalongFlywheel shooter2;
+    private final TagalongFlywheel shooterLeft;
+    private final TagalongFlywheel shooterRight;
     private final TagalongPivot arm;
     private boolean isShooterSubsystemDisabled = false;
 
     @Override
     public TagalongFlywheel getFlywheel() {
-      return shooter1;
+      return shooterLeft;
     }
 
     @Override
     public TagalongFlywheel getFlywheel(int i) {
         switch (i) {
           case 0:
-            return shooter1;
+            return shooterLeft;
           case 1:
-            return shooter2;
+            return shooterRight;
           default:
-            return shooter1;
+            return shooterLeft;
         }
     }
 
@@ -64,8 +64,8 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
 
     @Override
     public void onEnable(){
-        shooter1.onEnable();
-        shooter2.onEnable();
+        shooterLeft.onEnable();
+        shooterRight.onEnable();
         arm.onEnable();
     }
 
@@ -74,8 +74,8 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
       if (_isSubsystemDisabled) {
         return;
       }
-      shooter1.onDisable();
-      shooter2.onDisable();
+      shooterLeft.onDisable();
+      shooterRight.onDisable();
       arm.onDisable();
     }
   
@@ -84,49 +84,49 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
       if (_isSubsystemDisabled) {
         return;
       }
-      shooter1.periodic();
-      shooter2.periodic();
+      shooterLeft.periodic();
+      shooterRight.periodic();
       arm.periodic();
     }
   
     @Override
     public void disabledPeriodic() {
-      shooter1.disabledPeriodic();
-      shooter2.disabledPeriodic();
+      shooterLeft.disabledPeriodic();
+      shooterRight.disabledPeriodic();
       arm.disabledPeriodic();
     }
   
     @Override
     public void simulationInit() {
-      shooter1.simulationInit();
-      shooter2.simulationInit();
+      shooterLeft.simulationInit();
+      shooterRight.simulationInit();
       arm.simulationInit();
     }
   
     @Override
     public void simulationPeriodic() {
-      shooter1.simulationPeriodic();
-      shooter2.simulationPeriodic();
+      shooterLeft.simulationPeriodic();
+      shooterRight.simulationPeriodic();
       arm.simulationPeriodic();
     }
   
     @Override
     public void updateShuffleboard() {
-      shooter1.updateShuffleboard();
-      shooter2.updateShuffleboard();
+      shooterLeft.updateShuffleboard();
+      shooterRight.updateShuffleboard();
       arm.updateShuffleboard();
     }
   
     @Override
     public void configShuffleboard() {
-      shooter1.configShuffleboard();
-      shooter2.configShuffleboard();
+      shooterLeft.configShuffleboard();
+      shooterRight.configShuffleboard();
       arm.configShuffleboard();
     }
   
     @Override
     public boolean checkInitStatus() {
-      return super.checkInitStatus() && shooter1.checkInitStatus() && shooter2.checkInitStatus()
+      return super.checkInitStatus() && shooterLeft.checkInitStatus() && shooterRight.checkInitStatus()
           && arm.checkInitStatus();
     }
 }
