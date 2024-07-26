@@ -22,6 +22,7 @@ import frc.robot.constants.Constants;
 import frc.robot.constants.RobotAltModes;
 import frc.robot.parsers.ElevatorParser;
 import frc.robot.parsers.json.utils.ElevatorConfJson;
+import frc.robot.parsers.json.ElevatorConfJson;
 import frc.robot.subsystems.Controlboard;
 import frc.robot.tagalong.TagalongMinorSystemBase;
 import frc.robot.tagalong.TagalongMinorSystemInterface;
