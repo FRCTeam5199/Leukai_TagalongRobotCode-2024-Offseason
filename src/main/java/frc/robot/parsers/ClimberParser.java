@@ -7,18 +7,18 @@ import frc.robot.tagalong.FileUtils;
 import java.io.File;
 
 public class ClimberParser {
-  public ClimberConfJson notevatorConf;
+  public ClimberConfJson climberConf;
   public ElevatorParser elevatorParser;
 
   public ClimberParser(File dir, String filename) {
     try {
       File notevatorFile = new File(dir, filename);
       FileUtils.checkForFile(notevatorFile);
-      notevatorConf = new ObjectMapper().readValue(notevatorFile, ClimberConfJson.class);
+      climberConf = new ObjectMapper().readValue(notevatorFile, ClimberConfJson.class);
 
       elevatorParser = new ElevatorParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/climber"),
-          notevatorConf.elevatorFile
+          climberConf.elevatorFile
       );
 
     } catch (Exception err) {
