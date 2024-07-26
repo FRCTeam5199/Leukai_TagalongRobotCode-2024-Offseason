@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.ShooterParser;
 import frc.robot.subsystems.minor.TagalongDualMotorFlywheel;
+import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
@@ -17,30 +18,30 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         super(parser);
         shooterParser = parser;
         if (isShooterSubsystemDisabled) {
-          shooter1 = new TagalongDualMotorFlywheel(null);
-          shooter2 = new TagalongDualMotorFlywheel(null);
+          shooter1 = new TagalongFlywheel(null);
+          shooter2 = new TagalongFlywheel(null);
           arm = new TagalongPivot(null);
           return;
         }
-        shooter1 = new TagalongDualMotorFlywheel(shooterParser.flywheel1Parser);
-        shooter2 = new TagalongDualMotorFlywheel(shooterParser.flywheel2Parser);
+        shooter1 = new TagalongFlywheel(shooterParser.flywheel1Parser);
+        shooter2 = new TagalongFlywheel(shooterParser.flywheel2Parser);
         arm = new TagalongPivot(shooterParser.pivotParser);
     }
 
     public final ShooterParser shooterParser;
 
-    private final TagalongDualMotorFlywheel shooter1;
-    private final TagalongDualMotorFlywheel shooter2;
+    private final TagalongFlywheel shooter1;
+    private final TagalongFlywheel shooter2;
     private final TagalongPivot arm;
     private boolean isShooterSubsystemDisabled = false;
 
     @Override
-    public TagalongDualMotorFlywheel getFlywheel() {
+    public TagalongFlywheel getFlywheel() {
       return shooter1;
     }
 
     @Override
-    public TagalongDualMotorFlywheel getFlywheel(int i) {
+    public TagalongFlywheel getFlywheel(int i) {
         switch (i) {
           case 0:
             return shooter1;
