@@ -4,8 +4,8 @@ import frc.robot.parsers.json.utils.*;
 
 public class ShooterConfJson extends TagalongBaseJson {
   public String name;
-  public String flywheel1File;
-  public String flywheel2File;
+  public String flywheelLeftFile;
+  public String flywheelRightFile;
   public String pivotFile;
   public UnitJson pivotHeight;
   public String pivotConflict;

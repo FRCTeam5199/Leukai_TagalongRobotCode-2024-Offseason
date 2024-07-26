@@ -21,12 +21,12 @@ public class ShooterParser {
 
       flywheel1Parser = new FlywheelParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/shooter"),
-          shooterConf.flywheel1File
+          shooterConf.flywheelLeftFile
       );
 
       flywheel2Parser = new FlywheelParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/shooter"),
-          shooterConf.flywheel2File
+          shooterConf.flywheelRightFile
       );
 
       pivotParser = new PivotParser(
