@@ -1,8 +1,8 @@
 package frc.robot.tagalong;
 
-import frc.robot.subsystems.minor.TagalongDualMotorFlywheel;
+import frc.robot.subsystems.minor.TagalongFlywheel;
 
 public interface FlywheelAugment {
-  public TagalongDualMotorFlywheel getFlywheel();
-  public TagalongDualMotorFlywheel getFlywheel(int i);
+  public TagalongFlywheel getFlywheel();
+  public TagalongFlywheel getFlywheel(int i);
 }

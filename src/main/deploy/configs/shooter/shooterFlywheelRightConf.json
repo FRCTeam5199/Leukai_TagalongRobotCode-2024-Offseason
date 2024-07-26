@@ -2,7 +2,7 @@
   "name": "Flywheel",
   "flywheelMotor": {
     "type": "kraken",
-    "id": 31,
+    "id": 27,
     "canbus": "rio"
   },
   "flywheelFollowerMotor": {
@@ -10,7 +10,7 @@
     "id": 32,
     "canbus": "rio"
   },
-  "gearRatio": [[46, 70]],
+  "gearRatio": [[1, 1]],
   "feedforward": {
     "s": 0.21,
     "v": 0.133,
