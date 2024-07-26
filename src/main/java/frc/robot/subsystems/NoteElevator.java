@@ -2,14 +2,15 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.ElevatorParser;
-import frc.robot.parsers.json.ElevatorConfJson;
+import frc.robot.parsers.json.NotevatorConfJson;
 import frc.robot.subsystems.minor.TagalongElevator;
 import frc.robot.subsystems.minor.TagalongRoller;
 import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
+import frc.robot.parsers.NotevatorParser;
 
-public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugment, RollerAugment {
+public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugment {
   public static final class ElevatorConstants {
     public static final int ELEVATOR_ID = 0;
 
@@ -25,9 +26,8 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
   public static final class RollerConstants { public static final double ROLLER_AMP_SHOT = 50.0; }
 
   private final TagalongElevator _elevator;
-  private final TagalongRoller _roller;
-  public final ElevatorParser _elevatorParser;
-  public final ElevatorConfJson _elevatorConf;
+  public final NotevatorParser _elevatorParser;
+  public final NotevatorConfJson _notevatorConf;
 
   /* -------- Logging: utilities and configs -------- */
   // private final ClimberIOTalonFX _io;
@@ -43,35 +43,23 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
     return _elevator;
   }
 
-  @Override
-  public TagalongRoller getRoller() {
-    return _roller;
-  }
-
-  @Override
-  public TagalongRoller getRoller(int i) {
-    return _roller;
-  }
-
   public NoteElevator(String filePath) {
-    this(filePath == null ? null : new ElevatorParser(Filesystem.getDeployDirectory(), filePath));
+    this(filePath == null ? null : new NotevatorParser(Filesystem.getDeployDirectory(), filePath));
   }
 
-  public NoteElevator(ElevatorParser parser) {
+  public NoteElevator(NotevatorParser parser) {
     super(parser);
     _elevatorParser = parser;
 
     if (_configuredDisable) {
       // _io = null;
-      _elevatorConf = null;
+      _notevatorConf = null;
       _elevator = new TagalongElevator(null);
-      _roller = new TagalongRoller(null);
       return;
     }
 
-    _elevatorConf = _elevatorParser.elevatorConf;
-    _elevator = new TagalongElevator(parser);
-    _roller = new TagalongRoller(parser.rollerParser);
+    _notevatorConf = _elevatorParser.notevatorConf;
+    _elevator = new TagalongElevator(_elevatorParser.elevatorParser);
 
     int counter = 0;
     while (!checkInitStatus() && counter < 100) {
