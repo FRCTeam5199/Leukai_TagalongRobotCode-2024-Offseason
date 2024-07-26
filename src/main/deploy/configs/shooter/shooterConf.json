@@ -1,5 +1,6 @@
 {
   "name": "Shooter",
-  "flywheelFile": "shooterFlywheelConf.json",
+  "flywheel1File": "shooterFlywheel1Conf.json",
+  "flywheel2File": "shooterFlywheel2Conf.json",
   "pivotFile": "shooterPivotConf.json"
 }

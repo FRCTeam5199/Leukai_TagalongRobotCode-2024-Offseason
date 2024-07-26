@@ -1,96 +1,131 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.ShooterParser;
-import frc.robot.parsers.json.ShooterConfJson;
 import frc.robot.subsystems.minor.TagalongDualMotorFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
-import frc.robot.subsystems.minor.TagalongRoller;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
-import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
 public class Shooter extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
-
-    public Shooter(Object parser) {
-        super(parser);
-        //TODO Auto-generated constructor stub
-    }
-
-    public final ShooterParser _shooterParser;
-    public final ShooterConfJson _shooterConf;
-
-    private final TagalongDualMotorFlywheel _flywheel;
-    private final TagalongPivot _pivot;
-
-    @Override
-    public TagalongDualMotorFlywheel getFlywheel() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFlywheel'");
-    }
-
-    @Override
-    public TagalongDualMotorFlywheel getFlywheel(int i) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getFlywheel'");
-    }
-
-    @Override
-    public TagalongPivot getPivot() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPivot'");
-    }
-
-    @Override
-    public TagalongPivot getPivot(int i) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getPivot'");
-    }
-
-
-    public void onEnable(){
-        _flywheel.onEnable();
-        _pivot.onEnable();
-    }
-
     public Shooter(String filePath) {
         this(filePath == null ? null : new ShooterParser(Filesystem.getDeployDirectory(), filePath));
     }
 
-     public Shooter(ShooterParser parser) {
-    super(parser);
-    _shooterParser = parser;
-
-    if (_configuredDisable) {
-      _shooterConf = null;
-      _pivotUnsafeMinRot = 0.0;
-      _pivotUnsafeMaxRot = 0.0;
-      _flywheel = new TagalongDualMotorFlywheel(null);
-      _pivot = new TagalongPivot(null);
-      return;
+    public Shooter(ShooterParser parser) {
+        super(parser);
+        shooterParser = parser;
+        if (isShooterSubsystemDisabled) {
+          shooter1 = new TagalongDualMotorFlywheel(null);
+          shooter2 = new TagalongDualMotorFlywheel(null);
+          arm = new TagalongPivot(null);
+          return;
+        }
+        shooter1 = new TagalongDualMotorFlywheel(shooterParser.flywheel1Parser);
+        shooter2 = new TagalongDualMotorFlywheel(shooterParser.flywheel2Parser);
+        arm = new TagalongPivot(shooterParser.pivotParser);
     }
 
-    _shooterConf = _shooterParser.shooterConf;
-    _flywheel = new TagalongDualMotorFlywheel(_shooterParser.flywheelParser);
-    _pivot = new TagalongPivot(_shooterParser.pivotParser);
-    _pivotUnsafeMinRot = _shooterConf.pivotUnsafePositionalLimits.getMinRot();
-    _pivotUnsafeMaxRot = _shooterConf.pivotUnsafePositionalLimits.getMaxRot();
+    public final ShooterParser shooterParser;
 
-    int counter = 0;
-    while (!checkInitStatus() && counter < 100) {
-      System.out.println("Waiting for Shooter");
+    private final TagalongDualMotorFlywheel shooter1;
+    private final TagalongDualMotorFlywheel shooter2;
+    private final TagalongPivot arm;
+    private boolean isShooterSubsystemDisabled = false;
+
+    @Override
+    public TagalongDualMotorFlywheel getFlywheel() {
+      return shooter1;
     }
 
-    if (counter >= 100) {
-      System.out.println("failed to init Shooter");
+    @Override
+    public TagalongDualMotorFlywheel getFlywheel(int i) {
+        switch (i) {
+          case 0:
+            return shooter1;
+          case 1:
+            return shooter2;
+          default:
+            return shooter1;
+        }
     }
 
-    _chuteBreakBeam = new DigitalInput(_shooterConf.breakBeamChannel);
+    @Override
+    public TagalongPivot getPivot() {
+        return arm;
+    }
 
-    configShuffleboard();
-  }
+    @Override
+    public TagalongPivot getPivot(int i) {
+      return arm;
+    }
 
-    
+    @Override
+    public void onEnable(){
+        shooter1.onEnable();
+        shooter2.onEnable();
+        arm.onEnable();
+    }
+
+    @Override
+    public void onDisable() {
+      if (_isSubsystemDisabled) {
+        return;
+      }
+      shooter1.onDisable();
+      shooter2.onDisable();
+      arm.onDisable();
+    }
+  
+    @Override
+    public void periodic() {
+      if (_isSubsystemDisabled) {
+        return;
+      }
+      shooter1.periodic();
+      shooter2.periodic();
+      arm.periodic();
+    }
+  
+    @Override
+    public void disabledPeriodic() {
+      shooter1.disabledPeriodic();
+      shooter2.disabledPeriodic();
+      arm.disabledPeriodic();
+    }
+  
+    @Override
+    public void simulationInit() {
+      shooter1.simulationInit();
+      shooter2.simulationInit();
+      arm.simulationInit();
+    }
+  
+    @Override
+    public void simulationPeriodic() {
+      shooter1.simulationPeriodic();
+      shooter2.simulationPeriodic();
+      arm.simulationPeriodic();
+    }
+  
+    @Override
+    public void updateShuffleboard() {
+      shooter1.updateShuffleboard();
+      shooter2.updateShuffleboard();
+      arm.updateShuffleboard();
+    }
+  
+    @Override
+    public void configShuffleboard() {
+      shooter1.configShuffleboard();
+      shooter2.configShuffleboard();
+      arm.configShuffleboard();
+    }
+  
+    @Override
+    public boolean checkInitStatus() {
+      return super.checkInitStatus() && shooter1.checkInitStatus() && shooter2.checkInitStatus()
+          && arm.checkInitStatus();
+    }
 }
