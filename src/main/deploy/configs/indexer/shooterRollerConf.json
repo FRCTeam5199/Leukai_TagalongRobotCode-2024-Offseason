@@ -1,5 +1,5 @@
 {
-  "name": "Intake Roller",
+  "name": "Shooter Roller",
   "rollerMotor": {
     "type": "kraken",
     "id": 25,

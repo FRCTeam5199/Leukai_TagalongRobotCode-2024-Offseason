@@ -1,5 +1,5 @@
 {
-  "name": "Flywheel",
+  "name": "Flywheel Left",
   "flywheelMotor": {
     "type": "kraken",
     "id": 26,

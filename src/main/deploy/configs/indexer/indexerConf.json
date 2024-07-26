@@ -1,5 +1,5 @@
 {
-  "amptrapFile": "amptrapRollerConf.json",
-  "intakeFile": "compbotIntakeRollerConf.json",
-  "shooterFile": "compbotIntakeRollerConf.json"
+  "amptrapFile": "ampTrapRollerConf.json",
+  "intakeFile": "intakeRollerConf.json",
+  "shooterFile": "shooterRollerConf.json"
 }
