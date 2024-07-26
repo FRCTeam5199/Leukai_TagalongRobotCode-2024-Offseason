@@ -20,7 +20,8 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
     public static final double ELEVATOR_TRAP_MPS = 1.0;
   }
 
-  private final TagalongElevator _elevator;
+  private final TagalongElevator _elevatorLeft;
+  private final TagalongElevator _elevatorRight;
   public final ClimberParser _climberParser;
   public final ClimberConfJson _climberConf;
 
@@ -30,12 +31,18 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
 
   @Override
   public TagalongElevator getElevator() {
-    return _elevator;
+    return _elevatorRight;
   }
 
   @Override
   public TagalongElevator getElevator(int i) {
-    return _elevator;
+    switch (i) {
+      case 1:
+        return _elevatorLeft;
+      case 0:
+      default:
+        return _elevatorRight;
+    }
   }
 
   public Climber(String filePath) {
@@ -49,12 +56,14 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
     if (_configuredDisable) {
       // _io = null;
       _climberConf = null;
-      _elevator = new TagalongElevator(null);
+      _elevatorRight = new TagalongElevator(null);
+      _elevatorLeft = new TagalongElevator(null);
       return;
     }
 
     _climberConf = _climberParser.climberConf;
-    _elevator = new TagalongElevator(parser.elevatorParser);
+    _elevatorRight = new TagalongElevator(parser.elevatorParser);
+    _elevatorLeft = new TagalongElevator(parser.elevatorParser);
 
     int counter = 0;
     while (!checkInitStatus() && counter < 100) {
@@ -82,7 +91,8 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
     if (_isSubsystemDisabled) {
       return;
     }
-    _elevator.onEnable();
+    _elevatorLeft.onEnable();
+    _elevatorRight.onEnable();
     // for testing
     // _elevator.getElevatorMotor().setControl(
     //     new VelocityVoltage(0.000001).withFeedForward(_elevator._elevatorFF.ks)
@@ -94,7 +104,8 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
     if (_isSubsystemDisabled) {
       return;
     }
-    _elevator.onDisable();
+    _elevatorRight.onDisable();
+    _elevatorLeft.onDisable();
   }
 
   @Override
@@ -102,7 +113,8 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
     if (_isSubsystemDisabled) {
       return;
     }
-    _elevator.periodic();
+    _elevatorRight.periodic();
+    _elevatorLeft.periodic();
 
     // Logging
     // _io.updateInputs(_inputs);
@@ -112,32 +124,37 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
 
   @Override
   public void disabledPeriodic() {
-    _elevator.disabledPeriodic();
+    _elevatorRight.disabledPeriodic();
+    _elevatorLeft.disabledPeriodic();
   }
 
   @Override
   public void simulationInit() {
-    _elevator.simulationInit();
+    _elevatorRight.simulationInit();
+    _elevatorLeft.simulationInit();
   }
 
   @Override
   public void simulationPeriodic() {
-    _elevator.simulationPeriodic();
+    _elevatorRight.simulationPeriodic();
+    _elevatorLeft.simulationPeriodic();
   }
 
   @Override
   public void updateShuffleboard() {
-    _elevator.updateShuffleboard();
+    _elevatorRight.updateShuffleboard();
+    _elevatorLeft.updateShuffleboard();
   }
 
   @Override
   public void configShuffleboard() {
-    _elevator.configShuffleboard();
+    _elevatorRight.configShuffleboard();
+    _elevatorLeft.configShuffleboard();
   }
 
   // TODO IMPLEMENT
   @Override
   public boolean checkInitStatus() {
-    return super.checkInitStatus() && _elevator.checkInitStatus();
+    return super.checkInitStatus() && _elevatorRight.checkInitStatus() && _elevatorLeft.checkInitStatus();
   }
 }

@@ -1,10 +1,12 @@
 package frc.robot.parsers;
 
+import java.io.File;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.json.ClimberConfJson;
 import frc.robot.tagalong.FileUtils;
-import java.io.File;
 
 public class ClimberParser {
   public ClimberConfJson climberConf;
