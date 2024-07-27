@@ -1,7 +1,6 @@
 package frc.robot.commands.base;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.MathUtils;
 import frc.robot.tagalong.PivotAugment;
@@ -49,6 +48,20 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
     _upperBound = MathUtils.cppMod(_goalPositionRot, 1.0) + Math.abs(upperToleranceRot);
 
     addRequirements(pivot);
+  }
+
+  public PivotToCommand(
+      TagalongPivot pivot,
+      double goalPosition,
+      boolean holdPositionAfter
+  ) {
+    _pivot = pivot;
+    _goalPositionRot = goalPosition;
+    _holdPositionAfter = holdPositionAfter;
+    _lowerBound = 0;
+    _upperBound = 0;
+
+    // addRequirements(pivot);
   }
 
   public PivotToCommand(T pivot, TagalongAngle goalPosition, boolean holdPositionAfter) {

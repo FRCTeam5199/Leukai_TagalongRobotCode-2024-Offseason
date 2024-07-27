@@ -6,12 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.base.AutoShootCommands;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
@@ -20,6 +23,7 @@ public class RobotContainer {
     public static Climber climber = new Climber("configs/climber/climberConf.json");
     public static NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
     CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
+    AutoShootCommands autoShootCommands = new AutoShootCommands();
 
     public RobotContainer() {
         configureBindings();
@@ -29,6 +33,7 @@ public class RobotContainer {
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
         commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
+        commandXboxController.leftTrigger().onTrue(autoShootCommands.BasicAutoShootCommand(shooterSubsystem, indexerSubsystem));
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
     }
