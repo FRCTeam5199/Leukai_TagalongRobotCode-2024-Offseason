@@ -31,8 +31,7 @@ public class TagalongFlywheel
 
   /* -------- Hardware: motors and sensors -------- */
   private TalonFX _flywheelMotor;
-  private TalonFX _flywheelFollowerMotor;
-  private TalonFXConfiguration _flywheelMotorConfig, _flywheelFollowerMotorConfig;
+  private TalonFXConfiguration _flywheelMotorConfig;
   protected Slot0Configs _flywheelMotorSlot0 = new Slot0Configs();
 
   /* -------- Control: states and constants -------- */
@@ -99,7 +98,6 @@ public class TagalongFlywheel
       _flywheelMotorSlot0.kI = _flywheelIFactorEntry.getDouble(_flywheelMotorSlot0.kI);
       _flywheelMotorSlot0.kD = _flywheelDFactorEntry.getDouble(_flywheelMotorSlot0.kD);
       _flywheelMotor.getConfigurator().apply(_flywheelMotorSlot0);
-      _flywheelFollowerMotor.getConfigurator().apply(_flywheelMotorSlot0);
     }
   }
 
@@ -111,8 +109,6 @@ public class TagalongFlywheel
 
   private void configFlywheelMotor() {
     _flywheelMotor.getConfigurator().apply(_flywheelMotorConfig);
-    _flywheelFollowerMotor.getConfigurator().apply(_flywheelFollowerMotorConfig);
-    _flywheelFollowerMotor.setControl(new StrictFollower(_flywheelMotor.getDeviceID()));
   }
 
   public void setFlywheelPower(double power) {

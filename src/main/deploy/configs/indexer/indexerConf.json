@@ -1,5 +1,5 @@
 {
-  "amptrapFile": "ampTrapRollerConf.json",
+  "ampTrapFile": "ampTrapRollerConf.json",
   "intakeFile": "intakeRollerConf.json",
   "shooterFile": "shooterRollerConf.json"
 }

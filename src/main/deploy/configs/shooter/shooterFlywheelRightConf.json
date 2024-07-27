@@ -54,39 +54,5 @@
       "supplyContinuousLimit": 40,
       "peakDuration": 0.5
     }
-  },
-  "flywheelFollowerControl": {
-    "clockwisePositive": true,
-    "brakeMode": false,
-    "motor": {
-      "slot0PIDConstants": {
-        "p": 0.0,
-        "i": 0.0,
-        "d": 0.0,
-        "s": 0.0,
-        "g": 0.0,
-        "v": 0.0,
-        "a": 0.0
-      }
-    },
-    "simMotor": {
-      "slot0PIDConstants": {
-        "p": 0.0,
-        "i": 0.0,
-        "d": 0.0,
-        "s": 0.0,
-        "g": 0.0,
-        "v": 0.0,
-        "a": 0.0
-      }
-    },
-    "motorCurrentLimits": {
-      "statorEnableLimit": true,
-      "statorPeakLimit": 80,
-      "supplyEnableLimit": true,
-      "supplyPeakLimit": 80,
-      "supplyContinuousLimit": 40,
-      "peakDuration": 0.5
-    }
   }
 }

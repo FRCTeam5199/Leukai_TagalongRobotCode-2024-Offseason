@@ -14,11 +14,11 @@ import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
   IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
-  Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf");
+  Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
   CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
 
-  Climber climber = new Climber("src/main/deploy/configs/climber/climberConf.json");
-  NoteElevator noteElevator = new NoteElevator("src/main/deploy/configs/notevator/notevatorConf.json");
+  Climber climber = new Climber("configs/climber/climberConf.json");
+  NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
 
   public RobotContainer() {
     configureBindings();

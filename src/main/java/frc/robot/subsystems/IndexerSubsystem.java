@@ -42,7 +42,7 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
             return;
         }
         intake = new TagalongRoller(indexerParser.intakeSideParser);
-        ampTrap = new TagalongRoller(indexerParser.amptrapParser);
+        ampTrap = new TagalongRoller(indexerParser.ampTrapParser);
         indexer = new TagalongRoller(indexerParser.shooterSideParser);
 
         configShuffleboard();
