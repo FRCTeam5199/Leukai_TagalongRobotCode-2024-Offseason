@@ -10,55 +10,60 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.base.AutoShootCommands;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ScoreCommands;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
-  CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
-  IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
-  Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
-  // NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
-  Climber climber = new Climber("configs/climber/climberConf.json");
+    public static IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
+    public static Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
+    public static Climber climber = new Climber("configs/climber/climberConf.json");
+    public static NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
+    CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
 
-  // Commands
-  AutoShootCommands autoShootCommands = new AutoShootCommands();
-  
-  public RobotContainer() {
-    configureBindings();
-  }
+    public RobotContainer() {
+        configureBindings();
+    }
 
-  private void configureBindings() {
-    commandXboxController.leftTrigger().onTrue(autoShootCommands.BasicAutoShootCommand(shooterSubsystem, indexerSubsystem));
-  }
+    private void configureBindings() {
+        commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
+        commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
+        commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+        commandXboxController.x().onTrue(ScoreCommands.ampScore());
 
-  public void onEnable() {
-    indexerSubsystem.onEnable();
-    shooterSubsystem.onEnable();
-  }
+        commandXboxController.leftTrigger().onTrue(ScoreCommands.basicAutoShootCommand());
+    }
 
-  public void onDisable() {
-    indexerSubsystem.onDisable();
-    shooterSubsystem.onDisable();
-  }
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
+    }
 
-  public void disabledPeriodic() {
-    indexerSubsystem.disabledPeriodic();
-    shooterSubsystem.disabledPeriodic();
-  }
+    public void onEnable() {
+        indexerSubsystem.onEnable();
+        shooterSubsystem.onEnable();
+    }
 
-  public void simulationInit() {
-    indexerSubsystem.simulationInit();
-    shooterSubsystem.simulationInit();
-  }
+    public void onDisable() {
+        indexerSubsystem.onDisable();
+        shooterSubsystem.onDisable();
+    }
 
-  public void simulationPeriodic() {
-    indexerSubsystem.simulationPeriodic();
-    shooterSubsystem.simulationPeriodic();
-  }
+    public void disabledPeriodic() {
+        indexerSubsystem.disabledPeriodic();
+        shooterSubsystem.disabledPeriodic();
+    }
+
+    public void simulationInit() {
+        indexerSubsystem.simulationInit();
+        shooterSubsystem.simulationInit();
+    }
+
+    public void simulationPeriodic() {
+        indexerSubsystem.simulationPeriodic();
+        shooterSubsystem.simulationPeriodic();
+    }
 }

@@ -4,28 +4,24 @@
 
 package frc.robot.subsystems;
 
+import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Filesystem;
-import frc.robot.parsers.ClimberParser;
+import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.parsers.IndexerParser;
 import frc.robot.subsystems.minor.TagalongRoller;
 import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
 public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAugment {
-    public static final class RollerConstants {
-        public static final int INTAKE_ID = 0;
-        public static final int AMPTRAP_ID = 0;
-        public static final int INDEXER_ID = 0;
-        public static final int INTAKE_SENSOR_ID = 2;
-        public static final int AMPTRAP_SENSOR_ID = 1;
-        public static final int INDEXER_SENSOR_ID = 3;
-    }
-
     private final TagalongRoller intake;
     private final TagalongRoller ampTrap;
     private final TagalongRoller indexer;
-    private boolean isIndexerSubsystemDisabled = false;
     private final IndexerParser indexerParser;
+    private boolean isIndexerSubsystemDisabled = false;
+    private boolean ampMode = false;
+    private AnalogInput intakeSensor;
+    private AnalogInput ampTrapSensor;
+    private AnalogInput indexerSensor;
 
     public IndexerSubsystem(String filePath) {
         this(filePath == null ? null : new IndexerParser(Filesystem.getDeployDirectory(), filePath));
@@ -34,6 +30,10 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
     public IndexerSubsystem(IndexerParser parser) {
         super(parser);
         indexerParser = parser;
+
+        intakeSensor = new AnalogInput(RollerConstants.INTAKE_SENSOR_ID);
+        ampTrapSensor = new AnalogInput(RollerConstants.AMPTRAP_SENSOR_ID);
+        indexerSensor = new AnalogInput(RollerConstants.INDEXER_SENSOR_ID);
 
         if (isIndexerSubsystemDisabled) {
             intake = new TagalongRoller(null);
@@ -46,6 +46,14 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         indexer = new TagalongRoller(indexerParser.shooterSideParser);
 
         configShuffleboard();
+    }
+
+    public boolean getAmpMode() {
+        return ampMode;
+    }
+
+    public void setAmpMode(boolean ampMode) {
+        this.ampMode = ampMode;
     }
 
     @Override
@@ -83,7 +91,7 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
     public void disabledPeriodic() {
         intake.disabledPeriodic();
         ampTrap.disabledPeriodic();
-        indexer.disabledPeriodic(); 
+        indexer.disabledPeriodic();
     }
 
     @Override
@@ -120,11 +128,9 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
     @Override
     public TagalongRoller getRoller(int i) {
         switch (i) {
-            case 0:
-                return intake;
             case 1:
                 return ampTrap;
-            case 3:
+            case 2:
                 return indexer;
             default:
                 return intake;
@@ -133,7 +139,31 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
 
     @Override
     public boolean checkInitStatus() {
-        return super.checkInitStatus() && intake.checkInitStatus() 
-            && ampTrap.checkInitStatus() && indexer.checkInitStatus();
+        return super.checkInitStatus() && intake.checkInitStatus()
+                && ampTrap.checkInitStatus() && indexer.checkInitStatus();
+    }
+
+    public void setRollerSpeeds(double intakeSpeed, double ampTrapSpeed, double indexerSpeed) {
+        intake.setRollerVelocityControl(intakeSpeed / 60, true);
+        ampTrap.setRollerVelocityControl(ampTrapSpeed / 60, true);
+        indexer.setRollerVelocityControl(indexerSpeed / 60, true);
+    }
+
+    public boolean isNoteInIntake() {
+        return intakeSensor.getValue() < 100;
+    }
+
+    public boolean isNoteInAmpTrap() {
+        return ampTrapSensor.getValue() < 100;
+    }
+
+    public boolean isNoteInIndexer() {
+        return indexerSensor.getValue() < 100;
+    }
+
+    public static final class RollerConstants {
+        public static final int INTAKE_SENSOR_ID = 2;
+        public static final int AMPTRAP_SENSOR_ID = 1;
+        public static final int INDEXER_SENSOR_ID = 3;
     }
 }
