@@ -243,8 +243,8 @@ public class TagalongElevator
       _elevatorMotor.getConfigurator().apply(_elevatorMotorSlot0);
     }
 
-    if (RobotAltModes.isElevatorTuningMode
-        && _elevatorConf.name.equalsIgnoreCase(RobotAltModes.currentMicrosystem)) {
+    // if (RobotAltModes.isElevatorTuningMode
+      //  && _elevatorConf.name.equalsIgnoreCase(RobotAltModes.currentMicrosystem)) {
       _elevatorFF = new ElevatorFeedforward(
           _elevatorKSEntry.getDouble(_elevatorFF.ks),
           _elevatorKGEntry.getDouble(_elevatorFF.kg),
@@ -252,7 +252,7 @@ public class TagalongElevator
           _elevatorKAEntry.getDouble(_elevatorFF.ka)
       );
       _elevatorMotor.setControl(_requestedElevatorPositionVoltage.withFeedForward(_elevatorFF.ks));
-    }
+   // }
   }
 
   @Override
@@ -314,7 +314,8 @@ public class TagalongElevator
       return;
     }
     if (RobotAltModes.isElevatorTuningMode
-        && _elevatorConf.name.equalsIgnoreCase(RobotAltModes.currentMicrosystem)) {
+        //&& _elevatorConf.name.equalsIgnoreCase(RobotAltModes.currentMicrosystem)
+        ) {
       _elevatorCurrentPositionMEntry.setDouble(getElevatorHeightM());
       _elevatorTargetPositionMEntry.setDouble(_curState.position);
       _elevatorCurrentVelocityMPSEntry.setDouble(getElevatorVelocityMPS());
@@ -332,7 +333,8 @@ public class TagalongElevator
             .withSize(1, 4)
             .withPosition(2 * Controlboard.get()._tuningTabCounter++, 0);
     if (RobotAltModes.isElevatorTuningMode
-        && _elevatorConf.name.equalsIgnoreCase(RobotAltModes.currentMicrosystem)) {
+        //&& _elevatorConf.name.equalsIgnoreCase(RobotAltModes.currentMicrosystem)
+        ) {
       _elevatorCurrentPositionMEntry =
           elevatorLayout.add(_elevatorConf.name + " Current Position", 0.0)
               .withPosition(0, 0)

@@ -1,5 +1,5 @@
 {
-  "name": "Climber Elevator",
+  "name": "Left Climber",
   "motor": {
     "type": "kraken",
     "id": 28,
@@ -14,9 +14,9 @@
     "value": 1.273
   },
   "feedforward": {
-    "s": 0.103,
-    "g": 0.236,
-    "v": 7.9365079365,
+    "s": 0.0,
+    "g": 0.0,
+    "v": 0.0,
     "a": 0.0
   },
   "trapezoidalLimits": {
@@ -47,7 +47,7 @@
     },
     "motor": {
       "slot0PIDConstants": {
-        "p": 5.0,
+        "p": 0.0,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,
@@ -69,3 +69,5 @@
     }
   }
 }
+
+

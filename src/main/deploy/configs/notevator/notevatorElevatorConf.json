@@ -1,5 +1,5 @@
 {
-  "name": "Climber Elevator",
+  "name": "Note Elevator",
   "motor": {
     "type": "kraken",
     "id": 22,
