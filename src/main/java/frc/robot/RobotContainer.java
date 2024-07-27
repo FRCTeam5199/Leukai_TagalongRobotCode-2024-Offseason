@@ -13,50 +13,49 @@ import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
-  IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
-  Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
-  CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
+    public static IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
+    public static Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
+    public static Climber climber = new Climber("configs/climber/climberConf.json");
+    public static NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
+    CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
 
-  Climber climber = new Climber("configs/climber/climberConf.json");
-  // NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
+    public RobotContainer() {
+        configureBindings();
+    }
 
-  public RobotContainer() {
-    configureBindings();
-  }
+    private void configureBindings() {
+        // commandXboxController.y().onTrue(climber.);
+        // commandXboxController.x().onTrue(climber.);
 
-  private void configureBindings() {
-    // commandXboxController.y().onTrue(climber.);
-    // commandXboxController.x().onTrue(climber.);
+        // commandXboxController.y().onTrue(climber.)
+    }
 
-    // commandXboxController.y().onTrue(climber.)
-  }
+    public Command getAutonomousCommand() {
+        return Commands.print("No autonomous command configured");
+    }
 
-  public Command getAutonomousCommand() {
-    return Commands.print("No autonomous command configured");
-  }
+    public void onEnable() {
+        indexerSubsystem.onEnable();
+        shooterSubsystem.onEnable();
+    }
 
-  public void onEnable() {
-    indexerSubsystem.onEnable();
-    shooterSubsystem.onEnable();
-  }
+    public void onDisable() {
+        indexerSubsystem.onDisable();
+        shooterSubsystem.onDisable();
+    }
 
-  public void onDisable() {
-    indexerSubsystem.onDisable();
-    shooterSubsystem.onDisable();
-  }
+    public void disabledPeriodic() {
+        indexerSubsystem.disabledPeriodic();
+        shooterSubsystem.disabledPeriodic();
+    }
 
-  public void disabledPeriodic() {
-    indexerSubsystem.disabledPeriodic();
-    shooterSubsystem.disabledPeriodic();
-  }
+    public void simulationInit() {
+        indexerSubsystem.simulationInit();
+        shooterSubsystem.simulationInit();
+    }
 
-  public void simulationInit() {
-    indexerSubsystem.simulationInit();
-    shooterSubsystem.simulationInit();
-  }
-
-  public void simulationPeriodic() {
-    indexerSubsystem.simulationPeriodic();
-    shooterSubsystem.simulationPeriodic();
-  }
+    public void simulationPeriodic() {
+        indexerSubsystem.simulationPeriodic();
+        shooterSubsystem.simulationPeriodic();
+    }
 }
