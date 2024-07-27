@@ -129,4 +129,12 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
       return super.checkInitStatus() && shooterLeft.checkInitStatus() && shooterRight.checkInitStatus()
           && arm.checkInitStatus();
     }
+    
+    public boolean reachedShootingConditions() {
+      return arm.getPivotPosition() > 14 && shooterRight.getFlywheelVelocity() > 3999 && shooterLeft.getFlywheelVelocity() > 2999;
+    }
+
+    public boolean shotNote() {
+      return shooterRight.getFlywheelVelocity() < 4000 && shooterLeft.getFlywheelVelocity() < 3000; // TODO: Add sensor
+    }
 }

@@ -6,29 +6,31 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.base.AutoShootCommands;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
+  CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
   IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
   Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
-  CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
-
-  Climber climber = new Climber("configs/climber/climberConf.json");
   // NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
+  Climber climber = new Climber("configs/climber/climberConf.json");
 
+  // Commands
+  AutoShootCommands autoShootCommands = new AutoShootCommands();
+  
   public RobotContainer() {
     configureBindings();
   }
 
   private void configureBindings() {
-    // commandXboxController.y().onTrue(climber.);
-    // commandXboxController.x().onTrue(climber.);
-
-    // commandXboxController.y().onTrue(climber.)
+    commandXboxController.leftTrigger().onTrue(autoShootCommands.BasicAutoShootCommand(shooterSubsystem, indexerSubsystem));
   }
 
   public Command getAutonomousCommand() {
