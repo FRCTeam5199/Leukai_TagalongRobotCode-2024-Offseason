@@ -2,7 +2,7 @@
   "name": "Climber Elevator",
   "motor": {
     "type": "kraken",
-    "id": 46,
+    "id": 28,
     "canbus": "rio"
   },
   "gearRatio": [

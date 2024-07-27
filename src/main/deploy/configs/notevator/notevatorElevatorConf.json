@@ -2,7 +2,7 @@
   "name": "Climber Elevator",
   "motor": {
     "type": "kraken",
-    "id": 46,
+    "id": 22,
     "canbus": "rio"
   },
   "gearRatio": [
@@ -45,7 +45,24 @@
       "supplyContinuousLimit": 60,
       "peakDuration": 0.8
     },
-    "motor": {
+    "followerMotor": {
+      "type": "kraken",
+      "id": 23,
+      "canbus": "rio"
+    },
+    "followerMotorControl": {
+      "clockwisePositive": true,
+      "brakeMode": false,
+      "motorCurrentLimits": {
+        "statorEnableLimit": true,
+        "statorPeakLimit": 80,
+        "supplyEnableLimit": true,
+        "supplyPeakLimit": 80,
+        "supplyContinuousLimit": 60,
+        "peakDuration": 0.8
+      }
+    },
+      "motor": {
       "slot0PIDConstants": {
         "p": 5.0,
         "i": 0.0,

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.NotevatorParser;
 import frc.robot.parsers.json.NotevatorConfJson;
+import frc.robot.subsystems.minor.TagalongDualMotorElevator;
 import frc.robot.subsystems.minor.TagalongElevator;
 import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
@@ -22,7 +23,7 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
 
   public static final class RollerConstants { public static final double ROLLER_AMP_SHOT = 50.0; }
 
-  private final TagalongElevator _elevator;
+  private final TagalongDualMotorElevator _elevator;
   public final NotevatorParser _elevatorParser;
   public final NotevatorConfJson _notevatorConf;
 
@@ -51,12 +52,12 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
     if (_configuredDisable) {
       // _io = null;
       _notevatorConf = null;
-      _elevator = new TagalongElevator(null);
+      _elevator = new TagalongDualMotorElevator(null);
       return;
     }
 
     _notevatorConf = _elevatorParser.notevatorConf;
-    _elevator = new TagalongElevator(_elevatorParser.elevatorParser);
+    _elevator = new TagalongDualMotorElevator(_elevatorParser.elevatorParser);
 
     int counter = 0;
     while (!checkInitStatus() && counter < 100) {
