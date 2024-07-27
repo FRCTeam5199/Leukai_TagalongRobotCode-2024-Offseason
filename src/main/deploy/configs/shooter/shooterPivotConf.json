@@ -3,20 +3,17 @@
   "fusedDevices": {
     "motor": {
       "type": "kraken",
-      "id": 33,
-      "canbus": "Default Name"
+      "id": 24,
+      "canbus": "rio"
     },
     "encoder": {
       "type": "cancoder",
-      "id": 35,
-      "canbus": "Default Name"
+      "id": 30,
+      "canbus": "rio"
     }
   },
   "motorToPivot": [
-    [66, 14],
-    [54, 30],
-    [58, 30],
-    [66, 24]
+    [42.4286, 1]
   ],
   "encoderToPivot": [[1, 1]],
   "feedforward": {
