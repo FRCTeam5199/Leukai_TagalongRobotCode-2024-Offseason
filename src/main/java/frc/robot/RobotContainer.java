@@ -8,7 +8,9 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
+import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
   IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
