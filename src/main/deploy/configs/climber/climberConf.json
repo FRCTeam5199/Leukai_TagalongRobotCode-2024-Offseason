@@ -1,3 +1,4 @@
 {
-  "elevatorFile": "climberElevatorConf.json"
+  "elevatorRightFile": "climberRightElevatorConf.json",
+  "elevatorLeftFile": "climberLeftElevatorConf.json"
 }
