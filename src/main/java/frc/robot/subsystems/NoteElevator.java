@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.NotevatorParser;
 import frc.robot.parsers.json.NotevatorConfJson;
 import frc.robot.subsystems.minor.TagalongDualMotorElevator;
-import frc.robot.subsystems.minor.TagalongElevator;
 import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
@@ -32,12 +31,12 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
   // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
 
   @Override
-  public TagalongElevator getElevator() {
+  public TagalongDualMotorElevator getElevator() {
     return _elevator;
   }
 
   @Override
-  public TagalongElevator getElevator(int i) {
+  public TagalongDualMotorElevator getElevator(int i) {
     return _elevator;
   }
 
