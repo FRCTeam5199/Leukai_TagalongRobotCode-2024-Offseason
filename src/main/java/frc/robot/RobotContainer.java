@@ -18,10 +18,10 @@ import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
-    public static IndexerSubsystem indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
-    public static Shooter shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
-    public static Climber climber = new Climber("configs/climber/climberConf.json");
-    public static NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
+    public static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+    public static Shooter shooterSubsystem = Shooter.getInstance();
+    public static Climber climber = Climber.getInstance();
+    public static NoteElevator noteElevator = NoteElevator.getInstance();
     CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
 
     public RobotContainer() {

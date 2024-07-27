@@ -12,6 +12,7 @@ import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
 public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugment {
+    private static NoteElevator elevatorSubsystem;
     public final NotevatorParser _elevatorParser;
     public final NotevatorConfJson _notevatorConf;
     private final TagalongDualMotorElevator _elevator;
@@ -45,6 +46,13 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
         // THIS HAS TO GO LAST
         // _io = new ClimberIOTalonFX(this);
         configShuffleboard();
+    }
+
+    public static NoteElevator getInstance() {
+        if (elevatorSubsystem == null) {
+            elevatorSubsystem = new NoteElevator("configs/notevator/notevatorConf.json");
+        }
+        return elevatorSubsystem;
     }
 
     /* -------- Logging: utilities and configs -------- */

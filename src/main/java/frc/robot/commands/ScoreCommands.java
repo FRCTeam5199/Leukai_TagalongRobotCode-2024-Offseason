@@ -10,9 +10,9 @@ import frc.robot.subsystems.Shooter;
 import frc.robot.utility.LookUpTable;
 
 public class ScoreCommands {
-    private static final IndexerSubsystem indexerSubsystem = RobotContainer.indexerSubsystem;
-    private static final NoteElevator elevatorSubsystem = RobotContainer.noteElevator;
-    private static final Shooter shooterSubsystem = RobotContainer.shooterSubsystem;
+    private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+    private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static final Shooter shooterSubsystem = Shooter.getInstance();
 
     public static Command elevatorStable() {
         return new ParallelCommandGroup(

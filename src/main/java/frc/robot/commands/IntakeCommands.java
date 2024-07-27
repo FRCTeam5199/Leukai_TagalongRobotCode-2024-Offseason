@@ -10,9 +10,9 @@ import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class IntakeCommands {
-    private static final IndexerSubsystem indexerSubsystem = RobotContainer.indexerSubsystem;
-    private static final NoteElevator elevatorSubsystem = RobotContainer.noteElevator;
-    private static final Shooter shooterSubsystem = RobotContainer.shooterSubsystem;
+    private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+    private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static final Shooter shooterSubsystem = Shooter.getInstance();
 
     private static Command moveElevatorDown() {
         return new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 0);

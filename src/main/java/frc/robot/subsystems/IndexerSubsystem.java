@@ -13,6 +13,7 @@ import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
 public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAugment {
+    private static IndexerSubsystem indexerSubsystem;
     private final TagalongRoller intake;
     private final TagalongRoller ampTrap;
     private final TagalongRoller indexer;
@@ -46,6 +47,13 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         indexer = new TagalongRoller(indexerParser.shooterSideParser);
 
         configShuffleboard();
+    }
+
+    public static IndexerSubsystem getInstance() {
+        if (indexerSubsystem == null) {
+            indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
+        }
+        return indexerSubsystem;
     }
 
     public boolean getAmpMode() {
