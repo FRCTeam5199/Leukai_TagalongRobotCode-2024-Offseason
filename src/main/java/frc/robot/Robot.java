@@ -16,6 +16,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     m_robotContainer = new RobotContainer();
+    m_robotContainer.onEnable();
   }
 
   @Override
@@ -24,7 +25,9 @@ public class Robot extends TimedRobot {
   }
 
   @Override
-  public void disabledInit() {}
+  public void disabledInit() {
+    m_robotContainer.onDisable();
+  }
 
   @Override
   public void disabledPeriodic() {}
@@ -70,4 +73,14 @@ public class Robot extends TimedRobot {
 
   @Override
   public void testExit() {}
+
+  @Override
+  public void simulationInit() {
+    m_robotContainer.simulationInit();
+  }
+
+  @Override
+  public void simulationPeriodic() {
+    m_robotContainer.simulationPeriodic();
+  }
 }

@@ -24,7 +24,7 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
     private final TagalongRoller intake;
     private final TagalongRoller ampTrap;
     private final TagalongRoller indexer;
-    private boolean isRollerSubsystemDisabled = false;
+    private boolean isIndexerSubsystemDisabled = false;
     private final IndexerParser indexerParser;
 
     public IndexerSubsystem(String filePath) {
@@ -35,7 +35,7 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         super(parser);
         indexerParser = parser;
 
-        if (isRollerSubsystemDisabled) {
+        if (isIndexerSubsystemDisabled) {
             intake = new TagalongRoller(null);
             ampTrap = new TagalongRoller(null);
             indexer = new TagalongRoller(null);
@@ -48,7 +48,7 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
 
     @Override
     public void onEnable() {
-        if (isRollerSubsystemDisabled) {
+        if (isIndexerSubsystemDisabled) {
             return;
         }
         intake.onEnable();
@@ -58,7 +58,7 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
 
     @Override
     public void onDisable() {
-        if (isRollerSubsystemDisabled) {
+        if (isIndexerSubsystemDisabled) {
             return;
         }
         intake.onDisable();
@@ -68,7 +68,7 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
 
     @Override
     public void periodic() {
-        if (isRollerSubsystemDisabled) {
+        if (isIndexerSubsystemDisabled) {
             return;
         }
         intake.periodic();
