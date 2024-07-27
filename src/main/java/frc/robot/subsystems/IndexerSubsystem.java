@@ -128,11 +128,9 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
     @Override
     public TagalongRoller getRoller(int i) {
         switch (i) {
-            case 0:
-                return intake;
             case 1:
                 return ampTrap;
-            case 3:
+            case 2:
                 return indexer;
             default:
                 return intake;

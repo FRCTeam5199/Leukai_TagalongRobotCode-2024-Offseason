@@ -7,6 +7,8 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ScoreCommands;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
@@ -24,10 +26,11 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        // commandXboxController.y().onTrue(climber.);
-        // commandXboxController.x().onTrue(climber.);
+        commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
+        commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
+        commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
 
-        // commandXboxController.y().onTrue(climber.)
+        commandXboxController.x().onTrue(ScoreCommands.ampScore());
     }
 
     public Command getAutonomousCommand() {
