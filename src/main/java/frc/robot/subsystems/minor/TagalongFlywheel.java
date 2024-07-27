@@ -18,21 +18,20 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.constants.RobotAltModes;
 import frc.robot.constants.enums.IntakePivotPositions;
 import frc.robot.constants.enums.ShooterPivotPositions;
-import frc.robot.parsers.Flywheel2MParser;
-import frc.robot.parsers.json.utils.Flywheel2MConfJson;
+import frc.robot.parsers.FlywheelParser;
+import frc.robot.parsers.json.utils.FlywheelConfJson;
 import frc.robot.subsystems.Controlboard;
 import frc.robot.tagalong.TagalongMinorSystemBase;
 import frc.robot.tagalong.TagalongMinorSystemInterface;
 
-public class TagalongDualMotorFlywheel
+public class TagalongFlywheel
     extends TagalongMinorSystemBase implements TagalongMinorSystemInterface {
-  public final Flywheel2MParser _flywheelParser;
-  public final Flywheel2MConfJson _flywheelConf;
+  public final FlywheelParser _flywheelParser;
+  public final FlywheelConfJson _flywheelConf;
 
   /* -------- Hardware: motors and sensors -------- */
   private TalonFX _flywheelMotor;
-  private TalonFX _flywheelFollowerMotor;
-  private TalonFXConfiguration _flywheelMotorConfig, _flywheelFollowerMotorConfig;
+  private TalonFXConfiguration _flywheelMotorConfig;
   protected Slot0Configs _flywheelMotorSlot0 = new Slot0Configs();
 
   /* -------- Control: states and constants -------- */
@@ -47,7 +46,7 @@ public class TagalongDualMotorFlywheel
 
   protected SimpleMotorFeedforward _flywheelFF;
 
-  public TagalongDualMotorFlywheel(Flywheel2MParser parser) {
+  public TagalongFlywheel(FlywheelParser parser) {
     super(parser);
     _flywheelParser = parser;
 
@@ -59,14 +58,11 @@ public class TagalongDualMotorFlywheel
 
     _flywheelConf = parser.flywheelConf;
     _flywheelMotor = _flywheelConf.flywheelMotor.getTalonFX();
-    _flywheelFollowerMotor = _flywheelConf.flywheelFollowerMotor.getTalonFX();
     _flywheelGearRatio = _flywheelConf.getGearRatio();
     _flywheelFF = _flywheelConf.feedforward.getSimpleMotorFeedforward();
 
     _flywheelMotorConfig = _flywheelConf.flywheelMotorControl.getFullMotorConfiguration();
     // _flywheelMotorConfig.Voltage.PeakReverseVoltage = 0.0;
-    _flywheelFollowerMotorConfig =
-        _flywheelConf.flywheelFollowerControl.getFullMotorConfiguration();
     // _flywheelFollowerMotorConfig.Voltage.PeakReverseVoltage = 0.0;
     _flywheelMotorSlot0 = _flywheelConf.flywheelMotorControl.getSlot0();
 
@@ -102,7 +98,6 @@ public class TagalongDualMotorFlywheel
       _flywheelMotorSlot0.kI = _flywheelIFactorEntry.getDouble(_flywheelMotorSlot0.kI);
       _flywheelMotorSlot0.kD = _flywheelDFactorEntry.getDouble(_flywheelMotorSlot0.kD);
       _flywheelMotor.getConfigurator().apply(_flywheelMotorSlot0);
-      _flywheelFollowerMotor.getConfigurator().apply(_flywheelMotorSlot0);
     }
   }
 
@@ -114,8 +109,6 @@ public class TagalongDualMotorFlywheel
 
   private void configFlywheelMotor() {
     _flywheelMotor.getConfigurator().apply(_flywheelMotorConfig);
-    _flywheelFollowerMotor.getConfigurator().apply(_flywheelFollowerMotorConfig);
-    _flywheelFollowerMotor.setControl(new StrictFollower(_flywheelMotor.getDeviceID()));
   }
 
   public void setFlywheelPower(double power) {

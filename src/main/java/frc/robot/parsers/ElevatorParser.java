@@ -1,12 +1,16 @@
 package frc.robot.parsers;
 
+import java.io.File;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import frc.robot.parsers.json.utils.ElevatorConfJson;
 import frc.robot.tagalong.FileUtils;
-import java.io.File;
 
 public class ElevatorParser {
   public ElevatorConfJson elevatorConf;
+  public ElevatorParser elevatorParser;
+  public RollerParser rollerParser;
 
   public ElevatorParser(File dir, String filename) {
     try {

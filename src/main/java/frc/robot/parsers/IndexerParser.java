@@ -10,7 +10,7 @@ public class IndexerParser {
   public IndexerConfJson intakeConf;
   public RollerParser intakeSideParser;
   public RollerParser shooterSideParser;
-  public RollerParser amptrapParser;
+  public RollerParser ampTrapParser;
 
 
   public IndexerParser(File dir, String filename) {
@@ -21,17 +21,17 @@ public class IndexerParser {
 
       intakeSideParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/indexer"),
-          intakeConf.pivotFile
+          intakeConf.intakeFile
       );
 
       shooterSideParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/indexer"),
-          intakeConf.rollerFile
+          intakeConf.shooterFile
       );
 
-      amptrapParser = new RollerParser(
+      ampTrapParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/indexer"),
-          intakeConf.rollerFile
+          intakeConf.ampTrapFile
       );
 
     } catch (Exception err) {

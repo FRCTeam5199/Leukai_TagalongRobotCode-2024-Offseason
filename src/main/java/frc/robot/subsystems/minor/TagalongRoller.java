@@ -114,6 +114,7 @@ public class TagalongRoller
           _rollerKVEntry.getDouble(_rollerFF.kv),
           _rollerKAEntry.getDouble(_rollerFF.ka)
       );
+      _rollerMotor.setControl(_requestedRollerPositionVoltage.withFeedForward(_rollerFF.ks));
     }
   }
 

@@ -1,24 +1,31 @@
 package frc.robot.parsers;
 
+import java.io.File;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.json.ClimberConfJson;
 import frc.robot.tagalong.FileUtils;
-import java.io.File;
 
 public class ClimberParser {
-  public ClimberConfJson notevatorConf;
-  public ElevatorParser elevatorParser;
+  public ClimberConfJson climberConf;
+  public ElevatorParser elevatorRightParser;
+  public ElevatorParser elevatorLeftParser;
 
   public ClimberParser(File dir, String filename) {
     try {
       File notevatorFile = new File(dir, filename);
       FileUtils.checkForFile(notevatorFile);
-      notevatorConf = new ObjectMapper().readValue(notevatorFile, ClimberConfJson.class);
+      climberConf = new ObjectMapper().readValue(notevatorFile, ClimberConfJson.class);
 
-      elevatorParser = new ElevatorParser(
+      elevatorRightParser = new ElevatorParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/climber"),
-          notevatorConf.elevatorFile
+          climberConf.elevatorRightFile
+      );
+      elevatorLeftParser = new ElevatorParser(
+          new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/climber"),
+          climberConf.elevatorLeftFile
       );
 
     } catch (Exception err) {

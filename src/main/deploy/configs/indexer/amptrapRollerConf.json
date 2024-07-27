@@ -1,14 +1,14 @@
 {
-  "name": "Intake Roller",
+  "name": "Amp Trap Roller",
   "rollerMotor": {
     "type": "kraken",
-    "id": 41,
+    "id": 21,
     "canbus": "rio"
   },
-  "gearRatio": [[24, 12]],
+  "gearRatio": [[1, 1]],
   "feedforward": {
     "s": 0.0,
-    "v": 0.0,
+    "v": 0.12820512820512820512820512820513,
     "a": 0.0
   },
   "trapezoidalLimits": {
@@ -22,11 +22,11 @@
     "upperTolerance": 3.0
   },
   "rollerMotorControl": {
-    "clockwisePositive": false,
+    "clockwisePositive": true,
     "brakeMode": false,
     "motor": {
       "slot0PIDConstants": {
-        "p": 500.0,
+        "p": 0.0,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,

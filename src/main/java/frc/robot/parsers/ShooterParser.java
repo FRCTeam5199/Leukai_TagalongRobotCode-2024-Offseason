@@ -8,7 +8,8 @@ import java.io.File;
 
 public class ShooterParser {
   public ShooterConfJson shooterConf;
-  public FlywheelParser flywheelParser;
+  public FlywheelParser flywheelLeftParser;
+  public FlywheelParser flywheelRightParser;
   public PivotParser pivotParser;
   public RollerParser rollerParser;
 
@@ -18,19 +19,19 @@ public class ShooterParser {
       FileUtils.checkForFile(shooterFile);
       shooterConf = new ObjectMapper().readValue(shooterFile, ShooterConfJson.class);
 
-      flywheelParser = new FlywheelParser(
+      flywheelLeftParser = new FlywheelParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/shooter"),
-          shooterConf.flywheelFile
+          shooterConf.flywheelLeftFile
+      );
+
+      flywheelRightParser = new FlywheelParser(
+          new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/shooter"),
+          shooterConf.flywheelRightFile
       );
 
       pivotParser = new PivotParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/shooter"),
           shooterConf.pivotFile
-      );
-
-      rollerParser = new RollerParser(
-          new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/shooter"),
-          shooterConf.rollerFile
       );
 
     } catch (Exception err) {

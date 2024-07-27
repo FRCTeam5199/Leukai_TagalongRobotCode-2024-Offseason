@@ -1,27 +1,27 @@
 {
-  "name": "Intake Roller",
-  "rollerMotor": {
+  "name": "Flywheel Right",
+  "flywheelMotor": {
     "type": "kraken",
-    "id": 20,
+    "id": 27,
     "canbus": "rio"
   },
   "gearRatio": [[1, 1]],
   "feedforward": {
-    "s": 0.49,
-    "v": 0.14084507042253521126760563380282,
+    "s": 0.21,
+    "v": 0.133,
     "a": 0.0
   },
   "trapezoidalLimits": {
-    "unit": "rot",
+    "unit": "rotations",
     "velocity": 90.0,
-    "acceleration": 200.0
+    "acceleration": 400.0
   },
   "defaultTolerances": {
     "unit": "rot",
-    "lowerTolerance": 3.0,
-    "upperTolerance": 3.0
+    "lowerTolerance": 20.0,
+    "upperTolerance": 20.0
   },
-  "rollerMotorControl": {
+  "flywheelMotorControl": {
     "clockwisePositive": false,
     "brakeMode": false,
     "motor": {
@@ -50,9 +50,9 @@
       "statorEnableLimit": true,
       "statorPeakLimit": 80,
       "supplyEnableLimit": true,
-      "supplyPeakLimit": 140,
-      "supplyContinuousLimit": 80,
-      "peakDuration": 1.0
+      "supplyPeakLimit": 80,
+      "supplyContinuousLimit": 40,
+      "peakDuration": 0.5
     }
   }
 }

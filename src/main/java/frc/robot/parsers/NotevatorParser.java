@@ -17,7 +17,7 @@ public class NotevatorParser {
       notevatorConf = new ObjectMapper().readValue(notevatorFile, NotevatorConfJson.class);
 
       elevatorParser = new ElevatorParser(
-          new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/climber"),
+          new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/notevator"),
           notevatorConf.elevatorFile
       );
 
