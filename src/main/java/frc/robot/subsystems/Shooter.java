@@ -31,6 +31,8 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         shooterLeft = new TagalongFlywheel(shooterParser.flywheelLeftParser);
         shooterRight = new TagalongFlywheel(shooterParser.flywheelRightParser);
         arm = new TagalongPivot(shooterParser.pivotParser);
+
+        configShuffleboard();
     }
 
     public static Shooter getInstance() {
@@ -92,6 +94,8 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         shooterLeft.periodic();
         shooterRight.periodic();
         arm.periodic();
+
+        updateShuffleboard();
     }
 
     @Override

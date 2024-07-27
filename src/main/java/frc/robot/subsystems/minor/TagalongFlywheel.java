@@ -88,9 +88,9 @@ public class TagalongFlywheel
           _flywheelKAEntry.getDouble(_flywheelFF.ka)
       );
       // For testing only
-      // _flywheelMotor.setControl(
-      //     _requestedFlywheelVelocityVoltage.withVelocity(1.0).withFeedForward(0)
-      // );
+      _flywheelMotor.setControl(
+          _requestedFlywheelVelocityVoltage.withVelocity(1.0).withFeedForward(_flywheelFF.ks)
+      );
     }
 
     if (RobotAltModes.isFlywheelTuningMode && RobotAltModes.isPIDTuningMode) {
@@ -192,7 +192,7 @@ public class TagalongFlywheel
         tuningTab.getLayout(_flywheelConf.name, BuiltInLayouts.kGrid)
             .withSize(3, 4)
             .withPosition(2 * Controlboard.get()._tuningTabCounter++, 0);
-    if (RobotAltModes.isPIDTuningMode && RobotAltModes.isFlywheelTuningMode) {
+    if (RobotAltModes.isPIDTuningMode || RobotAltModes.isFlywheelTuningMode) {
       _flywheelPFactorEntry =
           flywheelLayout.add(_flywheelConf.name + " P Fac", 0.0).withPosition(3, 0).getEntry();
       _flywheelIFactorEntry =

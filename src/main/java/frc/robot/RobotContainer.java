@@ -20,7 +20,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
     public static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     public static Shooter shooterSubsystem = Shooter.getInstance();
-    public static Climber climber = Climber.getInstance();
+    public static Climber climberSubsystem = Climber.getInstance();
     public static NoteElevator noteElevator = NoteElevator.getInstance();
     CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
 
@@ -45,25 +45,35 @@ public class RobotContainer {
     public void onEnable() {
         indexerSubsystem.onEnable();
         shooterSubsystem.onEnable();
+        climberSubsystem.onEnable();
+        noteElevator.onEnable();
     }
 
     public void onDisable() {
         indexerSubsystem.onDisable();
         shooterSubsystem.onDisable();
+        climberSubsystem.onDisable();
+        noteElevator.onEnable();
     }
 
     public void disabledPeriodic() {
         indexerSubsystem.disabledPeriodic();
         shooterSubsystem.disabledPeriodic();
+        climberSubsystem.disabledPeriodic();
+        noteElevator.disabledPeriodic();
     }
 
     public void simulationInit() {
         indexerSubsystem.simulationInit();
         shooterSubsystem.simulationInit();
+        climberSubsystem.simulationInit();
+        noteElevator.simulationInit();
     }
 
     public void simulationPeriodic() {
         indexerSubsystem.simulationPeriodic();
         shooterSubsystem.simulationPeriodic();
+        climberSubsystem.simulationPeriodic();
+        noteElevator.simulationPeriodic();
     }
 }

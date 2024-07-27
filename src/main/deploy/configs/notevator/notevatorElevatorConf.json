@@ -1,5 +1,5 @@
 {
-  "name": "Climber Elevator",
+  "name": "Note Elevator",
   "motor": {
     "type": "kraken",
     "id": 22,
@@ -14,9 +14,9 @@
     "value": 1.273
   },
   "feedforward": {
-    "s": 0.103,
-    "g": 0.236,
-    "v": 7.9365079365,
+    "s": 0.4,
+    "g": 0.205,
+    "v": 8.3333333333333333333333333333333,
     "a": 0.0
   },
   "trapezoidalLimits": {
@@ -35,7 +35,7 @@
     "upperTolerance": 0.015
   },
   "motorControl": {
-    "clockwisePositive": true,
+    "clockwisePositive": false,
     "brakeMode": false,
     "motorCurrentLimits": {
       "statorEnableLimit": true,
@@ -47,9 +47,9 @@
     },
       "motor": {
       "slot0PIDConstants": {
-        "p": 1.5,
-        "i": 0.1,
-        "d": 0.001,
+        "p": 0.0,
+        "i": 0.0,
+        "d": 0.0,
         "s": 0.0,
         "g": 0.0,
         "v": 0.0,

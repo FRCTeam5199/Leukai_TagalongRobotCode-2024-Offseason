@@ -7,8 +7,8 @@
   },
   "gearRatio": [[1, 1]],
   "feedforward": {
-    "s": 0.21,
-    "v": 0.133,
+    "s": 0.14,
+    "v": 0.1960784313725490196078431372549,
     "a": 0.0
   },
   "trapezoidalLimits": {
@@ -33,7 +33,7 @@
         "g": 0.0,
         "v": 0.0,
         "a": 0.0
-      }
+      } 
     },
     "simMotor": {
       "slot0PIDConstants": {

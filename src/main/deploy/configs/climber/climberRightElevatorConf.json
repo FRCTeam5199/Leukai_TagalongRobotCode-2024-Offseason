@@ -1,5 +1,5 @@
 {
-  "name": "Climber Elevator",
+  "name": "Climber Right Elevator",
   "motor": {
     "type": "kraken",
     "id": 29,
