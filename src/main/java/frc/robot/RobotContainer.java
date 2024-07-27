@@ -24,7 +24,6 @@ public class RobotContainer {
     public static Climber climber = new Climber("configs/climber/climberConf.json");
     public static NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
     CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
-    AutoShootCommands autoShootCommands = new AutoShootCommands();
 
     public RobotContainer() {
         configureBindings();
@@ -37,7 +36,7 @@ public class RobotContainer {
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
 
-        commandXboxController.leftTrigger().onTrue(autoShootCommands.BasicAutoShootCommand(shooterSubsystem, indexerSubsystem));
+        commandXboxController.leftTrigger().onTrue(ScoreCommands.basicAutoShootCommand());
     }
 
     public Command getAutonomousCommand() {
