@@ -18,7 +18,7 @@ public class RobotContainer {
   CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
 
   Climber climber = new Climber("configs/climber/climberConf.json");
-  NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
+  // NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
 
   public RobotContainer() {
     configureBindings();
