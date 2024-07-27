@@ -22,7 +22,6 @@ public class RobotContainer {
 
   public RobotContainer() {
     configureBindings();
-    configShuffleboard();
   }
 
   private void configureBindings() {
@@ -59,10 +58,5 @@ public class RobotContainer {
   public void simulationPeriodic() {
     indexerSubsystem.simulationPeriodic();
     shooterSubsystem.simulationPeriodic();
-  }
-
-  public void configShuffleboard() {
-    indexerSubsystem.configShuffleboard();
-    shooterSubsystem.configShuffleboard();
   }
 }

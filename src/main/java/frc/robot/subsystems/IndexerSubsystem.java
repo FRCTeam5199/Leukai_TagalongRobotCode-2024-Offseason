@@ -43,7 +43,9 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         }
         intake = new TagalongRoller(indexerParser.intakeSideParser);
         ampTrap = new TagalongRoller(indexerParser.amptrapParser);
-        indexer = new TagalongRoller(indexerParser.shooterSideParser    );
+        indexer = new TagalongRoller(indexerParser.shooterSideParser);
+
+        configShuffleboard();
     }
 
     @Override
@@ -74,6 +76,8 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         intake.periodic();
         ampTrap.periodic();
         indexer.periodic();
+
+        updateShuffleboard();
     }
 
     public void disabledPeriodic() {
@@ -96,14 +100,12 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         indexer.simulationPeriodic();
     }
 
-    @Override
     public void updateShuffleboard() {
         intake.updateShuffleboard();
         ampTrap.updateShuffleboard();
         indexer.updateShuffleboard();
     }
 
-    @Override
     public void configShuffleboard() {
         intake.configShuffleboard();
         ampTrap.configShuffleboard();
