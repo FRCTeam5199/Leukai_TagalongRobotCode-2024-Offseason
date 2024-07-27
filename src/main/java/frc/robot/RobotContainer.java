@@ -15,6 +15,7 @@ import frc.robot.commands.ScoreCommands;
 import frc.robot.commands.base.AutoShootCommands;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class RobotContainer {
@@ -33,9 +34,10 @@ public class RobotContainer {
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
         commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
-        commandXboxController.leftTrigger().onTrue(autoShootCommands.BasicAutoShootCommand(shooterSubsystem, indexerSubsystem));
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
+
+        commandXboxController.leftTrigger().onTrue(autoShootCommands.BasicAutoShootCommand(shooterSubsystem, indexerSubsystem));
     }
 
     public Command getAutonomousCommand() {
