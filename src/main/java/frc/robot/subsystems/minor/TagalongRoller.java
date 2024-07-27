@@ -108,7 +108,8 @@ public class TagalongRoller
       _rollerMotor.getConfigurator().apply(_rollerMotorSlot0);
     }
 
-    if (RobotAltModes.isRollerTuningMode) {
+    if (RobotAltModes.isRollerTuningMode
+    && _rollerConf.name.equalsIgnoreCase(RobotAltModes.currentMicrosystem)) {
       _rollerFF = new SimpleMotorFeedforward(
           _rollerKSEntry.getDouble(_rollerFF.ks),
           _rollerKVEntry.getDouble(_rollerFF.kv),
