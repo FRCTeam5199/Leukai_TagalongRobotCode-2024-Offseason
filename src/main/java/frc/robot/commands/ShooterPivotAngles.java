@@ -4,7 +4,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.tagalong.TagalongAngle;
 
 public enum ShooterPivotAngles implements TagalongAngle {
-    STABLE(0);
+    STABLE(12),
+    LOW(25),
+    MID(37),
+    MAX(50);
     private final Rotation2d value;
 
     ShooterPivotAngles(double degree) {

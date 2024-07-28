@@ -16,8 +16,10 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.ElevatorHeights;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -55,7 +57,10 @@ public class RobotContainer {
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
 
-        commandXboxController.leftTrigger().onTrue(ScoreCommands.basicAutoShootCommand());
+//        commandXboxController.leftTrigger().onTrue(ScoreCommands.basicAutoShootCommand());
+        commandXboxController.povDown().onTrue(IntakeCommands.setShooterPivotToSetpoint(ShooterPivotAngles.MID));
+        commandXboxController.povLeft().onTrue(ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP));
+        commandXboxController.povRight().onTrue(ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.TRAP));
 
         commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive.withVelocityX(commandXboxController.getLeftY() * MaxSpeed) // Drive forward with
@@ -75,6 +80,7 @@ public class RobotContainer {
                                         .withRotationalRate(driveRotationalPIDController.calculate((commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.48 - commandSwerveDrivetrain.getPose().getY()) / (-0.0381 - commandSwerveDrivetrain.getPose().getX()))))))),
                         () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
                 ));
+        commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> commandSwerveDrivetrain.seedFieldRelative()));
     }
 
     public Command getAutonomousCommand() {

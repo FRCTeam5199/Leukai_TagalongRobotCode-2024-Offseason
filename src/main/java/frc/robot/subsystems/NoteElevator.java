@@ -127,6 +127,8 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
         // Logging
         // _io.updateInputs(_inputs);
         // Logger.processInputs("Climber", _inputs);
+
+        System.out.println("Elevator Position: " + _elevator.getElevatorVelocityMPS());
         updateShuffleboard();
     }
 

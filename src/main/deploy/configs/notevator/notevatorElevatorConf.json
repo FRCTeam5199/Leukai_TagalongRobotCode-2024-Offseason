@@ -21,13 +21,13 @@
   },
   "trapezoidalLimits": {
     "unit": "meter",
-    "velocity": 1.0,
-    "acceleration": 2.0
+    "velocity": 3,
+    "acceleration": 7.5
   },
   "positionalLimits": {
     "unit": "meter",
     "min": 0.0,
-    "max": 0.398
+    "max": 0.595
   },
   "defaultTolerances": {
     "unit": "meter",
@@ -47,7 +47,7 @@
     },
       "motor": {
       "slot0PIDConstants": {
-        "p": 0.0,
+        "p": 2.0,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,
@@ -58,9 +58,9 @@
     },
     "simMotor": {
       "slot0PIDConstants": {
-        "p": 1.5,
-        "i": 0.1,
-        "d": 0.001,
+        "p": 0.0,
+        "i": 0.0,
+        "d": 0.0,
         "s": 0.0,
         "g": 0.0,
         "v": 0.0,

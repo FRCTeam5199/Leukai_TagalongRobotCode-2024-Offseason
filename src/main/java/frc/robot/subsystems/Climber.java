@@ -117,6 +117,8 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
         // _io.updateInputs(_inputs);
         // Logger.processInputs("Climber", _inputs);
         updateShuffleboard();
+
+        System.out.println("Climber Position: " + _elevatorLeft.getElevatorHeightM());
     }
 
     @Override

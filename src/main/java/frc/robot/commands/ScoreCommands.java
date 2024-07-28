@@ -16,9 +16,13 @@ public class ScoreCommands {
 
     public static Command elevatorStable() {
         return new ParallelCommandGroup(
-                new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 0),
+                new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE),
                 new InstantCommand(() -> indexerSubsystem.setRollerSpeeds(0, 0, 0))
         );
+    }
+
+    public static Command moveElevatorToSetpoint(ElevatorHeights elevatorHeights) {
+        return new ElevatorRaiseToCommand<>(elevatorSubsystem, elevatorHeights);
     }
 
     public static Command ampScore() {

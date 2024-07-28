@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.RobotContainer;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.commands.base.RollerRotateXCommand;
@@ -14,21 +13,21 @@ public class IntakeCommands {
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
     private static final Shooter shooterSubsystem = Shooter.getInstance();
 
-    private static Command moveElevatorDown() {
+    private static Command setElevatorToStable() {
         return new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 0);
     }
 
-    private static Command moveShooterStable() {
-        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.STABLE, true);
+    public static Command setShooterPivotToSetpoint(ShooterPivotAngles angle) {
+        return new PivotToCommand<>(shooterSubsystem, angle, true);
     }
 
     private static Command spinRollersForIntake() {
         return new FunctionalCommand(
                 () -> {
                     if (indexerSubsystem.getAmpMode()) {
-                        indexerSubsystem.setRollerSpeeds(0.8, 1, 0);
+                        indexerSubsystem.setRollerSpeeds(1000, 2000, 0);
                     } else {
-                        indexerSubsystem.setRollerSpeeds(0.8, -1, -0.05);
+                        indexerSubsystem.setRollerSpeeds(1000, -2000, 500);
                     }
                 },
                 () -> {
@@ -50,7 +49,8 @@ public class IntakeCommands {
 
     public static Command intake() {
         return new SequentialCommandGroup(
-                moveElevatorDown(),
+//                setShooterPivotToStable(),
+                setElevatorToStable(),
                 spinRollersForIntake().until(
                         () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap())
                 ),
@@ -64,14 +64,16 @@ public class IntakeCommands {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> indexerSubsystem.setAmpMode(true)),
                 new SequentialCommandGroup(
-                        moveElevatorDown(),
-                        moveShooterStable(),
+                        setElevatorToStable(),
                         new FunctionalCommand(
-                                () -> indexerSubsystem.setRollerSpeeds(-0.35, 0.25, -0.5),
+                                () -> indexerSubsystem.setRollerSpeeds(-2500, 1500, -1000),
                                 () -> {
+                                    if (!indexerSubsystem.isNoteInIntake()) {
+                                        indexerSubsystem.setRollerSpeeds(1500, 2500, 0);
+                                    }
                                 },
-                                interrupted -> indexerSubsystem.setRollerSpeeds(0.4, 1, 0),
-                                () -> !indexerSubsystem.isNoteInIntake(),
+                                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                                indexerSubsystem::isNoteInAmpTrap,
                                 indexerSubsystem
                         )
                 ).unless(() -> !indexerSubsystem.isNoteInIndexer())
@@ -82,14 +84,16 @@ public class IntakeCommands {
         return new SequentialCommandGroup(
                 new InstantCommand(() -> indexerSubsystem.setAmpMode(false)),
                 new SequentialCommandGroup(
-                        moveElevatorDown(),
-                        moveShooterStable(),
+                        setElevatorToStable(),
                         new FunctionalCommand(
-                                () -> indexerSubsystem.setRollerSpeeds(-0.35, -0.5, 0.5),
+                                () -> indexerSubsystem.setRollerSpeeds(-2000, -2000, 0),
                                 () -> {
+                                    if (indexerSubsystem.isNoteInIntake()) {
+                                        indexerSubsystem.setRollerSpeeds(1000, -3000, 500);
+                                    }
                                 },
-                                interrupted -> indexerSubsystem.setRollerSpeeds(0.4, 1, 0),
-                                indexerSubsystem::isNoteInIntake,
+                                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                                indexerSubsystem::isNoteInIndexer,
                                 indexerSubsystem
                         )
                 ).unless(() -> !indexerSubsystem.isNoteInAmpTrap())
