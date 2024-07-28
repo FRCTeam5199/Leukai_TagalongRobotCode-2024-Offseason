@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.minor.TagalongRoller;
 import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongAngle;
+import frc.robot.tagalong.TagalongHeight;
 
 public class RollerRotateXCommand<T extends Subsystem & RollerAugment> extends Command {
   private final TagalongRoller _roller;
@@ -57,6 +58,18 @@ public class RollerRotateXCommand<T extends Subsystem & RollerAugment> extends C
       T roller, double relativeMovementRot, double lowerToleranceRot, double upperToleranceRot
   ) {
     this(roller, relativeMovementRot, lowerToleranceRot, upperToleranceRot, false);
+  }
+
+  public RollerRotateXCommand(
+      int id,
+      T roller,
+      TagalongAngle relativeMovementRot
+    ) {
+    _roller = roller.getRoller(id);
+    _relativeMovementRot = relativeMovementRot.getRotations();
+    _lowerToleranceRot = roller.getRoller()._defaultRollerLowerToleranceRot;
+    _upperToleranceRot = roller.getRoller()._defaultRollerUpperToleranceRot;
+    _requireInTolerance = false;
   }
 
   public RollerRotateXCommand(

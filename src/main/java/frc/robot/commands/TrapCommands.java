@@ -22,8 +22,7 @@ public class TrapCommands{
 
     public Command trapClimb(IndexerSubsystem indexer, Shooter shooter, Climber climber){
         return new SequentialCommandGroup(
-            new ClimberCommands().climberDescendCommand(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT),
-            new IndexerCommands().spitNote(indexer)
+            new ClimberCommands().climberDescendCommand(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT)
         );
     }
 
