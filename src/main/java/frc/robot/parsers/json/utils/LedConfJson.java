@@ -1,9 +1,5 @@
 package frc.robot.parsers.json.utils;
 
-import com.ctre.phoenix.led.CANdle.LEDStripType;
-import com.ctre.phoenix.led.CANdle.VBatOutputMode;
-import com.ctre.phoenix.led.CANdleConfiguration;
-
 public class LedConfJson {
   public DeviceJson candle;
 
@@ -17,37 +13,37 @@ public class LedConfJson {
   public String vBatOutputMode = "off";
 
   private int stripLength = -1;
-  private CANdleConfiguration candleConfig = null;
-  private LEDStripType stripType = null;
-  private VBatOutputMode vBatOutput = null;
+  // private CANdleConfiguration candleConfig = null;
+  // private LEDStripType stripType = null;
+  // private VBatOutputMode vBatOutput = null;
   private int[] stripSections = null;
 
-  public CANdleConfiguration getCANdleConfig() {
-    if (candleConfig == null) {
-      candleConfig = new CANdleConfiguration();
-      candleConfig.statusLedOffWhenActive = statusLedOffWhenActive;
-      candleConfig.disableWhenLOS = disableWhenLOS;
-      candleConfig.stripType = getLEDStripType();
-      candleConfig.brightnessScalar = brightness;
-      candleConfig.v5Enabled = enable5V;
-      candleConfig.vBatOutputMode = VBatOutputMode.Off;
-    }
-    return candleConfig;
-  }
+  // public CANdleConfiguration getCANdleConfig() {
+  //   if (candleConfig == null) {
+  //     candleConfig = new CANdleConfiguration();
+  //     candleConfig.statusLedOffWhenActive = statusLedOffWhenActive;
+  //     candleConfig.disableWhenLOS = disableWhenLOS;
+  //     candleConfig.stripType = getLEDStripType();
+  //     candleConfig.brightnessScalar = brightness;
+  //     candleConfig.v5Enabled = enable5V;
+  //     candleConfig.vBatOutputMode = VBatOutputMode.Off;
+  //   }
+  //   return candleConfig;
+  // }
 
-  public LEDStripType getLEDStripType() {
-    if (stripType == null) {
-      stripType = LEDStripType.valueOf(ledStripType.toUpperCase());
-    }
-    return stripType;
-  }
+  // public LEDStripType getLEDStripType() {
+  //   if (stripType == null) {
+  //     stripType = LEDStripType.valueOf(ledStripType.toUpperCase());
+  //   }
+  //   return stripType;
+  // }
 
-  public VBatOutputMode getVBatOutputMode() {
-    if (vBatOutput == null) {
-      vBatOutput = VBatOutputMode.valueOf(vBatOutputMode.toUpperCase());
-    }
-    return vBatOutput;
-  }
+  // public VBatOutputMode getVBatOutputMode() {
+  //   if (vBatOutput == null) {
+  //     vBatOutput = VBatOutputMode.valueOf(vBatOutputMode.toUpperCase());
+  //   }
+  //   return vBatOutput;
+  // }
 
   public int getStripLength() {
     if (stripLength <= 0) {
