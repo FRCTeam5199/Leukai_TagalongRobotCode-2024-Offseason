@@ -33,7 +33,7 @@
   "positionalLimits": {
     "unit": "meter",
     "min": 0.0,
-    "max": 0.398
+    "max": 1.66
   },
   "defaultTolerances": {
     "unit": "meter",
@@ -53,7 +53,7 @@
     },
     "motor": {
       "slot0PIDConstants": {
-        "p": 0.0,
+        "p": 1.0,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,

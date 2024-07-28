@@ -17,7 +17,7 @@ public final class RobotAltModes {
     public static final boolean isPIDTuningMode = false;
     public static final boolean isElevatorTuningMode = false;
     public static final boolean isRollerTuningMode = false;
-    public static final boolean isPivotTuningMode = true;
+    public static final boolean isPivotTuningMode = false;
     public static final boolean isFlywheelTuningMode = false;
     public static final boolean isUnprofiledPIDMode = false;
     public static final boolean isModuleTuningMode = false;

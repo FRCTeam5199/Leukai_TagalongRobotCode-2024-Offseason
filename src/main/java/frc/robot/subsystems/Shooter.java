@@ -97,7 +97,8 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         shooterRight.periodic();
         arm.periodic();
 
-        System.out.println("Arm Position: " + arm.getPivotPosition());
+        System.out.println("Shooter LEFT Velocity: " + shooterLeft.getFlywheelVelocity());
+        System.out.println("Shooter RIGHT Velocity: " + shooterLeft.getFlywheelVelocity());
 
         updateShuffleboard();
     }
@@ -143,8 +144,9 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
                 && arm.checkInitStatus();
     }
 
-    public boolean reachedShootingConditions() {
-        return arm.getPivotPosition() > 14 && shooterRight.getFlywheelVelocity() > 3999 && shooterLeft.getFlywheelVelocity() > 2999;
+    public boolean reachedShootingConditions(double targetSpeed) {
+        return arm.isPivotProfileFinished()
+         && shooterRight.isFlywheelAtTargetSpeed(targetSpeed) && shooterLeft.isFlywheelAtTargetSpeed(targetSpeed);
     }
 
     public boolean shotNote() {

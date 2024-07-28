@@ -32,8 +32,8 @@
   },
   "trapezoidalLimits": {
     "unit": "deg",
-    "velocity": 1440.0,
-    "acceleration": 2340.0
+    "velocity": 500.0,
+    "acceleration": 750.0
   },
   "positionalLimits": {
     "unit": "deg",
@@ -55,7 +55,7 @@
   },
   "pivotMotorControl": {
     "clockwisePositive": true,
-    "brakeMode": false,
+    "brakeMode": true,
     "motorCurrentLimits": {
       "statorEnableLimit": true,
       "statorPeakLimit": 80,
@@ -66,9 +66,9 @@
     },
     "motor": {
       "slot0PIDConstants": {
-        "p": 0.0,
+        "p": 250.0,
         "i": 0.0,
-        "d": 0.5,
+        "d": 0.0,
         "s": 0.0,
         "g": 0.0,
         "v": 0.0,
