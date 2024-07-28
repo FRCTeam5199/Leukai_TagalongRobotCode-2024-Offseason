@@ -4,6 +4,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -27,20 +28,34 @@ public class ScoreCommands {
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
     private static final Shooter shooterSubsystem = Shooter.getInstance();
-    
-    public static Command driveAutoTurn(CommandXboxController commandXboxController, CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive, TrapezoidProfile driveRotationalTrapezoidProfile) {
+    private static TrapezoidProfile driveRotationalTrapezoidProfile;
+
+    public static Command driveAutoTurn(CommandXboxController commandXboxController, CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-            new InstantCommand(() -> commandSwerveDrivetrain.applyRequest(
-              () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
-              .withRotationalRate(driveRotationalTrapezoidProfile.calculate(1.0,
-              new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(), commandSwerveDrivetrain.getPigeon2().getRate()),
-              new State(Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX()))), 2.27)).velocity))),
-            new InstantCommand(() -> commandSwerveDrivetrain.applyRequest(
-              () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
-              .withRotationalRate(driveRotationalTrapezoidProfile.calculate(1.0,
-              (new State(commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees(), commandSwerveDrivetrain.getPigeon2().getRate())),
-              new State(Units.radiansToDegrees(Math.atan((5.48 - commandSwerveDrivetrain.getPose().getY()) / (-0.0381 - commandSwerveDrivetrain.getPose().getX()))), 2.27)).velocity))),
-            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+            new FunctionalCommand(
+                () -> driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(18.9, 2.27)),
+                
+                () -> {
+                    double desiredRotation = (driveRotationalTrapezoidProfile.calculate(1.0,
+                    new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(), commandSwerveDrivetrain.getPigeon2().getRate()),
+                    new State(Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX()))), 2.27)).velocity);
+                    
+                    commandSwerveDrivetrain.applyRequest(
+                    () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
+                    .withRotationalRate(desiredRotation));},
+                
+                
+                    null,
+                null),
+            new FunctionalCommand(null,
+                () -> commandSwerveDrivetrain.applyRequest(
+                    () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
+                    .withRotationalRate(driveRotationalTrapezoidProfile.calculate(1.0,
+                    (new State(commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees(), commandSwerveDrivetrain.getPigeon2().getRate())),
+                    new State(Units.radiansToDegrees(Math.atan((5.48 - commandSwerveDrivetrain.getPose().getY()) / (-0.0381 - commandSwerveDrivetrain.getPose().getX()))), 2.27)).velocity)),
+                null,
+                null),
+        () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
         );
     }
 
