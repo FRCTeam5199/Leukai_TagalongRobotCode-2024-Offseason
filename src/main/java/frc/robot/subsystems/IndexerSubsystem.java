@@ -6,7 +6,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.parsers.IndexerParser;
 import frc.robot.subsystems.minor.TagalongRoller;
 import frc.robot.tagalong.RollerAugment;
@@ -94,6 +93,8 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         indexer.periodic();
 
         updateShuffleboard();
+
+        System.out.println("Intake Speed: " + intake.getRollerMotor().getVelocity());
     }
 
     public void disabledPeriodic() {
@@ -152,9 +153,33 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
     }
 
     public void setRollerSpeeds(double intakeSpeed, double ampTrapSpeed, double indexerSpeed) {
-        intake.setRollerVelocityControl(intakeSpeed / 60, true);
-        ampTrap.setRollerVelocityControl(ampTrapSpeed / 60, true);
-        indexer.setRollerVelocityControl(indexerSpeed / 60, true);
+        intake.setRollerVelocityControl(intakeSpeed, true);
+        ampTrap.setRollerVelocityControl(ampTrapSpeed, true);
+        indexer.setRollerVelocityControl(indexerSpeed, true);
+    }
+
+    public void setRollerProfiles(double intakeRotations, double ampTrapRotations, double indexerRotations) {
+        intake.setRollerProfile(intakeRotations, 0);
+        ampTrap.setRollerProfile(ampTrapRotations, 0);
+        indexer.setRollerProfile(indexerRotations, 0);
+    }
+
+    public void followLastRollerProfiles() {
+        intake.followLastRollerProfile();
+        ampTrap.followLastRollerProfile();
+        indexer.followLastRollerProfile();
+    }
+
+    public double[] getRollerPositions() {
+        return new double[]{
+                intake.getRollerPosition(),
+                ampTrap.getRollerPosition(),
+                indexer.getRollerPosition()
+        };
+    }
+
+    public boolean isRollerProfilesFinished() {
+        return intake.isRollerProfileFinished() && ampTrap.isRollerProfileFinished() && indexer.isRollerProfileFinished();
     }
 
     public boolean isNoteInIntake() {

@@ -97,8 +97,10 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         shooterRight.periodic();
         arm.periodic();
 
-        System.out.println("Shooter LEFT Velocity: " + shooterLeft.getFlywheelVelocity());
-        System.out.println("Shooter RIGHT Velocity: " + shooterLeft.getFlywheelVelocity());
+        if (shooterLeft.getFlywheelPower() > 0){ 
+            System.out.println("Shooter LEFT Velocity: " + shooterLeft.getFlywheelVelocity());
+            System.out.println("Shooter RIGHT Velocity: '" + shooterRight.getFlywheelVelocity());
+        }
 
         updateShuffleboard();
     }

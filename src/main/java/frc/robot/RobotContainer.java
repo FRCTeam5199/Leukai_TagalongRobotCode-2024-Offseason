@@ -59,9 +59,11 @@ public class RobotContainer {
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
 
-       commandXboxController.leftTrigger().onTrue(ScoreCommands.basicAutoShootCommand(50));
-       commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand());
-        // commandXboxController.povDown().onTrue(IntakeCommands.setShooterPivotToSetpoint(ShooterPivotAngles.MID));
+        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
+                .onFalse(ScoreCommands.moveShooterToStable());
+        commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand());
+        commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
+                .onFalse(ScoreCommands.elevatorStable());
         commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
         commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
 
