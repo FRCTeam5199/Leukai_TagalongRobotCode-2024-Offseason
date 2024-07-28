@@ -65,7 +65,7 @@ public class Constants {
 
     public static class Vision {
         public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
-        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.5, 0.5, 1);
+        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.00, 0.00, 0);
         public static final String kCameraName = "Camera";
 
         public static final Transform3d kRobotToCam =

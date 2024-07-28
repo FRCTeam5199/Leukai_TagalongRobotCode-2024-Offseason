@@ -49,6 +49,8 @@ public class RobotContainer {
         configureBindings();
     }
 
+
+
     private void configureBindings() {
 
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
@@ -70,6 +72,8 @@ public class RobotContainer {
                         .withRotationalRate(commandXboxController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
                 )
         );
+
+        commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
 
         commandXboxController.button(7).onTrue(
                 new ConditionalCommand(
