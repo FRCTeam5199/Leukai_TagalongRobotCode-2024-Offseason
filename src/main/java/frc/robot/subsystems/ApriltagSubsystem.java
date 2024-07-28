@@ -33,7 +33,7 @@ public class ApriltagSubsystem extends SubsystemBase {
         camera = new PhotonCamera(Constants.Vision.kCameraName);
 
         photonEstimator =
-                new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.LOWEST_AMBIGUITY, camera, Constants.Vision.kRobotToCam);
+                new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
@@ -56,16 +56,19 @@ public class ApriltagSubsystem extends SubsystemBase {
         photonEstimator.setReferencePose(drivetrain.getPose());
 
         getLatestResult();
+    
 
         // filtering stages
         // Ensure the result is
-        if (lastResult.hasTargets() && lastResult.getTargets().size() >= 2) {
-            System.out.println(lastResult.getTargets().size());
-            return photonEstimator.update(lastResult);
-        } else {
-            System.out.println("No targets");
-
+        if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
             return Optional.empty();
+        } else if(lastResult.getTargets().size() < 2){
+            System.out.println("No targets");
+            return Optional.empty();
+        }else{
+            System.out.println(lastResult.getTargets().size());
+            lastEstTimestamp = lastResult.getTimestampSeconds();
+            return photonEstimator.update(lastResult);
         }
     }
 
