@@ -10,13 +10,17 @@ import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
 
 public class TrapCommands{
-    
-    public Command trapPrep(NoteElevator noteElevator,Shooter shooter, Climber climber){
+    public static NoteElevator noteElevator;
+    public static Shooter shooter;
+    public static Climber climber;
+    public static Command trapPrep(){
         return new SequentialCommandGroup(
             new ElevatorRaiseToCommand<>(noteElevator, ()-> 10),
             new ClimberCommands().ClimberAscendCommand(shooter, climber, 10)
         );
     }
+
+
 
     public Command trapClimb(IndexerSubsystem indexer, Shooter shooter, Climber climber){
         return new SequentialCommandGroup(
