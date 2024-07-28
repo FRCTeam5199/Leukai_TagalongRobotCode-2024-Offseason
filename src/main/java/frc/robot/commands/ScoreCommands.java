@@ -33,12 +33,12 @@ public class ScoreCommands {
     public static Command driveAutoTurn(CommandXboxController commandXboxController,
             CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-            leosFunctionalRotationalDrive(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 0.0, 16.58, 5.59),
-            leosFunctionalRotationalDrive(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 180.0, -0.0381, 5.48),
+            turnDriveToSpeaker(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 0.0, 16.58, 5.59),
+            turnDriveToSpeaker(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 180.0, -0.0381, 5.48),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
-    private static Command leosFunctionalRotationalDrive(CommandXboxController commandXboxController, CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive, double offset, double locX, double locY) {
+    private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive, double offset, double locX, double locY) {
         return new FunctionalCommand(null,
                         () -> commandSwerveDrivetrain.applyRequest(
                                 () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY())
