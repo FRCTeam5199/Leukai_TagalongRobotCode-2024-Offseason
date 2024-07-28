@@ -13,8 +13,8 @@
   },
   "trapezoidalLimits": {
     "unit": "rotations",
-    "velocity": 90.0,
-    "acceleration": 400.0
+    "velocity": 96.66666,
+    "acceleration": 500.0
   },
   "defaultTolerances": {
     "unit": "rot",
@@ -26,7 +26,7 @@
     "brakeMode": false,
     "motor": {
       "slot0PIDConstants": {
-        "p": 0.0,
+        "p": 0.25,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,
@@ -48,10 +48,10 @@
     },
     "motorCurrentLimits": {
       "statorEnableLimit": true,
-      "statorPeakLimit": 80,
+      "statorPeakLimit": 120,
       "supplyEnableLimit": true,
-      "supplyPeakLimit": 80,
-      "supplyContinuousLimit": 40,
+      "supplyPeakLimit": 120,
+      "supplyContinuousLimit": 80,
       "peakDuration": 0.5
     }
   }

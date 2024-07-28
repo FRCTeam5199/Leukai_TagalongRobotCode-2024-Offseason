@@ -21,15 +21,24 @@ public class ScoreCommands {
         );
     }
 
-    public static Command moveElevatorToSetpoint(ElevatorHeights elevatorHeights) {
-        return new ElevatorRaiseToCommand<>(elevatorSubsystem, elevatorHeights);
+    public static Command moveElevatorToSetpoint(ElevatorHeights elevatorHeight) {
+        return new ElevatorRaiseToCommand<>(elevatorSubsystem, elevatorHeight, true);
+    }
+
+    public static Command moveShooterToStable() {
+        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.STABLE, true).beforeStarting(() -> {
+            shooterSubsystem.getFlywheel(0).setFlywheelPower(0);
+            shooterSubsystem.getFlywheel(1).setFlywheelPower(0);
+            indexerSubsystem.getRoller(1).setRollerPower(0);
+            indexerSubsystem.getRoller(2).setRollerPower(0);
+        });
     }
 
     public static Command ampScore() {
         return new SequentialCommandGroup(
-                new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 30),
+                moveElevatorToSetpoint(ElevatorHeights.AMP),
                 new FunctionalCommand(
-                        () -> indexerSubsystem.setRollerSpeeds(0, 0.4, 0),
+                        () -> indexerSubsystem.setRollerSpeeds(0, 30, 0),
                         () -> {
                         },
                         interrupted -> elevatorStable(),
@@ -39,33 +48,17 @@ public class ScoreCommands {
         ).unless(() -> !indexerSubsystem.isNoteInAmpTrap());
     }
 
-    public static Command basicAutoShootCommand(double targetSpeed) {
-        return new SequentialCommandGroup(
-                new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MID, true),
-                flywheelSpinupCommand(targetSpeed)
-        );
-    }
-
-    public static Command flywheelSpinupCommand(double targetSpeed) {
-        return new FunctionalCommand(
-                () -> {
+    public static Command moveShooterToSetpointAndSpeed(ShooterPivotAngles shooterPivotAngle, double targetSpeed) {
+        return new PivotToCommand<>(shooterSubsystem, shooterPivotAngle, true).beforeStarting(() -> {
                     shooterSubsystem.getFlywheel(0).setFlywheelControl(targetSpeed, true);
-                    shooterSubsystem.getFlywheel(1).setFlywheelControl(targetSpeed, true);
-                },
-                () -> {
-                },
-                interrupted -> {
-                    shooterSubsystem.getFlywheel(0).setFlywheelPower(0);
-                    shooterSubsystem.getFlywheel(1).setFlywheelPower(0);
-                },
-                () -> false,
-                shooterSubsystem);
+                    shooterSubsystem.getFlywheel(1).setFlywheelControl(.5 * targetSpeed, true);
+        });
     }
 
     public static Command indexerFeedCommand() {
         return new FunctionalCommand(
                 () -> {
-                    indexerSubsystem.getRoller(1).setRollerPower(0.5);
+                    indexerSubsystem.getRoller(1).setRollerPower(1);
                     indexerSubsystem.getRoller(2).setRollerPower(1);
                 },
                 () -> {
