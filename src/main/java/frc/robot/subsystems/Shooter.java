@@ -16,9 +16,11 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
     private final TagalongFlywheel shooterRight;
     private final TagalongPivot arm;
     private boolean isShooterSubsystemDisabled = false;
+
     public Shooter(String filePath) {
         this(filePath == null ? null : new ShooterParser(Filesystem.getDeployDirectory(), filePath));
     }
+
     public Shooter(ShooterParser parser) {
         super(parser);
         shooterParser = parser;
@@ -94,6 +96,8 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         shooterLeft.periodic();
         shooterRight.periodic();
         arm.periodic();
+
+        System.out.println("Arm Position: " + arm.getPivotPosition());
 
         updateShuffleboard();
     }
