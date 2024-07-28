@@ -30,40 +30,36 @@ public class ScoreCommands {
     private static final Shooter shooterSubsystem = Shooter.getInstance();
     private static TrapezoidProfile driveRotationalTrapezoidProfile;
 
-    public static Command driveAutoTurn(CommandXboxController commandXboxController, CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive) {
+    public static Command driveAutoTurn(CommandXboxController commandXboxController,
+            CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-            new FunctionalCommand(
-                () -> driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(18.9, 2.27)),
-                
-                () -> {
-                    double desiredRotation = (driveRotationalTrapezoidProfile.calculate(1.0,
-                    new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(), commandSwerveDrivetrain.getPigeon2().getRate()),
-                    new State(Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX()))), 2.27)).velocity);
-                    
-                    commandSwerveDrivetrain.applyRequest(
-                    () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
-                    .withRotationalRate(desiredRotation));},
-                
-                
-                    null,
-                null),
-            new FunctionalCommand(null,
-                () -> commandSwerveDrivetrain.applyRequest(
-                    () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
-                    .withRotationalRate(driveRotationalTrapezoidProfile.calculate(1.0,
-                    (new State(commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees(), commandSwerveDrivetrain.getPigeon2().getRate())),
-                    new State(Units.radiansToDegrees(Math.atan((5.48 - commandSwerveDrivetrain.getPose().getY()) / (-0.0381 - commandSwerveDrivetrain.getPose().getX()))), 2.27)).velocity)),
-                null,
-                null),
-        () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
+            leosFunctionalRotationalDrive(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 0.0, 16.58, 5.59),
+            leosFunctionalRotationalDrive(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 180.0, -0.0381, 5.48),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
+
+    private static Command leosFunctionalRotationalDrive(CommandXboxController commandXboxController, CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive, double offset, double locX, double locY) {
+        return new FunctionalCommand(null,
+                        () -> commandSwerveDrivetrain.applyRequest(
+                                () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY())
+                                        .withVelocityY(-commandXboxController.getLeftX())
+                                        .withRotationalRate(driveRotationalTrapezoidProfile.calculate(1.0,
+                                                (new State(
+                                                        commandSwerveDrivetrain.getPose().getRotation()
+                                                                .plus(Rotation2d.fromDegrees(offset)).getDegrees(),
+                                                        commandSwerveDrivetrain.getPigeon2().getRate())),
+                                                new State(Units.radiansToDegrees(Math.atan(
+                                                        (locY - commandSwerveDrivetrain.getPose().getY()) / (locX
+                                                                - commandSwerveDrivetrain.getPose().getX()))),
+                                                        2.27)).velocity)),
+                        null,
+                        null);
     }
 
     public static Command elevatorStable() {
         return new ParallelCommandGroup(
                 new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 0),
-                new InstantCommand(() -> indexerSubsystem.setRollerSpeeds(0, 0, 0))
-        );
+                new InstantCommand(() -> indexerSubsystem.setRollerSpeeds(0, 0, 0)));
     }
 
     public static Command ampScore() {
@@ -75,17 +71,16 @@ public class ScoreCommands {
                         },
                         interrupted -> elevatorStable(),
                         () -> false,
-                        indexerSubsystem
-                ).until(() -> !indexerSubsystem.isNoteInAmpTrap())
-        ).unless(() -> !indexerSubsystem.isNoteInAmpTrap());
+                        indexerSubsystem).until(() -> !indexerSubsystem.isNoteInAmpTrap()))
+                .unless(() -> !indexerSubsystem.isNoteInAmpTrap());
     }
 
     public static Command basicAutoShootCommand() {
         return new SequentialCommandGroup(
                 new PivotToCommand<>(shooterSubsystem.getPivot(), 15.0, true),
                 new WaitUntilCommand(shooterSubsystem::reachedShootingConditions),
-                indexerFeedCommand(indexerSubsystem).until(shooterSubsystem::shotNote)
-        ).deadlineWith(flywheelSpinupCommand());
+                indexerFeedCommand(indexerSubsystem).until(shooterSubsystem::shotNote))
+                .deadlineWith(flywheelSpinupCommand());
     }
 
     public static Command flywheelSpinupCommand() {
@@ -128,7 +123,6 @@ public class ScoreCommands {
                     shooterSubsystem.getFlywheel(0).setFlywheelPower(0);
                     shooterSubsystem.getFlywheel(1).setFlywheelPower(0);
                 },
-                () -> !indexerSubsystem.isNoteInIndexer()
-        );
+                () -> !indexerSubsystem.isNoteInIndexer());
     }
 }
