@@ -1,22 +1,28 @@
 {
-  "name": "Right Climber",
+  "name": "Climber Right Elevator",
   "motor": {
     "type": "kraken",
     "id": 29,
     "canbus": "rio"
   },
   "gearRatio": [
-    [48, 14],
-    [48, 24]
+    [
+      48,
+      14
+    ],
+    [
+      48,
+      24
+    ]
   ],
   "drumDiameter": {
     "unit": "in",
     "value": 1.273
   },
   "feedforward": {
-    "s": 0.0,
-    "g": 0.0,
-    "v": 0.0,
+    "s": 0.139,
+    "g": 0.01,
+    "v": 6.8493150684931506849315068493151,
     "a": 0.0
   },
   "trapezoidalLimits": {

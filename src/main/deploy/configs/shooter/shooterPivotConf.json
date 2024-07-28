@@ -13,13 +13,21 @@
     }
   },
   "motorToPivot": [
-    [42.4286, 1]
+    [
+      42.4286,
+      1
+    ]
   ],
-  "encoderToPivot": [[1, 1]],
+  "encoderToPivot": [
+    [
+      1,
+      1
+    ]
+  ],
   "feedforward": {
-    "s": 0.05,
-    "g": 0.44,
-    "v": 0.9,
+    "s": 0.215,
+    "g": 0.5378,
+    "v": 2.5,
     "a": 0.0
   },
   "trapezoidalLimits": {
@@ -29,8 +37,8 @@
   },
   "positionalLimits": {
     "unit": "deg",
-    "min": -53.0,
-    "max": 56.0
+    "min": 0.0,
+    "max": 60.0
   },
   "defaultTolerances": {
     "unit": "deg",
@@ -42,11 +50,11 @@
     "clockwisePositive": true,
     "magnetOffset": {
       "unit": "rot",
-      "value": -0.7651
+      "value": 0.930176
     }
   },
   "pivotMotorControl": {
-    "clockwisePositive": false,
+    "clockwisePositive": true,
     "brakeMode": false,
     "motorCurrentLimits": {
       "statorEnableLimit": true,
@@ -58,7 +66,7 @@
     },
     "motor": {
       "slot0PIDConstants": {
-        "p": 120.0,
+        "p": 0.0,
         "i": 0.0,
         "d": 0.5,
         "s": 0.0,
@@ -84,6 +92,6 @@
   },
   "ffOffset": {
     "unit": "deg",
-    "value": 35.0
+    "value": 13.5
   }
 }

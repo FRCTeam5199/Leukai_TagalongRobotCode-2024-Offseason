@@ -1,9 +1,13 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.parsers.NotevatorParser;
 import frc.robot.parsers.json.NotevatorConfJson;
 import frc.robot.subsystems.minor.TagalongDualMotorElevator;
+import frc.robot.subsystems.minor.TagalongElevator;
 import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
@@ -35,111 +39,129 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
     return _elevator;
   }
 
-  @Override
-  public TagalongDualMotorElevator getElevator(int i) {
-    return _elevator;
-  }
+    private static NoteElevator elevatorSubsystem;
 
-  public NoteElevator(String filePath) {
-    this(filePath == null ? null : new NotevatorParser(Filesystem.getDeployDirectory(), filePath));
-  }
-
-  public NoteElevator(NotevatorParser parser) {
-    super(parser);
-    _elevatorParser = parser;
-
-    if (_configuredDisable) {
-      // _io = null;
-      _notevatorConf = null;
-      _elevator = new TagalongDualMotorElevator(null);
-      return;
+    public NoteElevator(String filePath) {
+        this(filePath == null ? null : new NotevatorParser(Filesystem.getDeployDirectory(), filePath));
     }
 
-    _notevatorConf = _elevatorParser.notevatorConf;
-    _elevator = new TagalongDualMotorElevator(_elevatorParser.elevatorParser);
+    public NoteElevator(NotevatorParser parser) {
+        super(parser);
+        _elevatorParser = parser;
 
-    int counter = 0;
-    while (!checkInitStatus() && counter < 100) {
-      System.out.println("Waiting for elevator");
+        if (_configuredDisable) {
+            // _io = null;
+            _notevatorConf = null;
+            _elevator = new TagalongDualMotorElevator(null);
+            return;
+        }
+
+        _notevatorConf = _elevatorParser.notevatorConf;
+        _elevator = new TagalongDualMotorElevator(_elevatorParser.elevatorParser);
+
+        int counter = 0;
+        while (!checkInitStatus() && counter < 100) {
+            System.out.println("Waiting for elevator");
+        }
+        if (counter >= 100) {
+            System.out.println("failed to init");
+        }
+
+        // THIS HAS TO GO LAST
+        // _io = new ClimberIOTalonFX(this);
+        configShuffleboard();
     }
-    if (counter >= 100) {
-      System.out.println("failed to init");
+
+    public static NoteElevator getInstance() {
+        if (elevatorSubsystem == null) {
+            elevatorSubsystem = new NoteElevator("configs/notevator/notevatorConf.json");
+        }
+        return elevatorSubsystem;
     }
 
-    // THIS HAS TO GO LAST
-    // _io = new ClimberIOTalonFX(this);
-    configShuffleboard();
-  }
+    /* -------- Logging: utilities and configs -------- */
+    // private final ClimberIOTalonFX _io;
+    // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
 
-  public boolean isReadyToElevate() {
-    return _isSubsystemDisabled ? true : false;
-  }
 
-  public boolean isElevated() {
-    return _isSubsystemDisabled ? true : false;
-  }
-
-  @Override
-  public void onEnable() {
-    if (_isSubsystemDisabled) {
-      return;
+    @Override
+    public TagalongElevator getElevator(int i) {
+        return _elevator;
     }
-    _elevator.onEnable();
-    // for testing
-    // _elevator.getElevatorMotor().setControl(
-    //     new VelocityVoltage(0.000001).withFeedForward(_elevator._elevatorFF.ks)
-    // );
-    // System.out.println("ks " + _elevator._elevatorFF.ks);
-  }
 
-  public void onDisable() {
-    if (_isSubsystemDisabled) {
-      return;
+    public boolean isReadyToElevate() {
+        return _isSubsystemDisabled ? true : false;
     }
-    _elevator.onDisable();
-  }
 
-  @Override
-  public void periodic() {
-    if (_isSubsystemDisabled) {
-      return;
+    public boolean isElevated() {
+        return _isSubsystemDisabled ? true : false;
     }
-    _elevator.periodic();
 
-    // Logging
-    // _io.updateInputs(_inputs);
-    // Logger.processInputs("Climber", _inputs);
-    updateShuffleboard();
-  }
+    @Override
+    public void onEnable() {
+        if (_isSubsystemDisabled) {
+            return;
+        }
+        _elevator.onEnable();
+        // for testing
+        // _elevator.getElevatorMotor().setControl(
+        //     new VelocityVoltage(0.000001).withFeedForward(_elevator._elevatorFF.ks)
+        // );
+        // System.out.println("ks " + _elevator._elevatorFF.ks);
+    }
 
-  @Override
-  public void disabledPeriodic() {
-    _elevator.disabledPeriodic();
-  }
+    public void onDisable() {
+        if (_isSubsystemDisabled) {
+            return;
+        }
+        _elevator.onDisable();
+    }
 
-  @Override
-  public void simulationInit() {
-    _elevator.simulationInit();
-  }
+    @Override
+    public void periodic() {
+        if (_isSubsystemDisabled) {
+            return;
+        }
+        _elevator.periodic();
 
-  @Override
-  public void simulationPeriodic() {
-    _elevator.simulationPeriodic();
-  }
+        // Logging
+        // _io.updateInputs(_inputs);
+        // Logger.processInputs("Climber", _inputs);
+        updateShuffleboard();
+    }
 
-  @Override
-  public void updateShuffleboard() {
-    _elevator.updateShuffleboard();
-  }
+    @Override
+    public void disabledPeriodic() {
+        _elevator.disabledPeriodic();
+    }
 
-  @Override
-  public void configShuffleboard() {
-    _elevator.configShuffleboard();
-  }
+    @Override
+    public void simulationInit() {
+        _elevator.simulationInit();
+    }
 
-  // TODO IMPLEMENT
-  @Override
-  public boolean checkInitStatus() {
-    return super.checkInitStatus() && _elevator.checkInitStatus();
-  }
+    @Override
+    public void simulationPeriodic() {
+        _elevator.simulationPeriodic();
+    }
+
+    @Override
+    public void updateShuffleboard() {
+        _elevator.updateShuffleboard();
+    }
+
+    @Override
+    public void configShuffleboard() {
+        _elevator.configShuffleboard();
+    }
+
+    // TODO IMPLEMENT
+    @Override
+    public boolean checkInitStatus() {
+        return super.checkInitStatus() && _elevator.checkInitStatus();
+    }
+
+    public Command goToSetpoint(double setpoint) {
+        return new WaitCommand(0);
+    }
 }
