@@ -15,16 +15,14 @@ public class TrapCommands{
     public static Climber climber;
     public static Command trapPrep(){
         return new SequentialCommandGroup(
-            new ElevatorRaiseToCommand<>(noteElevator, ()-> 10),
-            new ClimberCommands().ClimberAscendCommand(shooter, climber, 10)
+            new ElevatorRaiseToCommand<>(noteElevator, ElevatorHeights.TRAP),
+            new ClimberCommands().climberAscendCommand(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT)
         );
     }
 
-
-
     public Command trapClimb(IndexerSubsystem indexer, Shooter shooter, Climber climber){
         return new SequentialCommandGroup(
-            new ClimberCommands().ClimberDescendCommand(shooter, climber, 0),
+            new ClimberCommands().climberDescendCommand(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT),
             new IndexerCommands().spitNote(indexer)
         );
     }

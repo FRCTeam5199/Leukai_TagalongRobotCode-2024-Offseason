@@ -39,19 +39,18 @@ public class ScoreCommands {
         ).unless(() -> !indexerSubsystem.isNoteInAmpTrap());
     }
 
-    public static Command basicAutoShootCommand() {
+    public static Command basicAutoShootCommand(double targetSpeed) {
         return new SequentialCommandGroup(
-                new PivotToCommand<>(shooterSubsystem.getPivot(), 15.0, true),
-                new WaitUntilCommand(shooterSubsystem::reachedShootingConditions),
-                indexerFeedCommand(indexerSubsystem).until(shooterSubsystem::shotNote)
-        ).deadlineWith(flywheelSpinupCommand());
+                new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MID, true),
+                flywheelSpinupCommand(targetSpeed)
+        );
     }
 
-    public static Command flywheelSpinupCommand() {
+    public static Command flywheelSpinupCommand(double targetSpeed) {
         return new FunctionalCommand(
                 () -> {
-                    shooterSubsystem.getFlywheel(0).setFlywheelControl(3000, true);
-                    shooterSubsystem.getFlywheel(1).setFlywheelControl(4000, true);
+                    shooterSubsystem.getFlywheel(0).setFlywheelControl(targetSpeed, true);
+                    shooterSubsystem.getFlywheel(1).setFlywheelControl(targetSpeed, true);
                 },
                 () -> {
                 },
@@ -63,12 +62,18 @@ public class ScoreCommands {
                 shooterSubsystem);
     }
 
-    public static Command indexerFeedCommand(IndexerSubsystem indexerSubsystem) {
+    public static Command indexerFeedCommand() {
         return new FunctionalCommand(
-                () -> indexerSubsystem.getRoller().setRollerPower(0.5),
+                () -> {
+                    indexerSubsystem.getRoller(1).setRollerPower(0.5);
+                    indexerSubsystem.getRoller(2).setRollerPower(1);
+                },
                 () -> {
                 },
-                interrupted -> indexerSubsystem.getRoller().setRollerPower(0),
+                interrupted -> {
+                    indexerSubsystem.getRoller(1).setRollerPower(0);
+                    indexerSubsystem.getRoller(2).setRollerPower(0);
+                },
                 () -> false,
                 indexerSubsystem);
     }

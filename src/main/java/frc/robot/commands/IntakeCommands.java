@@ -49,7 +49,7 @@ public class IntakeCommands {
 
     public static Command intake() {
         return new SequentialCommandGroup(
-//                setShooterPivotToStable(),
+            //    setShooterPivotToStable(),
                 setElevatorToStable(),
                 spinRollersForIntake().until(
                         () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap())
@@ -86,10 +86,10 @@ public class IntakeCommands {
                 new SequentialCommandGroup(
                         setElevatorToStable(),
                         new FunctionalCommand(
-                                () -> indexerSubsystem.setRollerSpeeds(-2000, -2000, 0),
+                                () -> indexerSubsystem.setRollerSpeeds(-1500, -3000, 0),
                                 () -> {
                                     if (indexerSubsystem.isNoteInIntake()) {
-                                        indexerSubsystem.setRollerSpeeds(1000, -3000, 500);
+                                        indexerSubsystem.setRollerSpeeds(1500, -3000, 500);
                                     }
                                 },
                                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),

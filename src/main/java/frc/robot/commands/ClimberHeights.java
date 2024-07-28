@@ -6,10 +6,13 @@ package frc.robot.commands;
 
 import frc.robot.tagalong.TagalongHeight;
 
-/** Add your docs here. */
-public enum ClimberHeights implements TagalongHeight{
-    Down(0),
-    UP(0);
+/**
+ * Add your docs here.
+ */
+public enum ClimberHeights implements TagalongHeight {
+    DOWN(0),
+    UP_LEFT(1.61),
+    UP_RIGHT(1.66);
     private double height;
 
     ClimberHeights(double height) {

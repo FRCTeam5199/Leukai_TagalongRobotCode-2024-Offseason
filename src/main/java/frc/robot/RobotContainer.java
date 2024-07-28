@@ -16,11 +16,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.ElevatorHeights;
-import frc.robot.commands.IntakeCommands;
-import frc.robot.commands.ScoreCommands;
-import frc.robot.commands.ShooterPivotAngles;
-import frc.robot.commands.TrapCommands;
+import frc.robot.commands.*;
+import frc.robot.commands.base.ClimberCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -53,7 +50,6 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
-        commandXboxController.y().onTrue(TrapCommands.trapPrep());
 
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
@@ -61,10 +57,11 @@ public class RobotContainer {
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
 
-//        commandXboxController.leftTrigger().onTrue(ScoreCommands.basicAutoShootCommand());
-        commandXboxController.povDown().onTrue(IntakeCommands.setShooterPivotToSetpoint(ShooterPivotAngles.MID));
-        commandXboxController.povLeft().onTrue(ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP));
-        commandXboxController.povRight().onTrue(ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.TRAP));
+       commandXboxController.leftTrigger().onTrue(ScoreCommands.basicAutoShootCommand(50));
+       commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand());
+        // commandXboxController.povDown().onTrue(IntakeCommands.setShooterPivotToSetpoint(ShooterPivotAngles.MID));
+        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
+        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
 
         commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive.withVelocityX(commandXboxController.getLeftY() * MaxSpeed) // Drive forward with

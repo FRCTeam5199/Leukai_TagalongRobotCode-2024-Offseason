@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import frc.robot.commands.ClimberHeights;
 import frc.robot.parsers.ClimberParser;
 import frc.robot.parsers.json.ClimberConfJson;
 import frc.robot.subsystems.minor.TagalongElevator;
@@ -69,7 +70,6 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
         switch (i) {
             case 1:
                 return _elevatorLeft;
-            case 0:
             default:
                 return _elevatorRight;
         }
@@ -117,8 +117,6 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
         // _io.updateInputs(_inputs);
         // Logger.processInputs("Climber", _inputs);
         updateShuffleboard();
-
-        System.out.println("Climber Position: " + _elevatorLeft.getElevatorHeightM());
     }
 
     @Override
@@ -165,5 +163,24 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
         public static final double ELEVATOR_PREP_SPEED_MPS = -0.01;
         public static final double ELEVATOR_ZEROING_STALL_TOLERANCE = 50;
         public static final int ELEVATOR_ZEROING_STALL_LOOPS = 6;
+    }
+
+    public void setElevatorProfiles(ClimberHeights leftClimberHeight, ClimberHeights rightClimberHeights) {
+        _elevatorLeft.setElevatorProfile(leftClimberHeight.getHeightM(), 0);
+        _elevatorRight.setElevatorProfile(rightClimberHeights.getHeightM(), 0);
+    }
+
+    public void followLastElevatorProfiles() {
+        _elevatorLeft.followLastProfile();
+        _elevatorRight.followLastProfile();
+    }
+
+    public void setHoldElevatorPositions() {
+        _elevatorLeft.setHoldElevatorPosition(true);
+        _elevatorRight.setHoldElevatorPosition(true);
+    }
+
+    public boolean isElevatorProfilesFinished() {
+        return _elevatorLeft.isProfileFinished() && _elevatorRight.isProfileFinished();
     }
 }
