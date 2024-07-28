@@ -20,12 +20,14 @@ import frc.robot.commands.ElevatorHeights;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ScoreCommands;
 import frc.robot.commands.ShooterPivotAngles;
+import frc.robot.commands.TrapCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.Shooter;
+import frc.robot.commands.TrapCommands;
 
 public class RobotContainer {
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
@@ -51,6 +53,8 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        commandXboxController.y().onTrue(TrapCommands.trapPrep());
+
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
         commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
@@ -80,6 +84,7 @@ public class RobotContainer {
                                         .withRotationalRate(driveRotationalPIDController.calculate((commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.48 - commandSwerveDrivetrain.getPose().getY()) / (-0.0381 - commandSwerveDrivetrain.getPose().getX()))))))),
                         () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
                 ));
+
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> commandSwerveDrivetrain.seedFieldRelative()));
     }
 
