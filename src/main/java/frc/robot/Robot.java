@@ -43,10 +43,8 @@ public class Robot extends TimedRobot {
 
             Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), commandSwerveDrivetrain.getRotation3d().toRotation2d());
 
-            System.out.println("wnqifowneio'gneriognio'sejgio;");
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }else{
-            System.out.println("meifowgfnijowerngiowreniomg");
         }
     }
 

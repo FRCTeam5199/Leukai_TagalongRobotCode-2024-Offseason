@@ -36,7 +36,6 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("Distance from Red Speaker: " + getDistanceFromRedSpeaker());
     }
 
     public double getDistanceFromRedSpeaker() {
@@ -60,10 +59,8 @@ public class ApriltagSubsystem extends SubsystemBase {
         if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
             return Optional.empty();
         } else if(lastResult.getTargets().size() < 2){
-            System.out.println("No targets");
             return Optional.empty();
         }else{
-            System.out.println(lastResult.getTargets().size());
             lastEstTimestamp = lastResult.getTimestampSeconds();
             return photonEstimator.update(lastResult);
         }

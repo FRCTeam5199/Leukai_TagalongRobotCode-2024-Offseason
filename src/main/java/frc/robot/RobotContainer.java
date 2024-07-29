@@ -32,7 +32,7 @@ public class RobotContainer {
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final NoteElevator noteElevator = NoteElevator.getInstance();
-    public static final Autos autos = Autos.getInstance();
+    public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     // The robot's subsystems and commands are defined here...
