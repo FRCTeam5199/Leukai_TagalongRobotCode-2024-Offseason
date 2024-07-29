@@ -1,0 +1,55 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.79,
+      "y": 4.43
+    },
+    "rotation": -120.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path to first shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "first shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path to second shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "second shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path to third far note"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "far note last shot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "5199 newbot autons",
+  "choreoAuto": false
+}

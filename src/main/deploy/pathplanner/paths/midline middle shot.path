@@ -1,0 +1,52 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.73,
+        "y": 4.15
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 9.968242131872735,
+        "y": 4.136372242518922
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 11.72,
+        "y": 4.56
+      },
+      "prevControl": {
+        "x": 10.78036722489485,
+        "y": 4.269245631223092
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -168.2,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "5199 new bot 4 piece far source path",
+  "previewStartingState": {
+    "rotation": -175.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": true
+}

@@ -1,0 +1,61 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.83,
+      "y": 4.39
+    },
+    "rotation": -121.76543191682255
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path midline source"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "midline source shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path to midline source middle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "midline source middle shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "path to midline middle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "midline middle shot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "end line"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "5199 newbot autons",
+  "choreoAuto": false
+}
