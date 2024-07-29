@@ -97,11 +97,6 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         shooterRight.periodic();
         arm.periodic();
 
-        if (shooterLeft.getFlywheelPower() > 0){ 
-            System.out.println("Shooter LEFT Velocity: " + shooterLeft.getFlywheelVelocity());
-            System.out.println("Shooter RIGHT Velocity: '" + shooterRight.getFlywheelVelocity());
-        }
-
         updateShuffleboard();
     }
 
@@ -146,12 +141,18 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
                 && arm.checkInitStatus();
     }
 
-    public boolean reachedShootingConditions(double targetSpeed) {
-        return arm.isPivotProfileFinished()
-         && shooterRight.isFlywheelAtTargetSpeed(targetSpeed) && shooterLeft.isFlywheelAtTargetSpeed(targetSpeed);
+    public void moveShooterToSetpointAndSpeed(double setpoint, double targetSpeed) {
+        arm.setPivotProfile(setpoint);
+        shooterLeft.setFlywheelControl(targetSpeed, true);
+        shooterRight.setFlywheelControl(.5 * targetSpeed, true);
     }
 
-    public boolean shotNote() {
-        return shooterRight.getFlywheelVelocity() < 4000 && shooterLeft.getFlywheelVelocity() < 3000; // TODO: Add sensor
+    public void followLastPivotProfile() {
+        arm.followLastProfile();
+    }
+
+    public boolean reachedShootingConditions(double targetSpeed) {
+        return arm.isPivotProfileFinished()
+                && shooterRight.isFlywheelAtTargetSpeed(targetSpeed) && shooterLeft.isFlywheelAtTargetSpeed(targetSpeed);
     }
 }

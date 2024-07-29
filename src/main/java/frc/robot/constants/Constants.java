@@ -74,5 +74,7 @@ public class Constants {
         // The layout of the AprilTags on the field
         public static final AprilTagFieldLayout kTagLayout =
                 AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+        public static final double[] RED_SPEAKER_COORDINATES = new double[]{16.54, 5.547};
+        public static final double[] BLUE_SPEAKER_COORDINATES = new double[]{0, 5.547};
     }
 }
