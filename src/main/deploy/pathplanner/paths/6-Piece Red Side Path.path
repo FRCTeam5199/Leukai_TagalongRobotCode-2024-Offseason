@@ -205,7 +205,12 @@
     },
     {
       "waypointRelativePos": 7.95,
-      "rotationDegrees": 171.0,
+      "rotationDegrees": 170.0,
+      "rotateFast": false
+    },
+    {
+      "waypointRelativePos": 7.0,
+      "rotationDegrees": 170.0,
       "rotateFast": false
     }
   ],
@@ -405,6 +410,23 @@
               "type": "named",
               "data": {
                 "name": "shootCommand"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "AutoShoot",
+      "waypointRelativePos": 0.0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "autoShootCommand"
               }
             }
           ]
