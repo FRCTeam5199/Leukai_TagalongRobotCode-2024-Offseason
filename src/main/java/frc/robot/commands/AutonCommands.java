@@ -8,25 +8,30 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class AutonCommands extends Command {
-  private static AutonCommands autonCommands;
+    private static AutonCommands autonCommands;
 
-  private static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
-  private static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-  private static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    private static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
+    private static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+    private static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
 
-  private AutonCommands() {}
+    private AutonCommands() {
+    }
 
-  public AutonCommands getInstance() {
-    if (autonCommands == null) { autonCommands = new AutonCommands(); }
-    return autonCommands;
-  }
+    public AutonCommands getInstance() {
+        if (autonCommands == null) {
+            autonCommands = new AutonCommands();
+        }
+        return autonCommands;
+    }
 
-  public Command autoShootCommand(double targetSpeed) {
-    return new FunctionalCommand(
-      () -> {}, 
-      () -> ScoreCommands.moveShooterToAutoAim(4000).until(() -> shooterSubsystem.reachedShootingConditions(4000)).andThen(ScoreCommands.indexerFeedCommand()),
-      interrupted -> {}, 
-      () -> (shooterSubsystem.shotNote(4000) && !indexerSubsystem.isNoteInIndexer()) || !indexerSubsystem.isNoteInIndexer(),
-      shooterSubsystem, indexerSubsystem);
-  }
+    public Command autoShootCommand(double targetSpeed) {
+        return new FunctionalCommand(
+                () -> {
+                },
+                () -> ScoreCommands.moveShooterToAutoAim(4000).until(() -> shooterSubsystem.reachedShootingConditions(4000)).andThen(ScoreCommands.indexerFeedCommand(60)),
+                interrupted -> {
+                },
+                () -> (shooterSubsystem.shotNote(4000) && !indexerSubsystem.isNoteInIndexer()) || !indexerSubsystem.isNoteInIndexer(),
+                shooterSubsystem, indexerSubsystem);
+    }
 }
