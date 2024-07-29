@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,25 +18,28 @@ import org.photonvision.targeting.PhotonPipelineResult;
 
 import java.util.Optional;
 
+import javax.swing.text.html.Option;
+
 public class ApriltagSubsystem extends SubsystemBase {
 
     private final PhotonCamera camera;
     private final PhotonPoseEstimator photonEstimator;
     private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private double lastEstTimestamp = 0;
+    private PhotonPipelineResult lastResult;
+
 
     public ApriltagSubsystem() {
         camera = new PhotonCamera(Constants.Vision.kCameraName);
 
         photonEstimator =
-                new PhotonPoseEstimator(
-                        Constants.Vision.kTagLayout, PoseStrategy.LOWEST_AMBIGUITY, camera, Constants.Vision.kRobotToCam);
+                new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
     @Override
     public void periodic() {
-//        System.out.println("Distance from Red Speaker: " + getDistanceFromRedSpeaker());
+        System.out.println("Distance from Red Speaker: " + getDistanceFromRedSpeaker());
     }
 
     public double getDistanceFromRedSpeaker() {
@@ -43,25 +47,38 @@ public class ApriltagSubsystem extends SubsystemBase {
                 + Math.pow((5.547867999 - drivetrain.getPose().getY()), 2));
     }
 
-    public PhotonPipelineResult getLatestResult() {
-        return camera.getLatestResult();
+    public void getLatestResult() {
+        lastResult =  camera.getLatestResult();
+
     }
 
     public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
         photonEstimator.setReferencePose(drivetrain.getPose());
 
-        var result = camera.getLatestResult();
+        getLatestResult();
+    
 
-        if (result.hasTargets()) {
-            return photonEstimator.update();
-        } else {
+        // filtering stages
+        // Ensure the result is
+        if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
             return Optional.empty();
+        } else if(lastResult.getTargets().size() < 2){
+            System.out.println("No targets");
+            return Optional.empty();
+        }else{
+            System.out.println(lastResult.getTargets().size());
+            lastEstTimestamp = lastResult.getTimestampSeconds();
+            return photonEstimator.update(lastResult);
         }
+    }
+
+    public double getTimestamp(){
+        return lastResult.getTimestampSeconds();
     }
 
     public Matrix<N3, N1> getEstimationStdDevs(Pose2d estimatedPose) {
         var estStdDevs = Constants.Vision.kSingleTagStdDevs;
-        var targets = getLatestResult().getTargets();
+        var targets = lastResult.getTargets();
         int numTags = 0;
         double avgDist = 0;
         for (var tgt : targets) {

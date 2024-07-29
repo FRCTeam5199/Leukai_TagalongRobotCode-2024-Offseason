@@ -4,10 +4,13 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -24,17 +27,28 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         m_robotContainer = new RobotContainer();
+        drivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevs);
+
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        // Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
 
-        // if (estimatePose1.isPresent()) {
-        //     EstimatedRobotPose robotPose = estimatePose1.get();
-        //     drivetrain.addVisionMeasurement(robotPose.estimatedPose.toPose2d(), Timer.getFPGATimestamp());
-        // }
+        if (estimatePose1.isPresent()) {
+
+            EstimatedRobotPose robotPose = estimatePose1.get();
+            
+            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+
+            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), drivetrain.getRotation3d().toRotation2d());
+
+            System.out.println("wnqifowneio'gneriognio'sejgio;");
+            drivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
+        }else{
+            System.out.println("meifowgfnijowerngiowreniomg");
+        }
     }
 
     @Override

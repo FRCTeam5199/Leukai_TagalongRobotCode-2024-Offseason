@@ -1,24 +1,26 @@
 package frc.robot.utility;
 
 import edu.wpi.first.math.Pair;
-import frc.robot.commands.ShooterPivotAngles;
 
 import java.util.ArrayList;
 
 public class LookUpTable {
-    public static ArrayList<Pair<Double, Double>> listOfValues = new ArrayList<>() {
+    public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
         {
             //add AutoAimValues here
         }
     };
 
     public static double findValue(double distance) {
-        Pair<Double, Double> lowAutoAimValue = listOfValues.get(0);
-        Pair<Double, Double> highAutoAimValue = listOfValues.get(listOfValues.size() - 1);
-        for (int i = 0; i < listOfValues.size() - 1; i++) {
-            if (distance > listOfValues.get(i).getFirst() && distance < listOfValues.get(i + 1).getFirst()) {
-                lowAutoAimValue = listOfValues.get(i);
-                highAutoAimValue = listOfValues.get(i + 1);
+        if (lookUpTable.size() < 2) {
+            return 40;
+        }
+        Pair<Double, Double> lowAutoAimValue = lookUpTable.get(0);
+        Pair<Double, Double> highAutoAimValue = lookUpTable.get(lookUpTable.size() - 1);
+        for (int i = 0; i < lookUpTable.size() - 1; i++) {
+            if (distance > lookUpTable.get(i).getFirst() && distance < lookUpTable.get(i + 1).getFirst()) {
+                lowAutoAimValue = lookUpTable.get(i);
+                highAutoAimValue = lookUpTable.get(i + 1);
                 break;
             }
         }
