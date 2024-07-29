@@ -6,20 +6,18 @@ import java.util.Map;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.path.PathConstraints;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.tagalong.PIDConstants;
 
 public class Autos extends Command {
   private static Autos autos;
   private CommandSwerveDrivetrain swerveDrive;
 
   private Map<String, Command> commandsMap = new HashMap<>();
+  private Map<String, Command> builtAutos = new HashMap<>();
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
   HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new com.pathplanner.lib.util.PIDConstants(0, 0, 0), new com.pathplanner.lib.util.PIDConstants(0, 0, 0), 5.76072, .375, new ReplanningConfig());
     
@@ -33,6 +31,8 @@ public class Autos extends Command {
   public void init() {
     initalizeCommandsMap();
     NamedCommands.registerCommands(commandsMap);
+    
+    buildAutos();
   }
 
   private void initalizeCommandsMap() {
@@ -42,7 +42,11 @@ public class Autos extends Command {
     commandsMap.put("shootCommand", ScoreCommands.indexerFeedCommand(60));
   }
 
-  public Command sixPieceRedAuton() {
-    return AutoBuilder.buildAuto("6 piece red");
+  private void buildAutos() {
+    builtAutos.put("6 piece red", AutoBuilder.buildAuto("6 piece red"));
+  }
+
+  public Command getBuiltAuton(String builtAutonName) {
+    return builtAutos.get(builtAutonName);
   }
 }
