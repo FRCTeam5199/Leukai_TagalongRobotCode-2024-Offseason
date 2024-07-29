@@ -124,7 +124,7 @@ public class ScoreCommands {
                     shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
                     shooterSubsystem.getPivot().setHoldPivotPosition(true);
                 },
-                () -> (shooterSubsystem.reachedShootingConditions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                () -> (shooterSubsystem.hasShotNote(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 shooterSubsystem
         ).unless(() -> !indexerSubsystem.isNoteInIndexer());
     }
@@ -150,7 +150,7 @@ public class ScoreCommands {
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
-                () -> (shooterSubsystem.reachedShootingConditions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                () -> (shooterSubsystem.hasShotNote(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
     }
 }

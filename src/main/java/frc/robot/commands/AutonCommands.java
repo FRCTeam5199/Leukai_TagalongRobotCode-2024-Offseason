@@ -27,9 +27,11 @@ public class AutonCommands {
   public static Command autoShootCommand(double targetSpeed) {
     return new FunctionalCommand(
       () -> {}, 
-      () -> ScoreCommands.moveShooterToAutoAim(4000).until(() -> shooterSubsystem.reachedShootingConditions(4000)).andThen(ScoreCommands.indexerFeedCommand()),
+      () -> ScoreCommands.moveShooterToAutoAim(60)
+      .until(() -> shooterSubsystem.hasShotNote(60))
+      .andThen(ScoreCommands.indexerFeedCommand(60)),
       interrupted -> {}, 
-      () -> (shooterSubsystem.shotNote(4000) && !indexerSubsystem.isNoteInIndexer()) || !indexerSubsystem.isNoteInIndexer(),
+      () -> (shooterSubsystem.hasShotNote(60) && !indexerSubsystem.isNoteInIndexer()) || !indexerSubsystem.isNoteInIndexer(),
       shooterSubsystem, indexerSubsystem);
   }
 }
