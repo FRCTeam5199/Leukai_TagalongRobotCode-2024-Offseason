@@ -103,8 +103,7 @@ public class ScoreCommands {
 
     public static Command moveShooterToAutoAim(double targetSpeed) {
         return new FunctionalCommand(
-                () -> {
-                },
+                () -> {},
                 () -> {
                     if (DriverStation.getAlliance().isPresent()) {
                         double distance;
@@ -122,13 +121,13 @@ public class ScoreCommands {
                 interrupted -> shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getDegrees(), 0),
                 () -> false,
                 shooterSubsystem
-        ).unless(() -> !indexerSubsystem.isNoteInIndexer());
+        );
     }
 
     public static Command shoot(double targetSpeed) {
         return new ConditionalCommand(
-                ampScore(),
-                moveShooterToAutoAim(targetSpeed),
+                ampScore().unless(() -> !indexerSubsystem.isNoteInAmpTrap()),
+                moveShooterToAutoAim(targetSpeed).unless(() -> !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem::getAmpMode
         );
     }
