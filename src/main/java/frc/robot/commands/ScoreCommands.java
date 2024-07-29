@@ -34,28 +34,28 @@ public class ScoreCommands {
 
     public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, 0.0, 16.58, 5.59),
-                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, 180.0, -0.0381, 5.48),
+                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59),
+                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
-    private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double offset, double locX, double locY) {
+    private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double locX, double locY) {
         return new FunctionalCommand(
                 () -> {
                     driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(180, 360));
                 },
                 () -> {
-                    State currentState = new State(commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(offset)).getDegrees(),
+                    State currentState = new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(),
                             commandSwerveDrivetrain.getPigeon2().getRate());
-                    State goalState = new State(Units.radiansToDegrees(Math.atan(
-                            (locY - commandSwerveDrivetrain.getPose().getY()) / (locX
-                                    - commandSwerveDrivetrain.getPose().getX()))),
-                            0);
-                    commandSwerveDrivetrain.setControl(fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY())
-                            .withVelocityY(-commandXboxController.getLeftX())
-                            .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02,
-                                    currentState,
-                                    goalState).velocity));
+                    State goalState = new State(Units.radiansToDegrees(
+                        Math.atan(
+                            (locY - commandSwerveDrivetrain.getPose().getY()) /
+                            (locX - commandSwerveDrivetrain.getPose().getX()))),                            0);
+                    commandSwerveDrivetrain.setControl(
+                        fieldCentricSwerveDrive
+                            .withVelocityX(commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
+                            .withVelocityY(commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
+                            .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02, currentState, goalState).velocity));
                 },
                 interrupted -> {
                 },
