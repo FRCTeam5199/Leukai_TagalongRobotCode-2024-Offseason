@@ -2,26 +2,25 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.ShooterParser;
-import frc.robot.subsystems.minor.TagalongDualMotorFlywheel;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
-public class Shooter extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
-    private static Shooter shooterSubsystem;
+public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
+    private static ShooterSubsystem shooterSubsystem;
     public final ShooterParser shooterParser;
     private final TagalongFlywheel shooterLeft;
     private final TagalongFlywheel shooterRight;
     private final TagalongPivot arm;
     private boolean isShooterSubsystemDisabled = false;
 
-    public Shooter(String filePath) {
+    public ShooterSubsystem(String filePath) {
         this(filePath == null ? null : new ShooterParser(Filesystem.getDeployDirectory(), filePath));
     }
 
-    public Shooter(ShooterParser parser) {
+    public ShooterSubsystem(ShooterParser parser) {
         super(parser);
         shooterParser = parser;
         if (isShooterSubsystemDisabled) {
@@ -37,9 +36,9 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         configShuffleboard();
     }
 
-    public static Shooter getInstance() {
+    public static ShooterSubsystem getInstance() {
         if (shooterSubsystem == null) {
-            shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
+            shooterSubsystem = new ShooterSubsystem("configs/shooter/shooterConf.json");
         }
         return shooterSubsystem;
     }
@@ -98,7 +97,7 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         arm.periodic();
 
         updateShuffleboard();
-//        System.out.println("Reached Shooter Conditions: " + reachedShootingConditions(60));
+//        System.out.println("Reached Shooter Conditions: " + hasShotNote(60));
     }
 
     @Override
@@ -153,7 +152,7 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         arm.followLastProfile();
     }
 
-    public boolean reachedShootingConditions(double targetSpeed) {
+    public boolean hasShotNote(double targetSpeed) {
         double percentageOfMaxSpeed = .99;
         return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
                 && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;

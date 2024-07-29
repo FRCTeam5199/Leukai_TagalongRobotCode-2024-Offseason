@@ -1,8 +1,20 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
@@ -10,16 +22,49 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 
-import java.sql.Driver;
-
 public class ScoreCommands {
+    private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
-    private static final Shooter shooterSubsystem = Shooter.getInstance();
-    private static final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
+    private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    private static TrapezoidProfile driveRotationalTrapezoidProfile;
+
+    public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
+        return new ConditionalCommand(
+                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59),
+                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
+
+    private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double locX, double locY) {
+        return new FunctionalCommand(
+                () -> {
+                    driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(180, 360));
+                },
+                () -> {
+                    State currentState = new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(),
+                            commandSwerveDrivetrain.getPigeon2().getRate());
+                    State goalState = new State(Units.radiansToDegrees(
+                        Math.atan(
+                            (locY - commandSwerveDrivetrain.getPose().getY()) /
+                            (locX - commandSwerveDrivetrain.getPose().getX()))),                            0);
+                    commandSwerveDrivetrain.setControl(
+                        fieldCentricSwerveDrive
+                            .withVelocityX(commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
+                            .withVelocityY(commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
+                            .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02, currentState, goalState).velocity));
+                },
+                interrupted -> {
+                },
+                () -> {
+                    return false;
+                },
+                commandSwerveDrivetrain
+        );
+    }
 
     public static Command elevatorStable() {
         return new ParallelCommandGroup(
@@ -65,7 +110,7 @@ public class ScoreCommands {
                 },
                 () -> {
                     double distance;
-                    double[] robotCoords = new double[]{drivetrain.getPose().getX(), drivetrain.getPose().getY()};
+                    double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
                     if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
                         distance = getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
                     else
@@ -79,7 +124,7 @@ public class ScoreCommands {
                     shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
                     shooterSubsystem.getPivot().setHoldPivotPosition(true);
                 },
-                () -> (shooterSubsystem.reachedShootingConditions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                () -> (shooterSubsystem.hasShotNote(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 shooterSubsystem
         ).unless(() -> !indexerSubsystem.isNoteInIndexer());
     }
@@ -105,7 +150,7 @@ public class ScoreCommands {
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
-                () -> (shooterSubsystem.reachedShootingConditions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                () -> (shooterSubsystem.hasShotNote(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
     }
 }

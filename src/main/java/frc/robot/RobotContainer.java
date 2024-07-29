@@ -6,37 +6,40 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
-import edu.wpi.first.wpilibj2.command.ConditionalCommand;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.*;
+import frc.robot.commands.Autos;
+import frc.robot.commands.ClimberHeights;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.commands.base.ClimberCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
-import frc.robot.subsystems.Shooter;
-import frc.robot.commands.TrapCommands;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
+    public static final CommandXboxController commandXboxController = new CommandXboxController(
+            Ports.DRIVER_XBOX_USB_PORT);
+
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
-    // NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
-    public static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    public static Shooter shooterSubsystem = Shooter.getInstance();
-    public static Climber climberSubsystem = Climber.getInstance();
-    public static NoteElevator noteElevator = NoteElevator.getInstance();
+    // NoteElevator noteElevator = new
+    // NoteElevator("configs/notevator/notevatorConf.json");
+    public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+    public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    public static final Climber climberSubsystem = Climber.getInstance();
+    public static final NoteElevator noteElevator = NoteElevator.getInstance();
+    public static final Autos autos = Autos.getInstance();
     // driving in open loop
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private final PIDController driveRotationalPIDController = new PIDController(0.05, 0, 0);
-    CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
+    private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -50,6 +53,19 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+                commandSwerveDrivetrain.applyRequest(
+                    () -> {
+                        return 
+                        // Drive forward with negative Y (forward)
+                        fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) 
+                        // Drive left with negative X (left)
+                        .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) 
+                        // Drive counterclockwise with negative X (left)
+                        .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
+                    } 
+                )
+        );
 
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
@@ -65,30 +81,23 @@ public class RobotContainer {
         commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
         commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
 
-        commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
-                commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive.withVelocityX(commandXboxController.getLeftY() * MaxSpeed) // Drive forward with
-                        // negative Y (forward)
-                        .withVelocityY(commandXboxController.getLeftX() * MaxSpeed) // Drive left with negative X (left)
-                        .withRotationalRate(commandXboxController.getRightX() * MaxAngularRate) // Drive counterclockwise with negative X (left)
-                )
-        );
 
-        commandXboxController.button(7).onTrue(
-                new ConditionalCommand(
-                        new InstantCommand(() -> commandSwerveDrivetrain.applyRequest(
-                                () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
-                                        .withRotationalRate(driveRotationalPIDController.calculate(commandSwerveDrivetrain.getPose().getRotation().getDegrees(), Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX()))))))),
-                        new InstantCommand(() -> commandSwerveDrivetrain.applyRequest(
-                                () -> fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY()).withVelocityY(-commandXboxController.getLeftX())
-                                        .withRotationalRate(driveRotationalPIDController.calculate((commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(180)).getDegrees()), Units.radiansToDegrees(Math.atan((5.48 - commandSwerveDrivetrain.getPose().getY()) / (-0.0381 - commandSwerveDrivetrain.getPose().getX()))))))),
-                        () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-                ));
+        commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
-        commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> commandSwerveDrivetrain.seedFieldRelative()));
+        commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
+            // Seed field relative pose that is alliance dependent
+            var current = commandSwerveDrivetrain.getPose();
+            commandSwerveDrivetrain.seedFieldRelative(
+                new Pose2d(
+                    current.getX(),
+                    current.getY(),
+                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0 : 0)));
+        }));
+        commandSwerveDrivetrain.registerTelemetry(logger:: telemeterize);
     }
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return AutoBuilder.buildAuto("6-Piece Red Side Auto");
     }
 
     public void onEnable() {

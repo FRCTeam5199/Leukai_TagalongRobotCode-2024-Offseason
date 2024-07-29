@@ -5,7 +5,6 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.subsystems.minor.TagalongRoller;
 import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongAngle;
-import frc.robot.tagalong.TagalongHeight;
 
 public class RollerRotateXCommand<T extends Subsystem & RollerAugment> extends Command {
   private final TagalongRoller _roller;

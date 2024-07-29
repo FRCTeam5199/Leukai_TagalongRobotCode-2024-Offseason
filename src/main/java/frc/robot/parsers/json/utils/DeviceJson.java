@@ -1,6 +1,5 @@
 package frc.robot.parsers.json.utils;
 
-import com.ctre.phoenix.led.CANdle;
 import com.ctre.phoenix6.hardware.CANcoder;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -37,8 +36,8 @@ public class DeviceJson {
     return new CANcoder(id, canbus);
   }
 
-  public CANdle getCANdle() {
-    assert (type.equalsIgnoreCase("candle"));
-    return new CANdle(id, canbus);
-  }
+  // public CANdle getCANdle() {
+  //   assert (type.equalsIgnoreCase("candle"));
+  //   return new CANdle(id, canbus);
+  // }
 }
