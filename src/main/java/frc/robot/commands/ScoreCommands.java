@@ -53,7 +53,7 @@ public class ScoreCommands {
                         0);
                 commandSwerveDrivetrain.setControl(fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY())
                     .withVelocityY(-commandXboxController.getLeftX())
-                    .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02, 
+                    .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02,
                 currentState,
                 goalState).velocity));
             },
@@ -103,31 +103,33 @@ public class ScoreCommands {
 
     public static Command moveShooterToAutoAim(double targetSpeed) {
         return new FunctionalCommand(
-                () -> {},
                 () -> {
-                    if (DriverStation.getAlliance().isPresent()) {
-                        double distance;
-                        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
-                        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
-                            distance = getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
-                        else
-                            distance = getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
-
-                        double armAngle = LookUpTable.findValue(distance);
-                        shooterSubsystem.moveShooterToSetpointAndSpeed(armAngle, targetSpeed);
-                        shooterSubsystem.followLastPivotProfile();
-                    }
                 },
-                interrupted -> shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getDegrees(), 0),
-                () -> false,
+                () -> {
+                    double distance;
+                    double[] robotCoords = new double[]{drivetrain.getPose().getX(), drivetrain.getPose().getY()};
+                    if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+                        distance = getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+                    else
+                        distance = getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+
+                    double armAngle = LookUpTable.findValue(distance);
+                    shooterSubsystem.moveShooterToSetpointAndSpeed(armAngle, targetSpeed);
+                    shooterSubsystem.followLastPivotProfile();
+                },
+                interrupted -> {
+                    shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
+                    shooterSubsystem.getPivot().setHoldPivotPosition(true);
+                },
+                () -> (shooterSubsystem.reachedShootingConditions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 shooterSubsystem
-        );
+        ).unless(() -> !indexerSubsystem.isNoteInIndexer());
     }
 
     public static Command shoot(double targetSpeed) {
         return new ConditionalCommand(
-                ampScore().unless(() -> !indexerSubsystem.isNoteInAmpTrap()),
-                moveShooterToAutoAim(targetSpeed).unless(() -> !indexerSubsystem.isNoteInIndexer()),
+                ampScore(),
+                moveShooterToAutoAim(targetSpeed),
                 indexerSubsystem::getAmpMode
         );
     }
@@ -139,19 +141,13 @@ public class ScoreCommands {
         });
     }
 
-    public static Command indexerFeedCommand() {
+    public static Command indexerFeedCommand(double targetSpeed) {
         return new FunctionalCommand(
-                () -> {
-                    indexerSubsystem.getRoller(1).setRollerPower(1);
-                    indexerSubsystem.getRoller(2).setRollerPower(1);
-                },
+                () -> indexerSubsystem.setRollerSpeeds(0, -80, 40),
                 () -> {
                 },
-                interrupted -> {
-                    indexerSubsystem.getRoller(1).setRollerPower(0);
-                    indexerSubsystem.getRoller(2).setRollerPower(0);
-                },
-                () -> false,
+                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                () -> (shooterSubsystem.reachedShootingConditions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
     }
 }
