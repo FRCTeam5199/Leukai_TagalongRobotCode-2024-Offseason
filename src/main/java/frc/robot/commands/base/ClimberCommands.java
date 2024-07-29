@@ -11,12 +11,12 @@ import frc.robot.commands.ElevatorHeights;
 import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.NoteElevator;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.tagalong.TagalongAngle;
 
 public class ClimberCommands {
     private static Climber climberSubsystem = Climber.getInstance();
-    private static Shooter shooterSubsystem = Shooter.getInstance();
+    private static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
 
     public static Command moveClimbersToSetpoint(ClimberHeights leftClimberHeight, ClimberHeights rightClimberHeight) {
         return new FunctionalCommand(

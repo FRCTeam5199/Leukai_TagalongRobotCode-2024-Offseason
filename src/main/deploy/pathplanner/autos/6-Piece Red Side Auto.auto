@@ -16,24 +16,6 @@
           "data": {
             "pathName": "6-Piece Red Side Path"
           }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "intakeCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "prepShooterCommand"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "shootCommand"
-          }
         }
       ]
     }

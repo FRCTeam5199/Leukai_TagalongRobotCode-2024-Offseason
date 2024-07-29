@@ -9,19 +9,19 @@ import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
-public class Shooter extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
-    private static Shooter shooterSubsystem;
+public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
+    private static ShooterSubsystem shooterSubsystem;
     public final ShooterParser shooterParser;
     private final TagalongFlywheel shooterLeft;
     private final TagalongFlywheel shooterRight;
     private final TagalongPivot arm;
     private boolean isShooterSubsystemDisabled = false;
 
-    public Shooter(String filePath) {
+    public ShooterSubsystem(String filePath) {
         this(filePath == null ? null : new ShooterParser(Filesystem.getDeployDirectory(), filePath));
     }
 
-    public Shooter(ShooterParser parser) {
+    public ShooterSubsystem(ShooterParser parser) {
         super(parser);
         shooterParser = parser;
         if (isShooterSubsystemDisabled) {
@@ -37,9 +37,9 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
         configShuffleboard();
     }
 
-    public static Shooter getInstance() {
+    public static ShooterSubsystem getInstance() {
         if (shooterSubsystem == null) {
-            shooterSubsystem = new Shooter("configs/shooter/shooterConf.json");
+            shooterSubsystem = new ShooterSubsystem("configs/shooter/shooterConf.json");
         }
         return shooterSubsystem;
     }
@@ -154,5 +154,9 @@ public class Shooter extends TagalongSubsystemBase implements PivotAugment, Flyw
     public boolean reachedShootingConditions(double targetSpeed) {
         return arm.isPivotProfileFinished()
                 && shooterRight.isFlywheelAtTargetSpeed(targetSpeed) && shooterLeft.isFlywheelAtTargetSpeed(targetSpeed);
+    }
+
+    public boolean shotNote(double targetSpeed) {
+        return ((shooterRight.getFlywheelVelocity() > (targetSpeed * 0.9)) && (shooterLeft.getFlywheelVelocity() > ((targetSpeed * 0.5) * 0.9)));
     }
 }

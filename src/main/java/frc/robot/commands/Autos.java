@@ -13,7 +13,7 @@ public class Autos extends Command {
   private Map<String, Command> commandsMap = new HashMap<>();
 
   private Autos() {}
-  public Autos getInstance() {
+  public static Autos getInstance() {
     if (autos == null) { autos = new Autos(); }
     return autos;
   }
@@ -24,11 +24,12 @@ public class Autos extends Command {
   }
 
   private void initalizeCommandsMap() {
-    commandsMap.put("autoAimCommand", ScoreCommands.autoAim());
+    commandsMap.put("intakeCommand", IntakeCommands.intake());
+    commandsMap.put("prepShooterCommand", ScoreCommands.moveShooterToAutoAim(4000));
     commandsMap.put("shootCommand", ScoreCommands.indexerFeedCommand());
   }
 
   public String getSelectedPath() {
-    return null;
+    return "6-Piece Red Side Path";
   }
 }

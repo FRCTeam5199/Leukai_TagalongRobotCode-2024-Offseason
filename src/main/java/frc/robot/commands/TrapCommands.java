@@ -7,11 +7,11 @@ import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class TrapCommands{
     public static NoteElevator noteElevator;
-    public static Shooter shooter;
+    public static ShooterSubsystem shooter;
     public static Climber climber;
     public static Command trapPrep(){
         return new SequentialCommandGroup(
@@ -20,7 +20,7 @@ public class TrapCommands{
         );
     }
 
-    public Command trapClimb(IndexerSubsystem indexer, Shooter shooter, Climber climber){
+    public Command trapClimb(IndexerSubsystem indexer, ShooterSubsystem shooter, Climber climber){
         return new SequentialCommandGroup(
             new ClimberCommands().climberDescendCommand(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT)
         );

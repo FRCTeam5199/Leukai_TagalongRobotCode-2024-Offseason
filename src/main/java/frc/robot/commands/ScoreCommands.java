@@ -1,8 +1,20 @@
 package frc.robot.commands;
 
+import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
+
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.RobotContainer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ConditionalCommand;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
@@ -10,26 +22,24 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 
-import java.sql.Driver;
-
 public class ScoreCommands {
+    private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
-    private static final Shooter shooterSubsystem = Shooter.getInstance();
+    private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static TrapezoidProfile driveRotationalTrapezoidProfile;
 
-    public static Command driveAutoTurn(CommandXboxController commandXboxController,
-            CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive) {
+    public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-            turnDriveToSpeaker(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 0.0, 16.58, 5.59),
-            turnDriveToSpeaker(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive, 180.0, -0.0381, 5.48),
+            turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, 0.0, 16.58, 5.59),
+            turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, 180.0, -0.0381, 5.48),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
-    private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, CommandSwerveDrivetrain commandSwerveDrivetrain, FieldCentric fieldCentricSwerveDrive, double offset, double locX, double locY) {
+    private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double offset, double locX, double locY) {
         return new FunctionalCommand(
             () -> {
                 driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(180, 360));
@@ -98,7 +108,7 @@ public class ScoreCommands {
                 () -> {
                     if (DriverStation.getAlliance().isPresent()) {
                         double distance;
-                        double[] robotCoords = new double[]{drivetrain.getPose().getX(), drivetrain.getPose().getY()};
+                        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
                         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
                             distance = getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
                         else
@@ -144,22 +154,5 @@ public class ScoreCommands {
                 },
                 () -> false,
                 indexerSubsystem);
-    }
-
-    public static Command autoAim() {
-        return new FunctionalCommand(
-                () -> {},
-                () -> {
-                    new PivotToCommand<>(shooterSubsystem.getPivot(), LookUpTable.findValue(0).armAngle, true);
-                    shooterSubsystem.getFlywheel(0).setFlywheelPower(LookUpTable.findValue(0).shooterRPM);
-                    shooterSubsystem.getFlywheel(1).setFlywheelPower(LookUpTable.findValue(0).shooterRPM);
-                },
-                interrupted -> {
-                    new PivotToCommand<>(shooterSubsystem.getPivot(), 0, true);
-                    shooterSubsystem.getFlywheel(0).setFlywheelPower(0);
-                    shooterSubsystem.getFlywheel(1).setFlywheelPower(0);
-                },
-                () -> !indexerSubsystem.isNoteInIndexer()
-        );
     }
 }

@@ -6,10 +6,11 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.Autos;
 import frc.robot.commands.ClimberHeights;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ScoreCommands;
@@ -20,18 +21,20 @@ import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class RobotContainer {
+    public static final CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
+
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
     // NoteElevator noteElevator = new NoteElevator("configs/notevator/notevatorConf.json");
-    public static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    public static Shooter shooterSubsystem = Shooter.getInstance();
-    public static Climber climberSubsystem = Climber.getInstance();
-    public static NoteElevator noteElevator = NoteElevator.getInstance();
+    public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+    public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    public static final Climber climberSubsystem = Climber.getInstance();
+    public static final NoteElevator noteElevator = NoteElevator.getInstance();
+    public static final Autos autos = Autos.getInstance();
     // driving in open loop
-    private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    CommandXboxController commandXboxController = new CommandXboxController(Ports.DRIVER_XBOX_USB_PORT);
+    private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -68,13 +71,13 @@ public class RobotContainer {
         commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
 
 
-        commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, commandSwerveDrivetrain, fieldCentricSwerveDrive));
+        commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> commandSwerveDrivetrain.seedFieldRelative()));
     }
 
     public Command getAutonomousCommand() {
-        return Commands.print("No autonomous command configured");
+        return AutoBuilder.buildAuto("6-Piece Red Side Auto");
     }
 
     public void onEnable() {
