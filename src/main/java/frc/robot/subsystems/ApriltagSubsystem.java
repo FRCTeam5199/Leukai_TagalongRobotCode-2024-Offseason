@@ -1,24 +1,21 @@
 package frc.robot.subsystems;
 
-import edu.wpi.first.math.Matrix;
-import edu.wpi.first.math.Pair;
-import edu.wpi.first.math.VecBuilder;
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.numbers.N1;
-import edu.wpi.first.math.numbers.N3;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.Constants;
-import frc.robot.generated.TunerConstants;
+import java.util.Optional;
+
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
 
-import java.util.Optional;
-
-import javax.swing.text.html.Option;
+import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.Constants;
+import frc.robot.generated.TunerConstants;
 
 public class ApriltagSubsystem extends SubsystemBase {
 

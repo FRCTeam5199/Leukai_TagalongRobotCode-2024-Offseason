@@ -26,6 +26,7 @@ public class Autos extends Command {
   private void initalizeCommandsMap() {
     commandsMap.put("intakeCommand", IntakeCommands.intake());
     commandsMap.put("prepShooterCommand", ScoreCommands.moveShooterToAutoAim(4000));
+    commandsMap.put("autoShootCommand", AutonCommands.autoShootCommand(2600));
     commandsMap.put("shootCommand", ScoreCommands.indexerFeedCommand());
   }
 

@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.ShooterParser;
-import frc.robot.subsystems.minor.TagalongDualMotorFlywheel;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;

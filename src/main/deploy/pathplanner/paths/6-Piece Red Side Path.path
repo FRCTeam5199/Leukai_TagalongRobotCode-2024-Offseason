@@ -21,11 +21,11 @@
       },
       "prevControl": {
         "x": 14.1,
-        "y": 4.140000000000001
+        "y": 4.040000000000002
       },
       "nextControl": {
         "x": 14.1,
-        "y": 4.039999999999999
+        "y": 4.14
       },
       "isLocked": false,
       "linkedName": null
@@ -200,17 +200,17 @@
     },
     {
       "waypointRelativePos": 9,
-      "rotationDegrees": 170.0,
+      "rotationDegrees": 171.0,
       "rotateFast": false
     },
     {
-      "waypointRelativePos": 7.95,
-      "rotationDegrees": 170.0,
+      "waypointRelativePos": 8.0,
+      "rotationDegrees": 171.0,
       "rotateFast": false
     },
     {
       "waypointRelativePos": 7.0,
-      "rotationDegrees": 170.0,
+      "rotationDegrees": 171.0,
       "rotateFast": false
     }
   ],
@@ -298,7 +298,7 @@
     },
     {
       "name": "Intake",
-      "waypointRelativePos": 4.8,
+      "waypointRelativePos": 4.65,
       "command": {
         "type": "parallel",
         "data": {
@@ -415,23 +415,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "AutoShoot",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "autoShootCommand"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
@@ -442,7 +425,7 @@
   },
   "goalEndState": {
     "velocity": 0.0,
-    "rotation": 171.21535071815993,
+    "rotation": 171.0,
     "rotateFast": false
   },
   "reversed": false,

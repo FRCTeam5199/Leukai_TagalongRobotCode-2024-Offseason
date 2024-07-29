@@ -4,30 +4,29 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.Pair;
+import java.util.Optional;
+
+import org.photonvision.EstimatedRobotPose;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import org.photonvision.EstimatedRobotPose;
-
-import java.util.Optional;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
+    private CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
     private RobotContainer m_robotContainer;
-    private CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
 
     @Override
     public void robotInit() {
         m_robotContainer = new RobotContainer();
-        drivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevs);
+        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevs);
 
     }
 
@@ -42,10 +41,10 @@ public class Robot extends TimedRobot {
             
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), drivetrain.getRotation3d().toRotation2d());
+            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), commandSwerveDrivetrain.getRotation3d().toRotation2d());
 
             System.out.println("wnqifowneio'gneriognio'sejgio;");
-            drivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
+            commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }else{
             System.out.println("meifowgfnijowerngiowreniomg");
         }
