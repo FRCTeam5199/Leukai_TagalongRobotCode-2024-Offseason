@@ -196,6 +196,8 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
             )));
             _pivotMotor.setControl(_requestedPivotPositionVoltage.withFeedForward(_pivotFF.ks));
         }
+
+        _pivotMotor.setNeutralMode(NeutralModeValue.Coast);
     }
 
     @Override
@@ -203,6 +205,8 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
         if (_isMinorSystemDisabled) {
             return;
         }
+        _pivotMotor.setNeutralMode(NeutralModeValue.Brake);
+
     }
 
     @Override
