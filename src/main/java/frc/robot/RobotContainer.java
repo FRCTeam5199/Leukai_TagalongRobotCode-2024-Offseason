@@ -74,6 +74,7 @@ public class RobotContainer {
         commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> commandSwerveDrivetrain.seedFieldRelative()));
+        commandSwerveDrivetrain.registerTelemetry(logger:: telemeterize);
     }
 
     public Command getAutonomousCommand() {
