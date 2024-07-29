@@ -19,7 +19,7 @@ public class Autos extends Command {
   private Map<String, Command> commandsMap = new HashMap<>();
   private Map<String, Command> builtAutos = new HashMap<>();
   SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
-  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new com.pathplanner.lib.util.PIDConstants(0, 0, 0), new com.pathplanner.lib.util.PIDConstants(0, 0, 0), 5.76072, .375, new ReplanningConfig());
+  HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(new com.pathplanner.lib.util.PIDConstants(5, 0, 0), new com.pathplanner.lib.util.PIDConstants(0, 0, 0), 5.76072, .375, new ReplanningConfig());
     
 
   public Autos(CommandSwerveDrivetrain swerveDrive) {

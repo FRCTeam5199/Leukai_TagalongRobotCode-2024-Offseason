@@ -14,25 +14,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start To Note 3"
+            "pathName": "Start To Note 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "note 3 to note 2"
+            "pathName": "note 1 to shoot"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "note 2 to note 1"
+            "pathName": "shoot to note 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "note 1 to note note4"
+            "pathName": "note 2 to note 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 3 to note4"
           }
         },
         {
