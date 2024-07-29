@@ -3,6 +3,7 @@ package frc.robot.commands;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -30,7 +31,7 @@ public class Autos extends Command {
     commandsMap.put("shootCommand", ScoreCommands.indexerFeedCommand(60));
   }
 
-  public String getSelectedPath() {
-    return "6-Piece Red Side Path";
+  public Command sixPieceRedAuton() {
+    return AutoBuilder.buildAuto("6 piece red");
   }
 }

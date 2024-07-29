@@ -78,7 +78,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return AutoBuilder.buildAuto("6-Piece Red Side Auto");
+        return autos.sixPieceRedAuton();
     }
 
     public void onEnable() {
