@@ -98,6 +98,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.periodic();
 
         updateShuffleboard();
+//        System.out.println("Reached Shooter Conditions: " + reachedShootingConditions(60));
     }
 
     @Override
@@ -143,6 +144,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
 
     public void moveShooterToSetpointAndSpeed(double setpoint, double targetSpeed) {
         arm.setPivotProfile(setpoint);
+
         shooterLeft.setFlywheelControl(targetSpeed, true);
         shooterRight.setFlywheelControl(.5 * targetSpeed, true);
     }
@@ -152,8 +154,9 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     }
 
     public boolean reachedShootingConditions(double targetSpeed) {
-        return arm.isPivotProfileFinished()
-                && shooterRight.isFlywheelAtTargetSpeed(targetSpeed) && shooterLeft.isFlywheelAtTargetSpeed(targetSpeed);
+        double percentageOfMaxSpeed = .99;
+        return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
+                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
     }
 
     public boolean shotNote(double targetSpeed) {
