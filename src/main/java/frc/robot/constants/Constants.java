@@ -70,7 +70,7 @@ public class Constants {
 
         public static final Transform3d kRobotToCam =
                 new Transform3d(new Translation3d(-0.1006348, 0.0, 0.4481322), new Rotation3d(0, -.29, 0));
-    
+
         // The layout of the AprilTags on the field
         public static final AprilTagFieldLayout kTagLayout =
                 AprilTagFields.kDefaultField.loadAprilTagLayoutField();

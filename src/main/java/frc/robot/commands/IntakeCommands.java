@@ -31,7 +31,10 @@ public class IntakeCommands {
                 },
                 () -> {
                 },
-                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                interrupted -> {
+                    System.out.println(interrupted);
+                    indexerSubsystem.setRollerSpeeds(0, 0, 0);
+                },
                 () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap()),
                 indexerSubsystem
         );

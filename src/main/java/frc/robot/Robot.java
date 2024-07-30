@@ -6,6 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -40,13 +41,13 @@ public class Robot extends TimedRobot {
         if (estimatePose1.isPresent()) {
 
             EstimatedRobotPose robotPose = estimatePose1.get();
-            
+
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), commandSwerveDrivetrain.getRotation3d().toRotation2d());
+            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
 
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
-        }else{
         }
     }
 

@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.03,
-        "y": 4.323
+        "x": 14.18,
+        "y": 4.36
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.74019249651338,
-        "y": 4.6960454548583845
+        "x": 14.89019249651338,
+        "y": 4.7330454548583845
       },
       "isLocked": false,
       "linkedName": null
@@ -30,7 +30,25 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "intake",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 5.5,
     "maxAcceleration": 5.5,
@@ -43,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "6 Piece Red Paths",
   "previewStartingState": {
     "rotation": -153.51,
     "velocity": 0

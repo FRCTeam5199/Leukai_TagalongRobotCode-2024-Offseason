@@ -6,7 +6,6 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -17,7 +16,6 @@ import frc.robot.commands.Autos;
 import frc.robot.commands.ClimberHeights;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ScoreCommands;
-import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.commands.base.ClimberCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
@@ -55,15 +53,15 @@ public class RobotContainer {
     private void configureBindings() {
         commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 commandSwerveDrivetrain.applyRequest(
-                    () -> {
-                        return 
-                        // Drive forward with negative Y (forward)
-                        fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed) 
-                        // Drive left with negative X (left)
-                        .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed) 
-                        // Drive counterclockwise with negative X (left)
-                        .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
-                    } 
+                        () -> {
+                            return
+                                    // Drive forward with negative Y (forward)
+                                    fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
+                                            // Drive left with negative X (left)
+                                            .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
+                                            // Drive counterclockwise with negative X (left)
+                                            .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
+                        }
                 )
         );
 
@@ -88,16 +86,16 @@ public class RobotContainer {
             // Seed field relative pose that is alliance dependent
             var current = commandSwerveDrivetrain.getPose();
             commandSwerveDrivetrain.seedFieldRelative(
-                new Pose2d(
-                    current.getX(),
-                    current.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0 : 0)));
+                    new Pose2d(
+                            current.getX(),
+                            current.getY(),
+                            Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0F : 0)));
         }));
-        commandSwerveDrivetrain.registerTelemetry(logger:: telemeterize);
+        commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {
-        return autos.getBuiltAuton("6 piece red");
+        return autos.sixPieceRed();
     }
 
     public void onEnable() {
