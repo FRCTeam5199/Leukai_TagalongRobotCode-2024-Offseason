@@ -1,0 +1,16 @@
+{
+  "NetworkTables Info": {
+    "Connections": {
+      "open": true
+    }
+  },
+  "NetworkTables Log": {
+    "visible": true
+  },
+  "NetworkTables Settings": {
+    "dsClient": false,
+    "mode": "Client (NT4)",
+    "visible": false
+  },
+  "enterKey": 258
+}

@@ -39,7 +39,7 @@ public class RobotContainer {
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final NoteElevator noteElevator = NoteElevator.getInstance();
     public final static  ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
-    public static final Autos autos = new Autos(commandSwerveDrivetrain);
+    public static final Autos autos = Autos.getInstance(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     // The robot's subsystems and commands are defined here...
@@ -86,7 +86,6 @@ public class RobotContainer {
         commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
         commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
 
-
         commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
@@ -102,7 +101,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autos.sixPieceRed();
+        return autos.getSelectedAuton();
     }
 
     public void onEnable() {
@@ -140,4 +139,6 @@ public class RobotContainer {
         climberSubsystem.simulationPeriodic();
         noteElevator.simulationPeriodic();
     }
+
+    
 }

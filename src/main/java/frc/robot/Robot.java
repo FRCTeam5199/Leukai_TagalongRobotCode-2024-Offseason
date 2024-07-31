@@ -27,35 +27,39 @@ import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-    private CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
-    private ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
+
     private RobotContainer m_robotContainer;
+    private final UserInterface userInterface = UserInterface.getInstance();
+
+    private final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
+    
+    private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
 
 
     @Override
     public void robotInit() {
 
         m_robotContainer = new RobotContainer();
-
+        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
+        // userInterface.init();
     }
 
     @Override
     public void robotPeriodic() {
-        CommandScheduler.getInstance().run();
         Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
 
-        System.out.println(ObjectDetectionSubsystem.getInstance().getObjectIdentity());
+        // System.out.println(ObjectDetectionSubsystem.getInstance().getObjectIdentity());
         if (estimatePose1.isPresent()) {
-
             EstimatedRobotPose robotPose = estimatePose1.get();
-
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-
             Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
                     Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
-
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
+
+        // userInterface.update();
+
+        CommandScheduler.getInstance().run();
     }
 
     @Override
