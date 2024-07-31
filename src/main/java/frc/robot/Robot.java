@@ -30,20 +30,6 @@ public class Robot extends TimedRobot {
     private ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
     private RobotContainer m_robotContainer;
 
-    private final TalonFX fldr = new TalonFX(13, "Canivore"); 
-    private final TalonFX brdr = new TalonFX(19, "Canivore");
-    private final TalonFX frdr = new TalonFX(15, "Canivore");
-    private final TalonFX bldr = new TalonFX(17, "Canivore");
-    
-    private final TalonFX blst = new TalonFX(16, "Canivore");
-    private final TalonFX frst = new TalonFX(14, "Canivore");
-    private final TalonFX flst = new TalonFX(12, "Canivore");
-    private final TalonFX brst = new TalonFX(18, "Canivore");
-
-    private final CurrentLimitsConfigs m_DrivecurrentLimits = new CurrentLimitsConfigs();
-    private final CurrentLimitsConfigs m_SteercurrentLimits = new CurrentLimitsConfigs();
-
-
 
     @Override
     public void robotInit() {
