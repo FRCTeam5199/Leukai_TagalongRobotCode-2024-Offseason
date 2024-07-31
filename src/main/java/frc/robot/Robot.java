@@ -4,30 +4,37 @@
 
 package frc.robot;
 
-import edu.wpi.first.math.Pair;
+import java.util.Optional;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import org.photonvision.EstimatedRobotPose;
+
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import org.photonvision.EstimatedRobotPose;
-
-import java.util.Optional;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
+    private CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
     private RobotContainer m_robotContainer;
-    private CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
+
 
     @Override
     public void robotInit() {
+
         m_robotContainer = new RobotContainer();
-        drivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevs);
 
     }
 
@@ -39,15 +46,13 @@ public class Robot extends TimedRobot {
         if (estimatePose1.isPresent()) {
 
             EstimatedRobotPose robotPose = estimatePose1.get();
-            
+
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), drivetrain.getRotation3d().toRotation2d());
+            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
 
-            System.out.println("wnqifowneio'gneriognio'sejgio;");
-            drivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
-        }else{
-            System.out.println("meifowgfnijowerngiowreniomg");
+            commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
     }
 
@@ -66,7 +71,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
+        // This corresponds to the field truth, which is always the blue perspective
+        commandSwerveDrivetrain.setOperatorPerspectiveForward(Rotation2d.fromDegrees(0));
+
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+        m_robotContainer.onEnable();
+
+        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
+
 
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
@@ -86,7 +98,15 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        
         m_robotContainer.onEnable();
+                
+        
+        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsTeleop);
+
+
+        // This corresponds to what direction the driver is facing at a given time
+        commandSwerveDrivetrain.setOperatorPerspectiveForward(Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
     }
 
     @Override

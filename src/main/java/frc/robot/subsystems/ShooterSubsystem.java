@@ -2,7 +2,6 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.ShooterParser;
-import frc.robot.subsystems.minor.TagalongDualMotorFlywheel;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
@@ -98,7 +97,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.periodic();
 
         updateShuffleboard();
-//        System.out.println("Reached Shooter Conditions: " + reachedShootingConditions(60));
+//        System.out.println("Reached Shooter Conditions: " + hasShotNote(60));
     }
 
     @Override
@@ -153,13 +152,9 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.followLastProfile();
     }
 
-    public boolean reachedShootingConditions(double targetSpeed) {
-        double percentageOfMaxSpeed = .99;
+    public boolean reachedShootingCondtions(double targetSpeed) {
+        double percentageOfMaxSpeed = .97;
         return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
                 && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
-    }
-
-    public boolean shotNote(double targetSpeed) {
-        return ((shooterRight.getFlywheelVelocity() > (targetSpeed * 0.9)) && (shooterLeft.getFlywheelVelocity() > ((targetSpeed * 0.5) * 0.9)));
     }
 }

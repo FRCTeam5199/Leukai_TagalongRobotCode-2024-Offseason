@@ -13,7 +13,7 @@ public class LookUpTable {
 
     public static double findValue(double distance) {
         if (lookUpTable.size() < 2) {
-            return 40d / 360d;
+            return 30d / 360d;
         }
         Pair<Double, Double> lowAutoAimValue = lookUpTable.get(0);
         Pair<Double, Double> highAutoAimValue = lookUpTable.get(lookUpTable.size() - 1);
