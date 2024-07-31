@@ -95,7 +95,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autos.sixPieceRed();
+        return autos.fourPieceRedMiddle();
     }
 
     public void onEnable() {
@@ -110,6 +110,7 @@ public class RobotContainer {
         shooterSubsystem.onDisable();
         climberSubsystem.onDisable();
         noteElevator.onEnable();
+        
     }
 
     public void disabledPeriodic() {

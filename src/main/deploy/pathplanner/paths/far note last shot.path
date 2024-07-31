@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 11.771852169296755,
-        "y": 4.3575412269307945
+        "x": 11.85,
+        "y": 4.64
       },
       "prevControl": {
-        "x": 10.30643886044504,
-        "y": 4.037285338241347
+        "x": 10.384586691148284,
+        "y": 4.319744111310552
       },
       "nextControl": null,
       "isLocked": false,
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "5199 new bot 4 pice middle source",
+  "folder": null,
   "previewStartingState": {
     "rotation": 140.0,
     "velocity": 0

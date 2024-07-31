@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.87650037859318,
-        "y": 3.083349484234513
+        "x": 13.460713232225435,
+        "y": 1.577587212115905
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.72,
-        "y": 2.3249385847142627
+        "x": 8.36763846719097,
+        "y": 2.366380818172868
       },
       "prevControl": {
-        "x": 11.078700052136945,
-        "y": 0.3600568604645991
+        "x": 13.207520222873818,
+        "y": 0.19476385334937737
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "5199 new bot 4 pice middle source",
+  "folder": null,
   "previewStartingState": {
     "rotation": -120.0,
     "velocity": 0

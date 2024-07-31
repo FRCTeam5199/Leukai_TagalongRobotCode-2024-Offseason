@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 11.67,
-        "y": 4.47
+        "x": 11.85,
+        "y": 4.64
       },
       "prevControl": null,
       "nextControl": {
-        "x": 10.707251856641436,
-        "y": 4.199600272818854
+        "x": 10.393182541999723,
+        "y": 3.651822250263718
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.63,
-        "y": 5.5
+        "x": 8.250780155178342,
+        "y": 5.803962829752469
       },
       "prevControl": {
-        "x": 9.250704416451775,
-        "y": 4.134450283806093
+        "x": 8.871484571630116,
+        "y": 4.438413113558561
       },
       "nextControl": null,
       "isLocked": false,
@@ -49,7 +49,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "5199 new bot 4 pice middle source",
+  "folder": null,
   "previewStartingState": {
     "rotation": -168.89,
     "velocity": 0

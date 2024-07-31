@@ -9,6 +9,10 @@ import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.EstimatedRobotPose;
 
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.hardware.TalonFX;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,10 +30,25 @@ public class Robot extends TimedRobot {
     private ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
     private RobotContainer m_robotContainer;
 
+    private final TalonFX fldr = new TalonFX(13, "Canivore"); 
+    private final TalonFX brdr = new TalonFX(19, "Canivore");
+    private final TalonFX frdr = new TalonFX(15, "Canivore");
+    private final TalonFX bldr = new TalonFX(17, "Canivore");
+    
+    private final TalonFX blst = new TalonFX(16, "Canivore");
+    private final TalonFX frst = new TalonFX(14, "Canivore");
+    private final TalonFX flst = new TalonFX(12, "Canivore");
+    private final TalonFX brst = new TalonFX(18, "Canivore");
+
+    private final CurrentLimitsConfigs m_DrivecurrentLimits = new CurrentLimitsConfigs();
+    private final CurrentLimitsConfigs m_SteercurrentLimits = new CurrentLimitsConfigs();
+
+
+
     @Override
     public void robotInit() {
+
         m_robotContainer = new RobotContainer();
-        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevs);
 
     }
 
@@ -72,6 +91,9 @@ public class Robot extends TimedRobot {
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         m_robotContainer.onEnable();
 
+        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
+
+
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
@@ -90,7 +112,12 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
+        
         m_robotContainer.onEnable();
+                
+        
+        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsTeleop);
+
 
         // This corresponds to what direction the driver is facing at a given time
         commandSwerveDrivetrain.setOperatorPerspectiveForward(Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));

@@ -18,7 +18,7 @@ public class Autos extends Command {
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
             new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
             new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
-            5.76072, .375, new ReplanningConfig());
+            5.76072, .375, new ReplanningConfig(true, true));
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
     private Map<String, Command> builtAutos = new HashMap<>();
@@ -58,7 +58,11 @@ public class Autos extends Command {
     }
 
     public Command sixPieceRed() {
-        return AutoBuilder.buildAuto("6 piece red");
+        return AutoBuilder.buildAuto("6 piece red shoot");
+    }
+
+    public Command fourPieceRedMiddle(){
+        return AutoBuilder.buildAuto("4 piece source middle");
     }
 
     public Command testCommandsRed() {
