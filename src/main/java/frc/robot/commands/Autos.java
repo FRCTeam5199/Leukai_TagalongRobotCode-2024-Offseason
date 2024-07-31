@@ -32,6 +32,7 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("intake", IntakeCommands.intake());
         NamedCommands.registerCommand("autoShoot", ScoreCommands.moveShooterToAutoAimAndAutoShoot(60));
+        NamedCommands.registerCommand("noteCheck1", AutonCommands.noteCheck1());
     }
 
 

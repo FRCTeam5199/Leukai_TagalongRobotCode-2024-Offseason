@@ -23,6 +23,7 @@ import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
@@ -43,6 +44,7 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
         Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
 
+        System.out.println(ObjectDetectionSubsystem.getInstance().getObjectIdentity());
         if (estimatePose1.isPresent()) {
 
             EstimatedRobotPose robotPose = estimatePose1.get();

@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.networktables.NetworkTable;
+import edu.wpi.first.networktables.NetworkTableEntry;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 import frc.robot.limelight.LimelightHelpers;
@@ -9,6 +12,28 @@ import frc.robot.limelight.LimelightHelpers.LimelightTarget_Detector;
 
 public class ObjectDetectionSubsystem extends SubsystemBase {
     private static ObjectDetectionSubsystem objectDetectionSubsystem;
+
+    NetworkTable table = NetworkTableInstance.getDefault().getTable("limelight");
+    NetworkTableEntry tx = table.getEntry("tx");
+    NetworkTableEntry ty = table.getEntry("ty");
+    NetworkTableEntry ta = table.getEntry("ta");
+    NetworkTableEntry tclass = table.getEntry("tclass");
+
+    //read values periodically
+    double x;
+    double area;
+    double y;
+
+
+    @Override
+    public void periodic(){
+        x = tx.getDouble(0.0);
+        y = ty.getDouble(0.0);
+        area = ta.getDouble(0.00);
+
+    }
+
+    String cwass = tclass.getString("no note");
 
     public static ObjectDetectionSubsystem getInstance(){
         if (objectDetectionSubsystem == null) objectDetectionSubsystem = new ObjectDetectionSubsystem();
@@ -52,20 +77,32 @@ public class ObjectDetectionSubsystem extends SubsystemBase {
     }
 
     public double getNotePoseX(){
-        return getNearestNote().tx;
+        return x;
     }
 
     public double getNotePoseY(){
-        return getNearestNote().ty;
+        return y;
     }
     
     public double getNoteDistance(){
-        return getNearestNote().ta;
+        return area;
     }
 
-    public String getObjectIdentity(){
-        return getNearestNote().className;
+    public double getObjectIdentity(){
+        return x;
     }
 
+    public boolean notePresent(){
+        if(x == 0 && y == 0 && area == 0){
+            return false;
+        }else{
+            return true;
+        }
+    }
+
+
+
+ 
+}
 
     
