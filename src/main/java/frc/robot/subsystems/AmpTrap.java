@@ -3,14 +3,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.parsers.NotevatorParser;
-import frc.robot.parsers.json.NotevatorConfJson;
+import frc.robot.parsers.AmpTrapParser;
+import frc.robot.parsers.json.AmpTrapConfJson;
 import frc.robot.subsystems.minor.TagalongDualMotorElevator;
 import frc.robot.subsystems.minor.TagalongElevator;
 import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
-public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugment {
+public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment {
   public static final class ElevatorConstants {
     public static final int ELEVATOR_ID = 0;
 
@@ -25,9 +25,9 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
 
   public static final class RollerConstants { public static final double ROLLER_AMP_SHOT = 50.0; }
 
-  private final TagalongDualMotorElevator _elevator;
-  public final NotevatorParser _elevatorParser;
-  public final NotevatorConfJson _notevatorConf;
+  private final TagalongDualMotorElevator elevator;
+  public final AmpTrapParser ampTrapParser;
+  public final AmpTrapConfJson ampTrapConf;
 
   /* -------- Logging: utilities and configs -------- */
   // private final ClimberIOTalonFX _io;
@@ -35,28 +35,28 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
 
   @Override
   public TagalongDualMotorElevator getElevator() {
-    return _elevator;
+    return elevator;
   }
 
-    private static NoteElevator elevatorSubsystem;
+    private static AmpTrap elevatorSubsystem;
 
-    public NoteElevator(String filePath) {
-        this(filePath == null ? null : new NotevatorParser(Filesystem.getDeployDirectory(), filePath));
+    public AmpTrap(String filePath) {
+        this(filePath == null ? null : new AmpTrapParser(Filesystem.getDeployDirectory(), filePath));
     }
 
-    public NoteElevator(NotevatorParser parser) {
+    public AmpTrap(AmpTrapParser parser) {
         super(parser);
-        _elevatorParser = parser;
+        ampTrapParser = parser;
 
         if (_configuredDisable) {
             // _io = null;
-            _notevatorConf = null;
-            _elevator = new TagalongDualMotorElevator(null);
+            ampTrapConf = null;
+            elevator = new TagalongDualMotorElevator(null);
             return;
         }
 
-        _notevatorConf = _elevatorParser.notevatorConf;
-        _elevator = new TagalongDualMotorElevator(_elevatorParser.elevatorParser);
+        ampTrapConf = ampTrapParser.ampTrapConf;
+        elevator = new TagalongDualMotorElevator(ampTrapParser.elevatorParser);
 
         int counter = 0;
         while (!checkInitStatus() && counter < 100) {
@@ -71,9 +71,9 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
         configShuffleboard();
     }
 
-    public static NoteElevator getInstance() {
+    public static AmpTrap getInstance() {
         if (elevatorSubsystem == null) {
-            elevatorSubsystem = new NoteElevator("configs/notevator/notevatorConf.json");
+            elevatorSubsystem = new AmpTrap("configs/ampTrap/ampTrapConf.json");
         }
         return elevatorSubsystem;
     }
@@ -85,7 +85,7 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
 
     @Override
     public TagalongElevator getElevator(int i) {
-        return _elevator;
+        return elevator;
     }
 
     public boolean isReadyToElevate() {
@@ -101,7 +101,7 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
         if (_isSubsystemDisabled) {
             return;
         }
-        _elevator.onEnable();
+        elevator.onEnable();
         // for testing
         // _elevator.getElevatorMotor().setControl(
         //     new VelocityVoltage(0.000001).withFeedForward(_elevator._elevatorFF.ks)
@@ -113,7 +113,7 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
         if (_isSubsystemDisabled) {
             return;
         }
-        _elevator.onDisable();
+        elevator.onDisable();
     }
 
     @Override
@@ -121,7 +121,7 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
         if (_isSubsystemDisabled) {
             return;
         }
-        _elevator.periodic();
+        elevator.periodic();
 
         // Logging
         // _io.updateInputs(_inputs);
@@ -132,33 +132,33 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
 
     @Override
     public void disabledPeriodic() {
-        _elevator.disabledPeriodic();
+        elevator.disabledPeriodic();
     }
 
     @Override
     public void simulationInit() {
-        _elevator.simulationInit();
+        elevator.simulationInit();
     }
 
     @Override
     public void simulationPeriodic() {
-        _elevator.simulationPeriodic();
+        elevator.simulationPeriodic();
     }
 
     @Override
     public void updateShuffleboard() {
-        _elevator.updateShuffleboard();
+        elevator.updateShuffleboard();
     }
 
     @Override
     public void configShuffleboard() {
-        _elevator.configShuffleboard();
+        elevator.configShuffleboard();
     }
 
     // TODO IMPLEMENT
     @Override
     public boolean checkInitStatus() {
-        return super.checkInitStatus() && _elevator.checkInitStatus();
+        return super.checkInitStatus() && elevator.checkInitStatus();
     }
 
     public Command goToSetpoint(double setpoint) {

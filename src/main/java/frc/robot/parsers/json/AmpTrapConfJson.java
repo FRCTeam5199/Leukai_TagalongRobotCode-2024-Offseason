@@ -1,5 +1,5 @@
 package frc.robot.parsers.json;
 
-public class NotevatorConfJson {
+public class AmpTrapConfJson {
   public String elevatorFile;
 }

@@ -4,12 +4,12 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
+import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class IntakeCommands {
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static final AmpTrap elevatorSubsystem = AmpTrap.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
 
     private static Command setElevatorToStable() {
@@ -32,7 +32,7 @@ public class IntakeCommands {
                 () -> {
                 },
                 interrupted -> {
-                    System.out.println(interrupted);
+                    // System.out.println(interrupted);
                     indexerSubsystem.setRollerSpeeds(0, 0, 0);
                 },
                 () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap()),

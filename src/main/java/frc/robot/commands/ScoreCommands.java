@@ -20,14 +20,14 @@ import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
+import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 
 public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static final AmpTrap elevatorSubsystem = AmpTrap.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static TrapezoidProfile driveRotationalTrapezoidProfile;
 
@@ -184,4 +184,9 @@ public class ScoreCommands {
                 () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
     }
+
+    // public static Command trapCommand() {
+    //     return new FunctionalCommand(() -> ), trap, null, null, null)
+    //     });
+    // }
 }
