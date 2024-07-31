@@ -2,7 +2,6 @@ package frc.robot.commands;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
@@ -48,14 +47,14 @@ public class ScoreCommands {
                     State currentState = new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(),
                             commandSwerveDrivetrain.getPigeon2().getRate());
                     State goalState = new State(Units.radiansToDegrees(
-                        Math.atan(
-                            (locY - commandSwerveDrivetrain.getPose().getY()) /
-                            (locX - commandSwerveDrivetrain.getPose().getX()))),                            0);
+                            Math.atan(
+                                    (locY - commandSwerveDrivetrain.getPose().getY()) /
+                                            (locX - commandSwerveDrivetrain.getPose().getX()))), 0);
                     commandSwerveDrivetrain.setControl(
-                        fieldCentricSwerveDrive
-                            .withVelocityX(commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
-                            .withVelocityY(commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
-                            .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02, currentState, goalState).velocity));
+                            fieldCentricSwerveDrive
+                                    .withVelocityX(commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withVelocityY(commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02, currentState, goalState).velocity));
                 },
                 interrupted -> {
                 },
@@ -100,7 +99,7 @@ public class ScoreCommands {
         ).unless(() -> !indexerSubsystem.isNoteInAmpTrap());
     }
 
-    private static double getDistance(double[] robotCoords, double[] speakerCoords) {
+    public static double getDistance(double[] robotCoords, double[] speakerCoords) {
         return Math.sqrt(Math.pow((robotCoords[1] - speakerCoords[1]), 2) + Math.pow((robotCoords[0] - speakerCoords[0]), 2));
     }
 
@@ -124,8 +123,40 @@ public class ScoreCommands {
                     shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
                     shooterSubsystem.getPivot().setHoldPivotPosition(true);
                 },
-                () -> (shooterSubsystem.hasShotNote(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 shooterSubsystem
+        ).unless(() -> !indexerSubsystem.isNoteInIndexer());
+    }
+
+    public static Command moveShooterToAutoAimAndAutoShoot(double targetSpeed) {
+        return new SequentialCommandGroup(
+                new FunctionalCommand(
+                        () -> {
+                        },
+                        () -> {
+                            double distance;
+                            double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+                            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+                                distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+                            else
+                                distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+
+                            double armAngle = LookUpTable.findValue(distance);
+                            shooterSubsystem.moveShooterToSetpointAndSpeed(armAngle, targetSpeed);
+                            shooterSubsystem.followLastPivotProfile();
+
+                            if (shooterSubsystem.reachedShootingCondtions(targetSpeed)) {
+                                indexerSubsystem.setRollerSpeeds(0, -80, 40);
+                            }
+                        },
+                        interrupted -> {
+                            shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
+                            shooterSubsystem.getPivot().setHoldPivotPosition(true);
+                            indexerSubsystem.setRollerSpeeds(0, 0, 0);
+                        },
+                        () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                        shooterSubsystem
+                )
         ).unless(() -> !indexerSubsystem.isNoteInIndexer());
     }
 
@@ -150,7 +181,7 @@ public class ScoreCommands {
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
-                () -> (shooterSubsystem.hasShotNote(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
     }
 }

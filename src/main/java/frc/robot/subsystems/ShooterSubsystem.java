@@ -152,8 +152,8 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.followLastProfile();
     }
 
-    public boolean hasShotNote(double targetSpeed) {
-        double percentageOfMaxSpeed = .99;
+    public boolean reachedShootingCondtions(double targetSpeed) {
+        double percentageOfMaxSpeed = .97;
         return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
                 && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
     }

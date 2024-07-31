@@ -36,7 +36,6 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("Distance from Red Speaker: " + getDistanceFromRedSpeaker());
     }
 
     public double getDistanceFromRedSpeaker() {
@@ -60,10 +59,8 @@ public class ApriltagSubsystem extends SubsystemBase {
         if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
             return Optional.empty();
         } else if(lastResult.getTargets().size() < 2){
-            System.out.println("No targets");
             return Optional.empty();
         }else{
-            System.out.println(lastResult.getTargets().size());
             lastEstTimestamp = lastResult.getTimestampSeconds();
             return photonEstimator.update(lastResult);
         }
@@ -88,7 +85,7 @@ public class ApriltagSubsystem extends SubsystemBase {
         if (numTags == 0) return estStdDevs;
         avgDist /= numTags;
         // Decrease std devs if multiple targets are visible
-        if (numTags > 1) estStdDevs = Constants.Vision.kMultiTagStdDevs;
+        if (numTags > 1) estStdDevs = Constants.Vision.kMultiTagStdDevsTeleop;
         // Increase std devs based on (average) distance
         if (numTags == 1 && avgDist > 4)
             estStdDevs = VecBuilder.fill(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
