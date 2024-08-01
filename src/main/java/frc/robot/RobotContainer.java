@@ -77,6 +77,7 @@ public class RobotContainer {
         commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
+        commandXboxController.y().onTrue(ClimberCommands.toggleElevatorTrap());
 
         commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToAutoAim(60));
 //                .onFalse(ScoreCommands.moveShooterToStable());

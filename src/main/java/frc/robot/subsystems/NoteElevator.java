@@ -164,4 +164,8 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
     public Command goToSetpoint(double setpoint) {
         return new WaitCommand(0);
     }
+
+    public double getElevatorSetpoint() {
+        return _elevator.getElevatorHeightM();
+    }
 }
