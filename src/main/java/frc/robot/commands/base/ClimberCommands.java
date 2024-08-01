@@ -7,6 +7,7 @@ import frc.robot.commands.ClimberHeights;
 import frc.robot.commands.ElevatorHeights;
 import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -14,6 +15,7 @@ public class ClimberCommands {
     private static Climber climberSubsystem = Climber.getInstance();
     private static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
 
     public static Command moveClimbersToSetpoint(ClimberHeights leftClimberHeight, ClimberHeights rightClimberHeight) {
         return new FunctionalCommand(
@@ -43,5 +45,16 @@ public class ClimberCommands {
             return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.TRAP, true);
         else
             return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE, true);
+    }
+
+    public static Command scoreTrap() {
+        return new FunctionalCommand(
+                        () -> indexerSubsystem.setRollerSpeeds(0, 30, 0),
+                        () -> {
+                        },
+                        interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                        () -> !indexerSubsystem.isNoteInAmpTrap(),
+                        indexerSubsystem
+                );
     }
 }
