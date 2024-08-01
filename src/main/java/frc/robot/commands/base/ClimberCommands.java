@@ -40,11 +40,22 @@ public class ClimberCommands {
         );
     }
 
+    public static Command setClimberPowers(double percent) {
+        return new FunctionalCommand(
+                () -> climberSubsystem.setClimberPowers(percent),
+                () -> {
+                },
+                interrupted -> climberSubsystem.setClimberPowers(0),
+                () -> false,
+                indexerSubsystem
+        );
+    }
+
     public static Command toggleElevatorTrap() {
-        if (elevatorSubsystem.getElevatorSetpoint() < 0.1)
+//        if (elevatorSubsystem.getElevatorSetpoint() < 0.1)
             return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.TRAP, true);
-        else
-            return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE, true);
+//        else
+//            return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE, true);
     }
 
     public static Command scoreTrap() {

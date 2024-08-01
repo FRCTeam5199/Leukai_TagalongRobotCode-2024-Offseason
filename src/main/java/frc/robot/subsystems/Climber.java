@@ -183,4 +183,9 @@ public class Climber extends TagalongSubsystemBase implements ElevatorAugment {
     public boolean isElevatorProfilesFinished() {
         return _elevatorLeft.isProfileFinished() && _elevatorRight.isProfileFinished();
     }
+
+    public void setClimberPowers(double percent) {
+        _elevatorLeft.setElevatorPower(percent);
+        _elevatorRight.setElevatorPower(percent);
+    }
 }

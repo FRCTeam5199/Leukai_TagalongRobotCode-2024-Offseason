@@ -77,15 +77,18 @@ public class RobotContainer {
         commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
 
         commandXboxController.x().onTrue(ClimberCommands.scoreTrap());
-        commandXboxController.y().onTrue(ClimberCommands.toggleElevatorTrap());
+        commandXboxController.povUp().onTrue(ClimberCommands.toggleElevatorTrap());
+        commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
 
         commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToAutoAim(60));
 //                .onFalse(ScoreCommands.moveShooterToStable());
         commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
                 .onFalse(ScoreCommands.elevatorStable());
-        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
-        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
+//        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
+//        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
+        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
 
         commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
