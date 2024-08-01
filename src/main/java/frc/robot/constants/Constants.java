@@ -65,12 +65,15 @@ public class Constants {
 
     public static class Vision {
         public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
-        public static final Matrix<N3, N1> kMultiTagStdDevs = VecBuilder.fill(0.07, 0.07, 0);
+        public static final Matrix<N3, N1> kMultiTagStdDevsAuton = VecBuilder.fill(0.07, 0.07,999);
+        public static final Matrix<N3, N1> kMultiTagStdDevsTeleop = VecBuilder.fill(0.07, 0.07,0);
+
         public static final String kCameraName = "Camera";
+        public static final String LIMELIGHT = "limelight";
 
         public static final Transform3d kRobotToCam =
                 new Transform3d(new Translation3d(-0.1006348, 0.0, 0.4481322), new Rotation3d(0, -.29, 0));
-    
+
         // The layout of the AprilTags on the field
         public static final AprilTagFieldLayout kTagLayout =
                 AprilTagFields.kDefaultField.loadAprilTagLayoutField();
