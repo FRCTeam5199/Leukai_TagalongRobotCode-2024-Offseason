@@ -44,7 +44,6 @@ public class Robot extends TimedRobot {
         CommandScheduler.getInstance().run();
         Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
 
-        System.out.println(ObjectDetectionSubsystem.getInstance().getObjectIdentity());
         if (estimatePose1.isPresent()) {
 
             EstimatedRobotPose robotPose = estimatePose1.get();

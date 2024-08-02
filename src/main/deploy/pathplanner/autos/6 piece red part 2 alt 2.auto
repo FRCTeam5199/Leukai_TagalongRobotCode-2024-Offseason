@@ -1,0 +1,31 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 8.844809907887907,
+      "y": 6.261657885118854
+    },
+    "rotation": -135.8814039965822
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 3 to note 6"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 6 to shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "6 Piece Stuff",
+  "choreoAuto": false
+}
