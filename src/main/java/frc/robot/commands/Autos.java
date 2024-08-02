@@ -10,10 +10,19 @@ import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Autos extends Command {
     private static Autos autos;
+
+    public boolean part1Finished;
+    public boolean part2Finished = false;
+    public boolean alt1 = false;
+    
+    public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
             new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
@@ -32,7 +41,6 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("intake", IntakeCommands.intake());
         NamedCommands.registerCommand("autoShoot", ScoreCommands.moveShooterToAutoAimAndAutoShoot(60));
-        NamedCommands.registerCommand("noteCheck1", AutonCommands.noteCheck1());
     }
 
 
@@ -60,6 +68,42 @@ public class Autos extends Command {
 
     public Command sixPieceRed() {
         return AutoBuilder.buildAuto("6 piece red shoot");
+    }
+
+    public Command sixPieceRedPart1(){
+        return AutoBuilder.buildAuto("6 piece red part 1");
+    }
+
+    public Command sixPieceRedPart2(){
+        part2Finished = false;
+        return AutoBuilder.buildAuto("6 piece red part 2").andThen(()-> part2Finished = true);
+    }
+
+    public Command sixPieceRedNote5Check(){
+        return AutoBuilder.buildAuto("6 piece red note 5 check");
+    }
+
+    public Command sixPieceRedPart2Alt1(){
+        alt1 = false;
+        return AutoBuilder.buildAuto("6 piece red part 2 alt 1").andThen(()-> alt1 = true);
+    }
+        public Command sixPieceRedPart2Alt2(){
+        return AutoBuilder.buildAuto("6 piece red part 2 alt 2");
+    }
+
+    public Command sixPiece(){
+        return sixPieceRedPart1();
+    }
+
+   
+    public Command sixPieceRedwithAlt() {
+        return new SequentialCommandGroup(
+            sixPieceRedPart1(),
+            sixPieceRedPart2().unless(()-> !objectDetection.notePresent()),
+            sixPieceRedNote5Check().unless(()-> part2Finished == true),
+            sixPieceRedPart2Alt1().unless(()-> !objectDetection.notePresent()),
+            sixPieceRedPart2Alt2().unless(()-> alt1 == true || part2Finished == true)
+        );
     }
 
     public Command fourPieceRedMiddle(){

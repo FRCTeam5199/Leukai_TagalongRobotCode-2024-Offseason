@@ -23,9 +23,12 @@ public class AutonCommands {
     private static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
+    
 
     private AutonCommands() {
     }
+
+    
 
     public AutonCommands getInstance() {
         if (autonCommands == null) {
@@ -34,15 +37,14 @@ public class AutonCommands {
         return autonCommands;
     }
 
-
-    public static Command noteCheck1(){
-        if(objectDetection.notePresent() == false){
-
-            return new SequentialCommandGroup(AutoBuilder.buildAuto("6 Piece Red alt 1"));
-
-        }else{
-            return new InstantCommand(()-> System.out.println("There is a note"));
-
+    public Command sixPieceRed(){
+        return AutoBuilder.buildAuto("6 Piece Red shoot");
         }
-    }
+
+ 
+
+
+
+    
+
 }

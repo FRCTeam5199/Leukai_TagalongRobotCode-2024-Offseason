@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.Autos;
 import frc.robot.commands.ClimberHeights;
@@ -102,7 +103,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autos.sixPieceRed();
+        return autos.sixPieceRedwithAlt();
     }
 
     public void onEnable() {
