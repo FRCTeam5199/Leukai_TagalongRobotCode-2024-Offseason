@@ -13,23 +13,25 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 
 public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    private static final AmpTrap elevatorSubsystem = AmpTrap.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    private static TrapezoidProfile driveRotationalTrapezoidProfile;
+    private static final AmpTrap ampTrapSubsystem = AmpTrap.getInstance();
+    
+    private static final TrapezoidProfile driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(180, 360));
 
     public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
@@ -40,9 +42,7 @@ public class ScoreCommands {
 
     private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double locX, double locY) {
         return new FunctionalCommand(
-                () -> {
-                    driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(180, 360));
-                },
+                () -> {},
                 () -> {
                     State currentState = new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(),
                             commandSwerveDrivetrain.getPigeon2().getRate());
@@ -67,13 +67,13 @@ public class ScoreCommands {
 
     public static Command elevatorStable() {
         return new ParallelCommandGroup(
-                new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE),
+                new ElevatorRaiseToCommand<>(ampTrapSubsystem, ElevatorHeights.STABLE),
                 new InstantCommand(() -> indexerSubsystem.setRollerSpeeds(0, 0, 0))
         );
     }
 
     public static Command moveElevatorToSetpoint(ElevatorHeights elevatorHeight) {
-        return new ElevatorRaiseToCommand<>(elevatorSubsystem, elevatorHeight, true);
+        return new ElevatorRaiseToCommand<>(ampTrapSubsystem, elevatorHeight, true);
     }
 
     public static Command moveShooterToStable() {
@@ -178,15 +178,23 @@ public class ScoreCommands {
     public static Command indexerFeedCommand(double targetSpeed) {
         return new FunctionalCommand(
                 () -> indexerSubsystem.setRollerSpeeds(0, -80, 40),
-                () -> {
-                },
+                () -> {},
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
                 () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
     }
 
-    // public static Command trapCommand() {
-    //     return new FunctionalCommand(() -> ), trap, null, null, null)
-    //     });
-    // }
+    public static Command trapCommand() {
+        return new FunctionalCommand(
+            () -> {},
+            () -> {
+                ampTrapSubsystem.setRollerPower(0.5);
+                new WaitCommand(0.5);
+                ampTrapSubsystem.setRollerPower(0);
+            },
+            interrupted -> {
+                ampTrapSubsystem.setRollerPower(0);
+            },
+            () -> false);
+    }
 }

@@ -9,6 +9,7 @@ import java.io.File;
 public class AmpTrapParser {
   public AmpTrapConfJson ampTrapConf;
   public ElevatorParser elevatorParser;
+  public RollerParser rollerParser;
 
   public AmpTrapParser(File dir, String filename) {
     try {
@@ -17,6 +18,11 @@ public class AmpTrapParser {
       ampTrapConf = new ObjectMapper().readValue(ampTrapFile, AmpTrapConfJson.class);
 
       elevatorParser = new ElevatorParser(
+          new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/ampTrap"),
+          ampTrapConf.elevatorFile
+      );
+
+      rollerParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/ampTrap"),
           ampTrapConf.elevatorFile
       );

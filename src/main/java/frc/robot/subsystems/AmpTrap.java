@@ -2,46 +2,62 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.parsers.AmpTrapParser;
+import frc.robot.parsers.RollerParser;
 import frc.robot.parsers.json.AmpTrapConfJson;
 import frc.robot.subsystems.minor.TagalongDualMotorElevator;
 import frc.robot.subsystems.minor.TagalongElevator;
+import frc.robot.subsystems.minor.TagalongRoller;
 import frc.robot.tagalong.ElevatorAugment;
+import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
-public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment {
-  public static final class ElevatorConstants {
-    public static final int ELEVATOR_ID = 0;
+public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment, RollerAugment {
+    public static final class ElevatorConstants {
+        public static final int ELEVATOR_ID = 0;
 
-    public static final double ELEVATOR_ZEROING_SPEED_MPS = -0.06;
-    public static final double ELEVATOR_PREP_SPEED_MPS = -0.01;
-    public static final double ELEVATOR_ZEROING_STALL_TOLERANCE = 50;
-    public static final int ELEVATOR_ZEROING_STALL_LOOPS = 6;
+        public static final double ELEVATOR_ZEROING_SPEED_MPS = -0.06;
+        public static final double ELEVATOR_PREP_SPEED_MPS = -0.01;
+        public static final double ELEVATOR_ZEROING_STALL_TOLERANCE = 50;
+        public static final int ELEVATOR_ZEROING_STALL_LOOPS = 6;
 
-    public static final double ELEVATOR_AMP_MPS = 1.0;
-    public static final double ELEVATOR_TRAP_MPS = 1.0;
-  }
+        public static final double ELEVATOR_AMP_MPS = 1.0;
+        public static final double ELEVATOR_TRAP_MPS = 1.0;
+    }
 
-  public static final class RollerConstants { public static final double ROLLER_AMP_SHOT = 50.0; }
+    public static final class RollerConstants {
+        public static final double ROLLER_AMP_SHOT = 50.0;
+    }
+    
+    private final TagalongDualMotorElevator elevator;
+    private final TagalongRoller rollers;
 
-  private final TagalongDualMotorElevator elevator;
-  public final AmpTrapParser ampTrapParser;
-  public final AmpTrapConfJson ampTrapConf;
+    public final AmpTrapParser ampTrapParser;
+    public final AmpTrapConfJson ampTrapConf;
 
   /* -------- Logging: utilities and configs -------- */
   // private final ClimberIOTalonFX _io;
   // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
 
-  @Override
-  public TagalongDualMotorElevator getElevator() {
-    return elevator;
-  }
-
     private static AmpTrap elevatorSubsystem;
 
-    public AmpTrap(String filePath) {
+    private AmpTrap(String filePath) {
         this(filePath == null ? null : new AmpTrapParser(Filesystem.getDeployDirectory(), filePath));
+    }
+
+    @Override
+    public TagalongDualMotorElevator getElevator() {
+      return elevator;
+    }
+
+    @Override
+    public TagalongRoller getRoller() {
+      return rollers;
+    }
+
+    @Override
+    public TagalongRoller getRoller(int roller) {
+      return rollers;
     }
 
     public AmpTrap(AmpTrapParser parser) {
@@ -52,11 +68,13 @@ public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment {
             // _io = null;
             ampTrapConf = null;
             elevator = new TagalongDualMotorElevator(null);
+            rollers = new TagalongRoller(null);
             return;
         }
 
         ampTrapConf = ampTrapParser.ampTrapConf;
         elevator = new TagalongDualMotorElevator(ampTrapParser.elevatorParser);
+        rollers = new TagalongRoller(ampTrapParser.rollerParser);
 
         int counter = 0;
         while (!checkInitStatus() && counter < 100) {
@@ -161,7 +179,11 @@ public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment {
         return super.checkInitStatus() && elevator.checkInitStatus();
     }
 
-    public Command goToSetpoint(double setpoint) {
-        return new WaitCommand(0);
+    public void setElevatorHeight(double height) {
+        elevator.setElevatorHeight(height);
+    }
+
+    public void setRollerPower(double power) {
+        rollers.setRollerPower(power);
     }
 }

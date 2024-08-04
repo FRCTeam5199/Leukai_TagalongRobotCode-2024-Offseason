@@ -21,8 +21,7 @@ public class UserInterface {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
 
     private static final Field2d field2d = new Field2d();
-    private static Pose2d robotStartPose2d;
-    // private static List<Translation2d> robotTranslation2ds;
+    private static List<Translation2d> robotTranslation2ds;
 
     private UserInterface() {}
     public static UserInterface getInstance() {
@@ -31,15 +30,8 @@ public class UserInterface {
     }
 
     public void init() {
-        initalizeData();
         initalizeWidgets();
     }
-
-    private void initalizeData() {
-        // TODO: Find actual robot pose at start using vision or hard-coded values
-        robotStartPose2d = commandSwerveDrivetrain.getPose();
-    }
-
     private void initalizeWidgets() {
         SmartDashboard.putData("Auto Selector", Autos.getInstance(commandSwerveDrivetrain).getAutoChooser());
         SmartDashboard.putData("Field 2D", field2d);
@@ -62,6 +54,5 @@ public class UserInterface {
     //         robotTranslation2ds,
     //         commandSwerveDrivetrain.getPose(),
     //         new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
-        
     // }
 }

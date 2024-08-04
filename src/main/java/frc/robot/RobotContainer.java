@@ -74,6 +74,7 @@ public class RobotContainer {
         commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
 
         commandXboxController.x().onTrue(ScoreCommands.ampScore());
+        commandXboxController.y().onTrue(ScoreCommands.trapCommand());
 
         commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToAutoAim(60));
 //                .onFalse(ScoreCommands.moveShooterToStable());
@@ -83,7 +84,7 @@ public class RobotContainer {
         commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
         commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
 
-        commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
+        commandXboxController.povDown().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
             // Seed field relative pose that is alliance dependent
