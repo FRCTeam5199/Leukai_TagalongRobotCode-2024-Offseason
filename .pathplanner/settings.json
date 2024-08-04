@@ -3,7 +3,8 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "6 Piece Red Paths"
+    "6 Piece Red Paths",
+    "California Auto"
   ],
   "autoFolders": [],
   "defaultMaxVel": 3.0,
