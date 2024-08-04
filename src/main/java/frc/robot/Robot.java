@@ -6,12 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
-import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.EstimatedRobotPose;
-
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,7 +18,6 @@ import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
