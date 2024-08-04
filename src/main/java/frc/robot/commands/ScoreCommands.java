@@ -128,6 +128,24 @@ public class ScoreCommands {
         ).unless(() -> !indexerSubsystem.isNoteInIndexer());
     }
 
+    public static Command setShooterSpeeds(double rps) {
+        return new FunctionalCommand(
+                () -> {
+                    if (rps == 0) {
+                        shooterSubsystem.setFlywheelPowers(0);
+                    } else {
+                        shooterSubsystem.setShooterSpeeds(rps);
+                    }
+                },
+                () -> {
+
+                },
+                interrupted -> shooterSubsystem.setFlywheelPowers(0),
+                () -> false,
+                shooterSubsystem
+        );
+    }
+
     public static Command moveShooterToAutoAimAndAutoShoot(double targetSpeed) {
         return new SequentialCommandGroup(
                 new FunctionalCommand(

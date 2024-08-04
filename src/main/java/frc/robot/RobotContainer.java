@@ -39,7 +39,7 @@ public class RobotContainer {
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final NoteElevator noteElevator = NoteElevator.getInstance();
-    public final static  ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
+    public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -70,16 +70,15 @@ public class RobotContainer {
                 )
         );
 
-        
 
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
         commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
-        commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
+//        commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
 
         commandXboxController.x().onTrue(ClimberCommands.scoreTrap());
-        commandXboxController.povUp().onTrue(ClimberCommands.toggleElevatorTrap());
-        commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
+//        commandXboxController.povUp().onTrue(ClimberCommands.toggleElevatorTrap());
+//        commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
 
         commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToAutoAim(60));
 //                .onFalse(ScoreCommands.moveShooterToStable());
@@ -88,9 +87,13 @@ public class RobotContainer {
                 .onFalse(ScoreCommands.elevatorStable());
 //        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
 //        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
-        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
-        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+//        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+//        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
+        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10)).onFalse(ScoreCommands.setShooterSpeeds(0));
+        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30)).onFalse(ScoreCommands.setShooterSpeeds(0));
+        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50)).onFalse(ScoreCommands.setShooterSpeeds(0));
+        commandXboxController.povRight().onTrue(ScoreCommands.setShooterSpeeds(80)).onFalse(ScoreCommands.setShooterSpeeds(0));
 
         commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
@@ -122,7 +125,7 @@ public class RobotContainer {
         shooterSubsystem.onDisable();
         climberSubsystem.onDisable();
         noteElevator.onEnable();
-        
+
     }
 
     public void disabledPeriodic() {

@@ -5,28 +5,33 @@
     "id": 26,
     "canbus": "rio"
   },
-  "gearRatio": [[1, 1]],
+  "gearRatio": [
+    [
+      1,
+      1
+    ]
+  ],
   "feedforward": {
-    "s": 0.16,
-    "v": 0.14492753623188405797101449275362,
+    "s": 0.08,
+    "v": 0.47619047619047619047619047619048,
     "a": 0.0
   },
   "trapezoidalLimits": {
     "unit": "rotations",
-    "velocity": 96.66666,
+    "velocity": 90.0,
     "acceleration": 500.0
   },
   "defaultTolerances": {
     "unit": "rot",
-    "lowerTolerance": 20.0,
-    "upperTolerance": 20.0
+    "lowerTolerance": 0.0,
+    "upperTolerance": 0.0
   },
   "flywheelMotorControl": {
     "clockwisePositive": true,
     "brakeMode": false,
     "motor": {
       "slot0PIDConstants": {
-        "p": 0.25,
+        "p": 3.0,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,

@@ -8,7 +8,7 @@ public final class RobotAltModes {
     public static final double TEST_MODE_COEFFICIENT = 0.5;
 
     /* --- Debug Modes --- */
-    public static final String currentMicrosystem = "Shooter Pivot";
+    public static final String currentMicrosystem = "Flywheel Right";
     public static final boolean isVerboseMode = true;
     public static final boolean isReplayMode = false;
     public static final boolean isLoopTiming = false;
