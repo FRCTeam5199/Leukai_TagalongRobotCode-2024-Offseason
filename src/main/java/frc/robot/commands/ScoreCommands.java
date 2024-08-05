@@ -3,6 +3,7 @@ package frc.robot.commands;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
@@ -34,28 +35,26 @@ public class ScoreCommands {
 
     public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-            driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59, 0),
-            driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
-            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+                driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59, 180),
+                driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
     private static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> {
-                    driveRotationalPIDController = new PIDController(0.5, 0, 0);
-                },
+                () -> driveRotationalPIDController = new PIDController(0.2, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
-                                    .withVelocityX(commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withVelocityY(commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withRotationalRate(driveRotationalPIDController.calculate(commandSwerveDrivetrain.getPose().getRotation().getRadians(), Math.atan(
-                                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX())) + rotationalOffset)));
-                    System.out.println(commandSwerveDrivetrain.getPose().getRotation().getDegrees());
-                    System.out.println(Units.radiansToDegrees(Math.atan(
-                                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX())) + rotationalOffset));
+                                    .withVelocityX(-commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withVelocityY(-commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withRotationalRate(driveRotationalPIDController.calculate(
+                                            commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
+                                            Units.radiansToDegrees(Math.atan(
+                                                    (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
                 },
-                interrupted -> {},
+                interrupted -> {
+                },
                 () -> {
                     return false;
                 },
