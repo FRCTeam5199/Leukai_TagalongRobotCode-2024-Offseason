@@ -70,6 +70,7 @@ public class RobotContainer {
                 )
         );
 
+        
 
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
@@ -100,6 +101,7 @@ public class RobotContainer {
                             current.getX(),
                             current.getY(),
                             Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0F : 0)));
+
         }));
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
     }
@@ -120,7 +122,7 @@ public class RobotContainer {
         shooterSubsystem.onDisable();
         climberSubsystem.onDisable();
         noteElevator.onEnable();
-
+        
     }
 
     public void disabledPeriodic() {

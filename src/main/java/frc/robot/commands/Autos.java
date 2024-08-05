@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -21,7 +22,7 @@ public class Autos extends Command {
     public boolean part1Finished;
     public boolean part2Finished = false;
     public boolean alt1 = false;
-    
+
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
@@ -30,7 +31,7 @@ public class Autos extends Command {
             5.76072, .375, new ReplanningConfig(true, true));
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
-    private Map<String, Command> builtAutos = new HashMap<>();
+    private SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
     public Autos(CommandSwerveDrivetrain swerveDrive) {
         this.swerveDrive = swerveDrive;
@@ -43,13 +44,11 @@ public class Autos extends Command {
         NamedCommands.registerCommand("autoShoot", ScoreCommands.moveShooterToAutoAimAndAutoShoot(60));
     }
 
+  public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
+    if (autos == null) autos = new Autos(commandSwerveDriveTrain);
+    return autos;
+  }
 
-//    public void init() {
-//        initalizeCommandsMap();
-//        NamedCommands.registerCommands(commandsMap);
-//
-//        buildAutos();
-//    }
 
 //    private void initalizeCommandsMap() {
 //        commandsMap.put("intakeCommand", IntakeCommands.intake());
@@ -57,14 +56,6 @@ public class Autos extends Command {
 //        commandsMap.put("autoShootCommand", AutonCommands.autonAutoShoot(60));
 //        commandsMap.put("shootCommand", ScoreCommands.indexerFeedCommand(60));
 //    }
-
-    private void buildAutos() {
-        builtAutos.put("6 piece red", AutoBuilder.buildAuto("6 piece red"));
-    }
-
-    public Command getBuiltAuton(String builtAutonName) {
-        return builtAutos.get(builtAutonName);
-    }
 
     public Command sixPieceRed() {
         return AutoBuilder.buildAuto("6 piece red shoot");
@@ -95,7 +86,7 @@ public class Autos extends Command {
         return sixPieceRedPart1();
     }
 
-   
+
     public Command sixPieceRedwithAlt() {
         return new SequentialCommandGroup(
             sixPieceRedPart1(),
@@ -110,15 +101,15 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("4 piece source middle");
     }
 
-    public Command testCommandsRed() {
-        return AutoBuilder.buildAuto("Test commands red");
-    }
+  private void initalizeAutoChooser() {
+    autoChooser = AutoBuilder.buildAutoChooser();
+  }
 
-    public Command testCommandsBlue() {
-        return AutoBuilder.buildAuto("Test commands blue");
-    }
+  public SendableChooser<Command> getAutoChooser() {
+    return autoChooser;
+  }
 
-    public Command testAuton() {
-        return AutoBuilder.buildAuto("Test auton");
-    }
+  public Command getSelectedAuton() {
+    return autoChooser.getSelected();
+  }
 }
