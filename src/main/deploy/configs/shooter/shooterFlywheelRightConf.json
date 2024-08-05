@@ -27,7 +27,7 @@
     "upperTolerance": 5.0
   },
   "flywheelMotorControl": {
-    "clockwisePositive": false,
+    "clockwisePositive": true,
     "brakeMode": false,
     "motor": {
       "slot0PIDConstants": {
