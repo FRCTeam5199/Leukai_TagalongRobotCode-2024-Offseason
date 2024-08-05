@@ -47,6 +47,8 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     public TagalongFlywheel getFlywheel() {
         return shooterLeft;
     }
+//0.08, 0.16393442622950819672131147540984, 0.5
+    //0.08, 0.14367816091954022988505747126437, 0.5
 
     @Override
     public TagalongFlywheel getFlywheel(int i) {
@@ -164,7 +166,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     }
 
     public void setShooterSpeeds(double rps) {
-        shooterLeft.setFlywheelControl(rps, true);
+        shooterLeft.setFlywheelControl(rps / 2, true);
         shooterRight.setFlywheelControl(rps, true);
     }
 

@@ -185,8 +185,8 @@ public class ScoreCommands {
 
     public static Command moveShooterToSetpointAndSpeed(ShooterPivotAngles shooterPivotAngle, double targetSpeed) {
         return new PivotToCommand<>(shooterSubsystem, shooterPivotAngle, true).beforeStarting(() -> {
-            shooterSubsystem.getFlywheel(0).setFlywheelControl(targetSpeed, true);
-            shooterSubsystem.getFlywheel(1).setFlywheelControl(.5 * targetSpeed, true);
+            shooterSubsystem.getFlywheel(0).setFlywheelControl(.7 * targetSpeed, true);
+            shooterSubsystem.getFlywheel(1).setFlywheelControl(targetSpeed, true);
         });
     }
 

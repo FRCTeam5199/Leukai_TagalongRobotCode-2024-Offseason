@@ -12,13 +12,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.Autos;
-import frc.robot.commands.ClimberHeights;
-import frc.robot.commands.DriveCommands;
-import frc.robot.commands.IntakeCommands;
-import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.*;
 import frc.robot.commands.base.ClimberCommands;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
@@ -70,7 +67,6 @@ public class RobotContainer {
                 )
         );
 
-        
 
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
@@ -81,7 +77,8 @@ public class RobotContainer {
         commandXboxController.povUp().onTrue(ClimberCommands.toggleElevatorTrap());
         commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
 
-        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToAutoAim(60));
+        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
+                .onFalse(ScoreCommands.moveShooterToStable());
 //                .onFalse(ScoreCommands.moveShooterToStable());
         commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
@@ -91,6 +88,10 @@ public class RobotContainer {
         commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
         commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
+//        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10));
+//        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30));
+//        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50));
+//        commandXboxController.povRight().onTrue(ScoreCommands.setShooterSpeeds(90));
         commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
@@ -122,7 +123,7 @@ public class RobotContainer {
         shooterSubsystem.onDisable();
         climberSubsystem.onDisable();
         noteElevator.onEnable();
-        
+
     }
 
     public void disabledPeriodic() {

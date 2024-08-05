@@ -2,7 +2,7 @@
   "name": "Flywheel Right",
   "flywheelMotor": {
     "type": "kraken",
-    "id": 27,
+    "id": 26,
     "canbus": "rio"
   },
   "gearRatio": [
@@ -12,8 +12,8 @@
     ]
   ],
   "feedforward": {
-    "s": 0.8,
-    "v": 0.63291139240506329113924050632911,
+    "s": 0.08,
+    "v": 0.16393442622950819672131147540984,
     "a": 0.0
   },
   "trapezoidalLimits": {
@@ -23,15 +23,15 @@
   },
   "defaultTolerances": {
     "unit": "rot",
-    "lowerTolerance": 0.0,
-    "upperTolerance": 0.0
+    "lowerTolerance": 5.0,
+    "upperTolerance": 5.0
   },
   "flywheelMotorControl": {
     "clockwisePositive": false,
     "brakeMode": false,
     "motor": {
       "slot0PIDConstants": {
-        "p": 3.0,
+        "p": 0.75,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,
@@ -53,10 +53,10 @@
     },
     "motorCurrentLimits": {
       "statorEnableLimit": true,
-      "statorPeakLimit": 120,
+      "statorPeakLimit": 500,
       "supplyEnableLimit": true,
-      "supplyPeakLimit": 120,
-      "supplyContinuousLimit": 80,
+      "supplyPeakLimit": 500,
+      "supplyContinuousLimit": 500,
       "peakDuration": 0.5
     }
   }
