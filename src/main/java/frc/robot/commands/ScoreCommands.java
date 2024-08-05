@@ -2,6 +2,7 @@ package frc.robot.commands;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
@@ -29,35 +30,32 @@ public class ScoreCommands {
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    private static TrapezoidProfile driveRotationalTrapezoidProfile;
+    public static PIDController driveRotationalPIDController;
 
     public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59),
-                turnDriveToSpeaker(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48),
-                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+            driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59, 0),
+            driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
+            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
-    private static Command turnDriveToSpeaker(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double locX, double locY) {
+    private static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
                 () -> {
-                    driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(180, 360));
+                    driveRotationalPIDController = new PIDController(0.5, 0, 0);
                 },
                 () -> {
-                    State currentState = new State(commandSwerveDrivetrain.getPose().getRotation().getDegrees(),
-                            commandSwerveDrivetrain.getPigeon2().getRate());
-                    State goalState = new State(Units.radiansToDegrees(
-                            Math.atan(
-                                    (locY - commandSwerveDrivetrain.getPose().getY()) /
-                                            (locX - commandSwerveDrivetrain.getPose().getX()))), 0);
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
                                     .withVelocityX(commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
                                     .withVelocityY(commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withRotationalRate(driveRotationalTrapezoidProfile.calculate(0.02, currentState, goalState).velocity));
+                                    .withRotationalRate(driveRotationalPIDController.calculate(commandSwerveDrivetrain.getPose().getRotation().getRadians(), Math.atan(
+                                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX())) + rotationalOffset)));
+                    System.out.println(commandSwerveDrivetrain.getPose().getRotation().getDegrees());
+                    System.out.println(Units.radiansToDegrees(Math.atan(
+                                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX())) + rotationalOffset));
                 },
-                interrupted -> {
-                },
+                interrupted -> {},
                 () -> {
                     return false;
                 },
