@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 9.43883966059747,
-      "y": 7.420502812535874
+      "x": 2,
+      "y": 2
     },
-    "rotation": 178.87669728592448
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,12 +14,12 @@
         {
           "type": "path",
           "data": {
-            "pathName": " note 3 to note 5 "
+            "pathName": null
           }
         }
       ]
     }
   },
-  "folder": "6 Piece Red",
+  "folder": "6 Piece Blue",
   "choreoAuto": false
 }

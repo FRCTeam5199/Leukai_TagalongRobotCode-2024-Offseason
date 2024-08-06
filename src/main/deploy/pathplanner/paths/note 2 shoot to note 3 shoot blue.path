@@ -3,25 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 13.5,
-        "y": 5.548
+        "x": 1.9793840773921174,
+        "y": 5.531293435066112
       },
       "prevControl": null,
       "nextControl": {
-        "x": 13.840502746248672,
-        "y": 5.794224637085098
+        "x": 2.9339256767312234,
+        "y": 5.531293435066112
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.5,
-        "y": 7.050451491175817
+        "x": 2.943465151461739,
+        "y": 5.531293435066112
       },
       "prevControl": {
-        "x": 15.847362864160004,
-        "y": 7.0580231016927035
+        "x": 1.9597148754588898,
+        "y": 5.531293435066112
+      },
+      "nextControl": {
+        "x": 3.333114566550912,
+        "y": 5.531293435066112
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.9793840773921174,
+        "y": 5.531293435066112
+      },
+      "prevControl": {
+        "x": 2.4516864217595584,
+        "y": 5.550769820400852
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,25 +46,7 @@
   ],
   "rotationTargets": [],
   "constraintZones": [],
-  "eventMarkers": [
-    {
-      "name": "intake",
-      "waypointRelativePos": 0.0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 5.5,
     "maxAcceleration": 5.5,
@@ -57,13 +55,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 170.41036004340214,
+    "rotation": 0.0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "6 Piece Red Paths",
+  "folder": "6 Piece blue paths",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 1.0416266760099453,
     "velocity": 0
   },
   "useDefaultConstraints": false
