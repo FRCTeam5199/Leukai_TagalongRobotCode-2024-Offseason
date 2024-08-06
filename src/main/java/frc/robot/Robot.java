@@ -6,12 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
-import edu.wpi.first.math.geometry.Pose3d;
 import org.photonvision.EstimatedRobotPose;
-
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.hardware.TalonFX;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -23,38 +18,29 @@ import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Robot extends TimedRobot {
     private Command m_autonomousCommand;
-    private CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
-    private ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
+
     private RobotContainer m_robotContainer;
+    private final UserInterface userInterface = UserInterface.getInstance();
+
+    private final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
+    
+    private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
 
 
     @Override
     public void robotInit() {
 
         m_robotContainer = new RobotContainer();
-
+        commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
+        // userInterface.init();
     }
 
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
-
-        if (estimatePose1.isPresent()) {
-
-            EstimatedRobotPose robotPose = estimatePose1.get();
-
-            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
-
-            commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
-        }
     }
 
     @Override
@@ -88,6 +74,19 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousPeriodic() {
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
+
+        if (estimatePose1.isPresent()) {
+
+            EstimatedRobotPose robotPose = estimatePose1.get();
+
+            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+
+            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
+
+            commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
+        }
     }
 
     @Override
@@ -99,10 +98,10 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        
+
         m_robotContainer.onEnable();
-                
-        
+
+
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsTeleop);
 
 
@@ -112,6 +111,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopPeriodic() {
+        Optional<EstimatedRobotPose> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
+
+        if (estimatePose1.isPresent()) {
+
+            EstimatedRobotPose robotPose = estimatePose1.get();
+
+            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+
+            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), commandSwerveDrivetrain.getPose().getRotation());
+
+            commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
+        }
     }
 
     @Override

@@ -1,4 +1,4 @@
-package frc.robot.commands;
+ht64qkorfdn gi[orwtj pb]oe5 oilpth;nmeto;l.package frc.robot.commands;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,6 +9,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -30,41 +31,45 @@ public class Autos extends Command {
             5.76072, .375, new ReplanningConfig(true, false));
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
-    private Map<String, Command> builtAutos = new HashMap<>();
+    private SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
-    public Autos(CommandSwerveDrivetrain swerveDrive) {
-        this.swerveDrive = swerveDrive;
-        AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(),
-                swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds,
-                (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)),
-                pathFollowerConfig, () -> false, swerveDrive);
+  private Autos(CommandSwerveDrivetrain swerveDrive) {
+    this.swerveDrive = swerveDrive;
+  }
 
-        NamedCommands.registerCommand("intake", IntakeCommands.intake());
-        NamedCommands.registerCommand("autoShoot", ScoreCommands.moveShooterToAutoAimAndAutoShoot(60));
-    }
+  public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
+    if (autos == null) autos = new Autos(commandSwerveDriveTrain);
+    return autos;
+  }
+ 
 
+  public void init() {
+    configureAutoBuilder();
+    initalizeCommandsMap();
+    NamedCommands.registerCommands(commandsMap);
+    
+    initalizeAutoChooser();
+  }
 
-//    public void init() {
-//        initalizeCommandsMap();
-//        NamedCommands.registerCommands(commandsMap);
-//
-//        buildAutos();
-//    }
+  private void configureAutoBuilder() {
+    AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(), swerveDrive::seedFieldRelative, swerveDrive::getCurrentRobotChassisSpeeds, (speeds) -> swerveDrive.setControl(autonDrive.withSpeeds(speeds)), pathFollowerConfig, () -> false, swerveDrive);
+    AutoBuilder.buildAutoChooser();
+  }
 
-//    private void initalizeCommandsMap() {
-//        commandsMap.put("intakeCommand", IntakeCommands.intake());
-//        commandsMap.put("prepShooterCommand", ScoreCommands.moveShooterToAutoAim(60));
-//        commandsMap.put("autoShootCommand", AutonCommands.autonAutoShoot(60));
-//        commandsMap.put("shootCommand", ScoreCommands.indexerFeedCommand(60));
-//    }
+   private void initalizeCommandsMap() {
+       commandsMap.put("intakeCommand", IntakeCommands.intake());
+       commandsMap.put("prepShooterCommand", ScoreCommands.moveShooterToAutoAim(60));
+       commandsMap.put("shootCommand", ScoreCommands.indexerFeedCommand(60));
+       commandsMap.put("autoShoot", ScoreCommands.moveShooterToAutoAimAndAutoShoot(60));
+   }
 
-    private void buildAutos() {
-        builtAutos.put("6 piece red", AutoBuilder.buildAuto("6 piece red"));
-    }
+  private void initalizeAutoChooser() {
+    autoChooser = AutoBuilder.buildAutoChooser();
+  }
 
-    public Command getBuiltAuton(String builtAutonName) {
-        return builtAutos.get(builtAutonName);
-    }
+  public SendableChooser<Command> getAutoChooser() {
+    return autoChooser;
+  }
 
     public Command sixPieceRed() {
         return AutoBuilder.buildAuto("6 piece red shoot");

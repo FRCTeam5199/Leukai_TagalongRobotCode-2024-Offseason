@@ -40,7 +40,7 @@ public class RobotContainer {
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final NoteElevator noteElevator = NoteElevator.getInstance();
     public final static  ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
-    public static final Autos autos = new Autos(commandSwerveDrivetrain);
+    public static final Autos autos = Autos.getInstance(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     // The robot's subsystems and commands are defined here...
@@ -70,8 +70,6 @@ public class RobotContainer {
                 )
         );
 
-        
-
         commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
         commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
@@ -91,7 +89,6 @@ public class RobotContainer {
         commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
         commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
-
         commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
@@ -102,12 +99,13 @@ public class RobotContainer {
                             current.getX(),
                             current.getY(),
                             Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0F : 0)));
+
         }));
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
     }
 
     public Command getAutonomousCommand() {
-        return autos.sixPieceRedwithAlt();
+        return autos.getSelectedAuton();
     }
 
     public void onEnable() {
@@ -145,4 +143,6 @@ public class RobotContainer {
         climberSubsystem.simulationPeriodic();
         noteElevator.simulationPeriodic();
     }
+
+    
 }
