@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.UserInterface;
 import frc.robot.parsers.ShooterParser;
@@ -8,6 +9,8 @@ import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
+
+import java.sql.SQLOutput;
 
 public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
     private static ShooterSubsystem shooterSubsystem;
@@ -48,14 +51,10 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     public TagalongFlywheel getFlywheel() {
         return shooterLeft;
     }
-//0.08, 0.16393442622950819672131147540984, 0.5
-    //0.08, 0.14367816091954022988505747126437, 0.5
 
     @Override
     public TagalongFlywheel getFlywheel(int i) {
         switch (i) {
-            case 0:
-                return shooterLeft;
             case 1:
                 return shooterRight;
             default:
@@ -101,9 +100,9 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
 
         updateShuffleboard();
         // System.out.println("Shooter Left: " + shooterLeft.getFlywheelVelocity());
-        // System.out.println("Shooter Right: " + shooterRight.getFlywheelVelocity());
+//        System.out.println("Shooter RIGHT: " + shooterRight.getFlywheelVelocity());
         // System.out.println(UserInterface.getInstance().getShooterPositionComponentData());
-        arm.setPivotProfile(UserInterface.getInstance().getShooterPositionComponentData());
+//        System.out.println(Rotation2d.fromRotations(arm.getPivotPosition()).getDegrees());
     }
 
     @Override
@@ -148,7 +147,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     }
 
     public void moveShooterToSetpointAndSpeed(double setpoint, double targetSpeed) {
-        arm.setPivotProfile(setpoint);
+        arm.setPivotProfile(Rotation2d.fromDegrees(setpoint).getDegrees());
 
         if (targetSpeed == 0) {
             shooterSubsystem.setFlywheelPowers(0);

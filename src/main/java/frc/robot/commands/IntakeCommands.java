@@ -17,7 +17,7 @@ public class IntakeCommands {
     }
 
     public static Command setShooterPivotToSetpoint(ShooterPivotAngles angle) {
-        return new PivotToCommand<>(shooterSubsystem, angle, true);
+        return new PivotToCommand<>(shooterSubsystem, angle.getRotations(), true);
     }
 
     private static Command spinRollersForIntake() {

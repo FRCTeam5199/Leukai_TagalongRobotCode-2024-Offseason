@@ -20,7 +20,7 @@ public class ClimberCommands {
     public static Command moveClimbersToSetpoint(ClimberHeights leftClimberHeight, ClimberHeights rightClimberHeight) {
         return new FunctionalCommand(
                 () -> climberSubsystem.setElevatorProfiles(leftClimberHeight, rightClimberHeight),
-                () -> climberSubsystem.followLastElevatorProfiles(), 
+                () -> climberSubsystem.followLastElevatorProfiles(),
                 interrupted -> climberSubsystem.setHoldElevatorPositions(),
                 () -> climberSubsystem.isElevatorProfilesFinished(),
                 climberSubsystem);
@@ -28,7 +28,7 @@ public class ClimberCommands {
 
     public static Command climberAscendCommand(ClimberHeights leftClimberHeight, ClimberHeights rightClimberHeight) {
         return new SequentialCommandGroup(
-                new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MAX, true),
+                new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true),
                 moveClimbersToSetpoint(leftClimberHeight, rightClimberHeight)
         );
     }
@@ -53,19 +53,19 @@ public class ClimberCommands {
 
     public static Command toggleElevatorTrap() {
 //        if (elevatorSubsystem.getElevatorSetpoint() < 0.1)
-            return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.TRAP, true);
+        return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.TRAP, true);
 //        else
 //            return new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE, true);
     }
 
     public static Command scoreTrap() {
         return new FunctionalCommand(
-                        () -> indexerSubsystem.setRollerSpeeds(0, 30, 0),
-                        () -> {
-                        },
-                        interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
-                        () -> !indexerSubsystem.isNoteInAmpTrap(),
-                        indexerSubsystem
-                );
+                () -> indexerSubsystem.setRollerSpeeds(0, 30, 0),
+                () -> {
+                },
+                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                () -> !indexerSubsystem.isNoteInAmpTrap(),
+                indexerSubsystem
+        );
     }
 }

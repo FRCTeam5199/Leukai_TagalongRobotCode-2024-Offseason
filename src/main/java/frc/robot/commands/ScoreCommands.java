@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.UserInterface;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
@@ -32,6 +33,7 @@ public class ScoreCommands {
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static PIDController driveRotationalPIDController;
+    public static double armAutoAimAngle;
 
     public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
@@ -74,7 +76,7 @@ public class ScoreCommands {
     }
 
     public static Command moveShooterToStable() {
-        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.STABLE, true).beforeStarting(() -> {
+        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true).beforeStarting(() -> {
             shooterSubsystem.getFlywheel(0).setFlywheelPower(0);
             shooterSubsystem.getFlywheel(1).setFlywheelPower(0);
             indexerSubsystem.getRoller(1).setRollerPower(0);
@@ -101,28 +103,34 @@ public class ScoreCommands {
     }
 
     public static Command moveShooterToAutoAim(double targetSpeed) {
-        return new FunctionalCommand(
-                () -> {
-                },
-                () -> {
-                    double distance;
-                    double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
-                    if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
-                        distance = getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
-                    else
-                        distance = getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+//        return new FunctionalCommand(
+//                () -> {
+//                },
+//                () -> {
+//                    double distance;
+//                    double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+//                    if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+//                        distance = getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+//                    else
+//                        distance = getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+//
+//                    double armAngle = LookUpTable.findValue(distance);
+//                    System.out.println("Distance: " + distance);
+//                    System.out.println("Arm Angle: " + armAngle);
+//                    shooterSubsystem.moveShooterToSetpointAndSpeed(armAngle, targetSpeed);
+//                    shooterSubsystem.followLastPivotProfile();
+//                },
+//                interrupted -> {
+//                    shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
+//                    shooterSubsystem.getPivot().setHoldPivotPosition(true);
+//                },
+//                () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+//                shooterSubsystem
+//        ).unless(() -> !indexerSubsystem.isNoteInIndexer());
 
-                    double armAngle = LookUpTable.findValue(distance);
-                    shooterSubsystem.moveShooterToSetpointAndSpeed(armAngle, targetSpeed);
-                    shooterSubsystem.followLastPivotProfile();
-                },
-                interrupted -> {
-                    shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
-                    shooterSubsystem.getPivot().setHoldPivotPosition(true);
-                },
-                () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
-                shooterSubsystem
-        ).unless(() -> !indexerSubsystem.isNoteInIndexer());
+
+        return new PivotToCommand<>(shooterSubsystem, Rotation2d.fromDegrees(armAutoAimAngle).getRotations(), true)
+                .beforeStarting(setShooterSpeeds(targetSpeed));
     }
 
     public static Command setShooterSpeeds(double rps) {
@@ -184,8 +192,15 @@ public class ScoreCommands {
     }
 
     public static Command moveShooterToSetpointAndSpeed(ShooterPivotAngles shooterPivotAngle, double targetSpeed) {
-        return new PivotToCommand<>(shooterSubsystem, shooterPivotAngle, true).beforeStarting(() -> {
-            shooterSubsystem.getFlywheel(0).setFlywheelControl(.7 * targetSpeed, true);
+        return new PivotToCommand<>(shooterSubsystem, shooterPivotAngle.getRotations(), true).beforeStarting(() -> {
+            shooterSubsystem.getFlywheel(0).setFlywheelControl(.57 * targetSpeed, true);
+            shooterSubsystem.getFlywheel(1).setFlywheelControl(targetSpeed, true);
+        });
+    }
+
+    public static Command generateLookUpTable(double targetSpeed) {
+        return new PivotToCommand<>(shooterSubsystem, Rotation2d.fromDegrees(UserInterface.getInstance().getShooterPositionComponentData()).getRotations(), true).beforeStarting(() -> {
+            shooterSubsystem.getFlywheel(0).setFlywheelControl(.57 * targetSpeed, true);
             shooterSubsystem.getFlywheel(1).setFlywheelControl(targetSpeed, true);
         });
     }

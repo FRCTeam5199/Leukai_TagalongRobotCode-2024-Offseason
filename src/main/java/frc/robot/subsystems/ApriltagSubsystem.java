@@ -36,6 +36,7 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+//        System.out.println("Distance from Red Speaker: " + getDistanceFromRedSpeaker());
     }
 
     public double getDistanceFromRedSpeaker() {
@@ -44,7 +45,7 @@ public class ApriltagSubsystem extends SubsystemBase {
     }
 
     public void getLatestResult() {
-        lastResult =  camera.getLatestResult();
+        lastResult = camera.getLatestResult();
 
     }
 
@@ -52,21 +53,21 @@ public class ApriltagSubsystem extends SubsystemBase {
         photonEstimator.setReferencePose(drivetrain.getPose());
 
         getLatestResult();
-    
+
 
         // filtering stages
         // Ensure the result is
         if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
             return Optional.empty();
-        } else if(lastResult.getTargets().size() < 2){
+        } else if (lastResult.getTargets().size() < 2) {
             return Optional.empty();
-        }else{
+        } else {
             lastEstTimestamp = lastResult.getTimestampSeconds();
             return photonEstimator.update(lastResult);
         }
     }
 
-    public double getTimestamp(){
+    public double getTimestamp() {
         return lastResult.getTimestampSeconds();
     }
 

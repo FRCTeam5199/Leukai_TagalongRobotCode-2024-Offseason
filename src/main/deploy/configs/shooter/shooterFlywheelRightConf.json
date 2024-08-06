@@ -31,7 +31,7 @@
     "brakeMode": false,
     "motor": {
       "slot0PIDConstants": {
-        "p": 0.75,
+        "p": 0.7,
         "i": 0.0,
         "d": 0.0,
         "s": 0.0,

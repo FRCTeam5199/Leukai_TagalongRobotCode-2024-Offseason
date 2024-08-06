@@ -20,23 +20,30 @@ import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class UserInterface {
-    private static UserInterface userInterface;
-
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
-
     private static final Field2d field2d = new Field2d();
+    private static UserInterface userInterface;
     private static Pose2d robotStartPose2d;
 
     // Shuffleboard
     private static ShuffleboardTab shuffleboardTestTab = Shuffleboard.getTab("Test");
     private static GenericEntry shuffleboardShooterPositionComponent;
-    
+
     // private static List<Translation2d> robotTranslation2ds;
 
-    private UserInterface() {}
+    private UserInterface() {
+    }
+
     public static UserInterface getInstance() {
         if (userInterface == null) userInterface = new UserInterface();
         return userInterface;
+    }
+
+    public float getShooterPositionComponentData() {
+        if (shuffleboardShooterPositionComponent != null) {
+            return shuffleboardShooterPositionComponent.getFloat(0);
+        }
+        return 0;
     }
 
     public void init() {
@@ -54,9 +61,9 @@ public class UserInterface {
         SmartDashboard.putData("Field 2D", field2d);
 
         shuffleboardShooterPositionComponent = shuffleboardTestTab.add("Shooter Position", 0)
-            .withWidget(BuiltInWidgets.kTextView)
-            .withPosition(0, 0)
-            .withSize(1, 1).getEntry();
+                .withWidget(BuiltInWidgets.kTextView)
+                .withPosition(0, 0)
+                .withSize(1, 1).getEntry();
     }
 
     public void update() {
@@ -68,13 +75,6 @@ public class UserInterface {
         // field2d.getObject("traj").setTrajectory(generateRobotTrajectory());
     }
 
-    public float getShooterPositionComponentData() {
-        if (shuffleboardShooterPositionComponent != null) {
-            return shuffleboardShooterPositionComponent.getFloat(0);
-        }
-        return 0;
-    }
-
     // private Trajectory generateRobotTrajectory() {
     //     if (robotTranslation2ds.size() > 30) robotTranslation2ds.remove(0);
     //     robotTranslation2ds.add(commandSwerveDrivetrain.getPose().getTranslation());
@@ -83,6 +83,6 @@ public class UserInterface {
     //         robotTranslation2ds,
     //         commandSwerveDrivetrain.getPose(),
     //         new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
-        
+
     // }
 }

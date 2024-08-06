@@ -13,10 +13,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
 import frc.robot.commands.base.ClimberCommands;
+import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -24,6 +26,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.LookUpTable;
 
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
@@ -52,6 +55,16 @@ public class RobotContainer {
         configureBindings();
     }
 
+    public static void getAngle() {
+        double distance;
+        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+        else
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+        ScoreCommands.armAutoAimAngle = LookUpTable.findValue(distance);
+    }
+
     private void configureBindings() {
         commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 commandSwerveDrivetrain.applyRequest(
@@ -77,22 +90,32 @@ public class RobotContainer {
         commandXboxController.povUp().onTrue(ClimberCommands.toggleElevatorTrap());
         commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
 
-        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
-                .onFalse(ScoreCommands.moveShooterToStable());
+//        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
+//                .onFalse(ScoreCommands.moveShooterToStable());
+
+        commandXboxController.leftTrigger().whileTrue(new ParallelCommandGroup(
+                ScoreCommands.driveAutoTurn(commandXboxController,
+                        fieldCentricSwerveDrive),
+                new SequentialCommandGroup(
+                        new InstantCommand(RobotContainer::getAngle),
+                        ScoreCommands.moveShooterToAutoAim(60)
+                )
+        )).onFalse(ScoreCommands.moveShooterToStable());
+
 //                .onFalse(ScoreCommands.moveShooterToStable());
         commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
                 .onFalse(ScoreCommands.elevatorStable());
 //        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
 //        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
-        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
-        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+//        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
+//        ).onFalse(ClimberCommands.setClimberPowers(0));
+//        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
 //        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10));
 //        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30));
 //        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50));
 //        commandXboxController.povRight().onTrue(ScoreCommands.setShooterSpeeds(90));
-        commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
             // Seed field relative pose that is alliance dependent
