@@ -19,7 +19,7 @@ import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.AmpTrap;
+import frc.robot.subsystems.AmpTrapSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -29,7 +29,7 @@ public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    private static final AmpTrap ampTrapSubsystem = AmpTrap.getInstance();
+    private static final AmpTrapSubsystem ampTrapSubsystem = AmpTrapSubsystem.getInstance();
     
     private static PIDController driveRotationalPIDController;
 

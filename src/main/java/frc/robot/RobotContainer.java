@@ -15,11 +15,14 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.*;
+import frc.robot.commands.Autos;
+import frc.robot.commands.ClimberHeights;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ScoreCommands;
 import frc.robot.commands.base.ClimberCommands;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.AmpTrap;
+import frc.robot.subsystems.AmpTrapSubsystem;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -35,8 +38,8 @@ public class RobotContainer {
     public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
-    public static final AmpTrap ampTrap = AmpTrap.getInstance();
-    public final static  ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
+    public static final AmpTrapSubsystem ampTrapSubsystem = AmpTrapSubsystem.getInstance();
+    public final static  ObjectDetectionSubsystem objectDetectionSubsystem = ObjectDetectionSubsystem.getInstance();
     public static final Autos autos = Autos.getInstance(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
@@ -130,14 +133,14 @@ public class RobotContainer {
         indexerSubsystem.onEnable();
         shooterSubsystem.onEnable();
         climberSubsystem.onEnable();
-        ampTrap.onEnable();
+        ampTrapSubsystem.onEnable();
     }
 
     public void onDisable() {
         indexerSubsystem.onDisable();
         shooterSubsystem.onDisable();
         climberSubsystem.onDisable();
-        ampTrap.onEnable();
+        ampTrapSubsystem.onEnable();
         
     }
 
@@ -145,20 +148,20 @@ public class RobotContainer {
         indexerSubsystem.disabledPeriodic();
         shooterSubsystem.disabledPeriodic();
         climberSubsystem.disabledPeriodic();
-        ampTrap.disabledPeriodic();
+        ampTrapSubsystem.disabledPeriodic();
     }
 
     public void simulationInit() {
         indexerSubsystem.simulationInit();
         shooterSubsystem.simulationInit();
         climberSubsystem.simulationInit();
-        ampTrap.simulationInit();
+        ampTrapSubsystem.simulationInit();
     }
 
     public void simulationPeriodic() {
         indexerSubsystem.simulationPeriodic();
         shooterSubsystem.simulationPeriodic();
         climberSubsystem.simulationPeriodic();
-        ampTrap.simulationPeriodic();
+        ampTrapSubsystem.simulationPeriodic();
     }
 }

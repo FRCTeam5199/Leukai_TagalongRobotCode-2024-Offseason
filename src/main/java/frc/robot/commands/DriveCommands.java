@@ -16,7 +16,7 @@ public class DriveCommands {
 
 
     public static Command goToNote(){
-        return RobotContainer.commandSwerveDrivetrain.applyRequest(()-> {return new FieldCentric().withVelocityX(0).withVelocityY(notePid.calculate(RobotContainer.objectDetection.getNotePoseY(), -14)).withRotationalRate(angController.calculate(RobotContainer.objectDetection.getNotePoseX(), 0.1));});
+        return RobotContainer.commandSwerveDrivetrain.applyRequest(()-> {return new FieldCentric().withVelocityX(0).withVelocityY(notePid.calculate(RobotContainer.objectDetectionSubsystem.getNotePoseY(), -14)).withRotationalRate(angController.calculate(RobotContainer.objectDetectionSubsystem.getNotePoseX(), 0.1));});
     }
 
 }

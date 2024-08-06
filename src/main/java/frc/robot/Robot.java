@@ -29,10 +29,8 @@ public class Robot extends TimedRobot {
     
     private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
 
-
     @Override
     public void robotInit() {
-
         m_robotContainer = new RobotContainer();
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
         userInterface.init();

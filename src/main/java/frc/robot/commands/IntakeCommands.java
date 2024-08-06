@@ -1,19 +1,22 @@
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
+import frc.robot.subsystems.AmpTrapSubsystem;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class IntakeCommands {
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    private static final AmpTrap elevatorSubsystem = AmpTrap.getInstance();
+    private static final AmpTrapSubsystem ampTrapSubsystem = AmpTrapSubsystem.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
 
     private static Command setElevatorToStable() {
-        return new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 0);
+        return new ElevatorRaiseToCommand<>(ampTrapSubsystem, () -> 0);
     }
 
     public static Command setShooterPivotToSetpoint(ShooterPivotAngles angle) {

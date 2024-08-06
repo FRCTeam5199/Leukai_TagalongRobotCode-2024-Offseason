@@ -47,6 +47,10 @@ public class TagalongDualMotorElevator extends TagalongElevator {
     _elevatorFollowerMotor.setControl(new StrictFollower(_elevatorMotor.getDeviceID()));
   }
 
+  public double getElevatorPosition() {
+    return _isMinorSystemDisabled ? 0.0 : _elevatorMotor.getPosition().getValueAsDouble();
+  }
+
   @Override
   public boolean motorResetConfig() {
     if (_elevatorFollowerMotor.hasResetOccurred()) {

@@ -1,9 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
-import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.parsers.AmpTrapParser;
-import frc.robot.parsers.RollerParser;
 import frc.robot.parsers.json.AmpTrapConfJson;
 import frc.robot.subsystems.minor.TagalongDualMotorElevator;
 import frc.robot.subsystems.minor.TagalongElevator;
@@ -12,7 +10,8 @@ import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.RollerAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
-public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment, RollerAugment {
+public class AmpTrapSubsystem extends TagalongSubsystemBase implements ElevatorAugment, RollerAugment {
+    private static AmpTrapSubsystem ampTrapSubsystem;
     public static final class ElevatorConstants {
         public static final int ELEVATOR_ID = 0;
 
@@ -39,15 +38,19 @@ public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment, R
   // private final ClimberIOTalonFX _io;
   // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
 
-    private static AmpTrap elevatorSubsystem;
 
-    private AmpTrap(String filePath) {
+    private AmpTrapSubsystem(String filePath) {
         this(filePath == null ? null : new AmpTrapParser(Filesystem.getDeployDirectory(), filePath));
     }
 
     @Override
     public TagalongDualMotorElevator getElevator() {
       return elevator;
+    }
+    
+    @Override
+    public TagalongElevator getElevator(int i) {
+        return elevator;
     }
 
     @Override
@@ -60,7 +63,7 @@ public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment, R
       return rollers;
     }
 
-    public AmpTrap(AmpTrapParser parser) {
+    public AmpTrapSubsystem(AmpTrapParser parser) {
         super(parser);
         ampTrapParser = parser;
 
@@ -89,22 +92,17 @@ public class AmpTrap extends TagalongSubsystemBase implements ElevatorAugment, R
         configShuffleboard();
     }
 
-    public static AmpTrap getInstance() {
-        if (elevatorSubsystem == null) {
-            elevatorSubsystem = new AmpTrap("configs/ampTrap/ampTrapConf.json");
+    public static AmpTrapSubsystem getInstance() {
+        if (ampTrapSubsystem == null) {
+            ampTrapSubsystem = new AmpTrapSubsystem("configs/ampTrap/ampTrapConf.json");
         }
-        return elevatorSubsystem;
+        return ampTrapSubsystem;
     }
 
     /* -------- Logging: utilities and configs -------- */
     // private final ClimberIOTalonFX _io;
     // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
 
-
-    @Override
-    public TagalongElevator getElevator(int i) {
-        return elevator;
-    }
 
     public boolean isReadyToElevate() {
         return _isSubsystemDisabled ? true : false;

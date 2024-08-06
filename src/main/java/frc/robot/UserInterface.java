@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autos;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.AmpTrapSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -16,6 +17,7 @@ public class UserInterface {
     
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    private static final AmpTrapSubsystem ampTrapSubsystem = AmpTrapSubsystem.getInstance();
 
     private static final Field2d field2d = new Field2d();
 
@@ -39,10 +41,11 @@ public class UserInterface {
     }
 
     public void init() {
+        // initalizeData();
         initalizeWidgets();
     }
 
-    private void initalizeData() {}
+    // private void initalizeData() {}
 
     private void initalizeWidgets() {
         SmartDashboard.putData("Auto Selector", Autos.getInstance(commandSwerveDrivetrain).getAutoChooser());
@@ -53,7 +56,7 @@ public class UserInterface {
             .withPosition(0, 0)
             .withSize(1, 1).getEntry();
 
-            
+
         shuffleboardShooterArmPositionComponent = shuffleboardTestTab.add("Shooter Arm Position", 0)
             .withWidget(BuiltInWidgets.kTextView)
             .withPosition(1, 0)
@@ -84,6 +87,7 @@ public class UserInterface {
             shuffleboardShooterArmPositionComponent.setDouble(shooterSubsystem.getPivot().getPivotPosition());
             shuffleboardShooterLeftFlywheelVelocityComponent.setDouble(shooterSubsystem.getFlywheel(0).getFlywheelVelocity());
             shuffleboardShooterRightFlywheelVelocityComponent.setDouble(shooterSubsystem.getFlywheel(1).getFlywheelVelocity());
+            shuffleboardAmpTrapElevatorPositionComponent.setDouble(ampTrapSubsystem.getElevator().getElevatorPosition());
         }
     }
 }
