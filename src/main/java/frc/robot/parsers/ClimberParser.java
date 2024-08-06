@@ -15,9 +15,9 @@ public class ClimberParser {
 
   public ClimberParser(File dir, String filename) {
     try {
-      File notevatorFile = new File(dir, filename);
-      FileUtils.checkForFile(notevatorFile);
-      climberConf = new ObjectMapper().readValue(notevatorFile, ClimberConfJson.class);
+      File ampTrapFile = new File(dir, filename);
+      FileUtils.checkForFile(ampTrapFile);
+      climberConf = new ObjectMapper().readValue(ampTrapFile, ClimberConfJson.class);
 
       elevatorRightParser = new ElevatorParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/climber"),
