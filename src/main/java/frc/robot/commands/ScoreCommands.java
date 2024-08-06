@@ -4,9 +4,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -34,7 +31,9 @@ public class ScoreCommands {
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static final AmpTrap ampTrapSubsystem = AmpTrap.getInstance();
     
-    private static final TrapezoidProfile driveRotationalTrapezoidProfile = new TrapezoidProfile(new Constraints(180, 360));
+    private static PIDController driveRotationalPIDController;
+
+    public static double armAutoAimAngle = 0;
 
     public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(

@@ -1,14 +1,5 @@
 package frc.robot;
 
-import java.util.List;
-
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.trajectory.Trajectory;
-import edu.wpi.first.math.trajectory.TrajectoryConfig;
-import edu.wpi.first.math.trajectory.TrajectoryGenerator;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -18,22 +9,19 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autos;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ShooterSubsystem;
 
 public class UserInterface {
-    private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
-    private static final Field2d field2d = new Field2d();
-<<<<<<< HEAD
     private static UserInterface userInterface;
-    private static Pose2d robotStartPose2d;
+    
+    private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
+    private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+
+    private static final Field2d field2d = new Field2d();
 
     // Shuffleboard
     private static ShuffleboardTab shuffleboardTestTab = Shuffleboard.getTab("Test");
-    private static GenericEntry shuffleboardShooterPositionComponent;
-
-    // private static List<Translation2d> robotTranslation2ds;
-=======
-    private static List<Translation2d> robotTranslation2ds;
->>>>>>> Amp/Trap-Development
+    private static GenericEntry shuffleboardEditModeComponent, shuffleboardShooterArmPositionComponent, shuffleboardShooterLeftFlywheelVelocityComponent, shuffleboardShooterRightFlywheelVelocityComponent, shuffleboardAmpTrapElevatorPositionComponent;
 
     private UserInterface() {
     }
@@ -44,8 +32,8 @@ public class UserInterface {
     }
 
     public float getShooterPositionComponentData() {
-        if (shuffleboardShooterPositionComponent != null) {
-            return shuffleboardShooterPositionComponent.getFloat(0);
+        if (shuffleboardShooterArmPositionComponent != null) {
+            return shuffleboardShooterArmPositionComponent.getFloat(0);
         }
         return 0;
     }
@@ -53,14 +41,36 @@ public class UserInterface {
     public void init() {
         initalizeWidgets();
     }
+
+    private void initalizeData() {}
+
     private void initalizeWidgets() {
         SmartDashboard.putData("Auto Selector", Autos.getInstance(commandSwerveDrivetrain).getAutoChooser());
         SmartDashboard.putData("Field 2D", field2d);
 
-        shuffleboardShooterPositionComponent = shuffleboardTestTab.add("Shooter Position", 0)
-                .withWidget(BuiltInWidgets.kTextView)
-                .withPosition(0, 0)
-                .withSize(1, 1).getEntry();
+        shuffleboardEditModeComponent = shuffleboardTestTab.add("Edit Mode", false)
+            .withWidget(BuiltInWidgets.kToggleSwitch)
+            .withPosition(0, 0)
+            .withSize(1, 1).getEntry();
+
+            
+        shuffleboardShooterArmPositionComponent = shuffleboardTestTab.add("Shooter Arm Position", 0)
+            .withWidget(BuiltInWidgets.kTextView)
+            .withPosition(1, 0)
+            .withSize(1, 1).getEntry();
+        shuffleboardShooterLeftFlywheelVelocityComponent = shuffleboardTestTab.add("Shooter Left Flywheel Velocity", 0)
+            .withWidget(BuiltInWidgets.kTextView)
+            .withPosition(1, 1)
+            .withSize(1, 1).getEntry();
+        shuffleboardShooterRightFlywheelVelocityComponent = shuffleboardTestTab.add("Shooter Right Flywheel Velocity", 0)
+            .withWidget(BuiltInWidgets.kTextView)
+            .withPosition(2, 1)
+            .withSize(1, 1).getEntry();
+
+        shuffleboardAmpTrapElevatorPositionComponent = shuffleboardTestTab.add("Amp/Trap Elevator Position", 0)
+            .withWidget(BuiltInWidgets.kTextView)
+            .withPosition(2, 1)
+            .withSize(1, 1).getEntry();
     }
 
     public void update() {
@@ -69,20 +79,11 @@ public class UserInterface {
 
     public void updateWidgets() {
         field2d.setRobotPose(commandSwerveDrivetrain.getPose());
-        // field2d.getObject("traj").setTrajectory(generateRobotTrajectory());
+
+        if (!shuffleboardEditModeComponent.getBoolean(false)) {
+            shuffleboardShooterArmPositionComponent.setDouble(shooterSubsystem.getPivot().getPivotPosition());
+            shuffleboardShooterLeftFlywheelVelocityComponent.setDouble(shooterSubsystem.getFlywheel(0).getFlywheelVelocity());
+            shuffleboardShooterRightFlywheelVelocityComponent.setDouble(shooterSubsystem.getFlywheel(1).getFlywheelVelocity());
+        }
     }
-
-    // private Trajectory generateRobotTrajectory() {
-    //     if (robotTranslation2ds.size() > 30) robotTranslation2ds.remove(0);
-    //     robotTranslation2ds.add(commandSwerveDrivetrain.getPose().getTranslation());
-    //     return TrajectoryGenerator.generateTrajectory(
-    //         new Pose2d(robotTranslation2ds.get(0), new Rotation2d(0)),
-    //         robotTranslation2ds,
-    //         commandSwerveDrivetrain.getPose(),
-    //         new TrajectoryConfig(Units.feetToMeters(3.0), Units.feetToMeters(3.0)));
-<<<<<<< HEAD
-
-=======
->>>>>>> Amp/Trap-Development
-    // }
 }

@@ -2,15 +2,12 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
-import frc.robot.UserInterface;
 import frc.robot.parsers.ShooterParser;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
-
-import java.sql.SQLOutput;
 
 public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
     private static ShooterSubsystem shooterSubsystem;
@@ -102,7 +99,6 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         // System.out.println("Shooter Left: " + shooterLeft.getFlywheelVelocity());
 //        System.out.println("Shooter RIGHT: " + shooterRight.getFlywheelVelocity());
         // System.out.println(UserInterface.getInstance().getShooterPositionComponentData());
-//        System.out.println(Rotation2d.fromRotations(arm.getPivotPosition()).getDegrees());
     }
 
     @Override
