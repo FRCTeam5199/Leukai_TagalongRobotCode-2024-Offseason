@@ -35,9 +35,9 @@ public class ScoreCommands {
 
     public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59, 180),
-                driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
-                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+            driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59, 180),
+            driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
+            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
     private static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
@@ -53,11 +53,8 @@ public class ScoreCommands {
                                             Units.radiansToDegrees(Math.atan(
                                                     (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
                 },
-                interrupted -> {
-                },
-                () -> {
-                    return false;
-                },
+                interrupted -> {},
+                () -> { return false; },
                 commandSwerveDrivetrain
         );
     }
@@ -102,8 +99,7 @@ public class ScoreCommands {
 
     public static Command moveShooterToAutoAim(double targetSpeed) {
         return new FunctionalCommand(
-                () -> {
-                },
+                () -> {},
                 () -> {
                     double distance;
                     double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
@@ -128,8 +124,7 @@ public class ScoreCommands {
     public static Command moveShooterToAutoAimAndAutoShoot(double targetSpeed) {
         return new SequentialCommandGroup(
                 new FunctionalCommand(
-                        () -> {
-                        },
+                        () -> {},
                         () -> {
                             double distance;
                             double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};

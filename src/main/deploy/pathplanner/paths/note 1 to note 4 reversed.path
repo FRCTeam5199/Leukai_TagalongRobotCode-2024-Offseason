@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Red Paths",
   "previewStartingState": {
     "rotation": 333.33000000000004,
     "velocity": 0

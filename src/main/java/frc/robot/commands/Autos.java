@@ -1,4 +1,4 @@
-ht64qkorfdn gi[orwtj pb]oe5 oilpth;nmeto;l.package frc.robot.commands;
+package frc.robot.commands;
 
 import java.util.HashMap;
 import java.util.Map;
