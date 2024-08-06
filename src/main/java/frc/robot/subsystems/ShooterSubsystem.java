@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.Filesystem;
+import frc.robot.UserInterface;
 import frc.robot.parsers.ShooterParser;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
@@ -99,8 +100,10 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.periodic();
 
         updateShuffleboard();
-        System.out.println("Shooter Left: " + shooterLeft.getFlywheelVelocity());
-        System.out.println("Shooter Right: " + shooterRight.getFlywheelVelocity());
+        // System.out.println("Shooter Left: " + shooterLeft.getFlywheelVelocity());
+        // System.out.println("Shooter Right: " + shooterRight.getFlywheelVelocity());
+        // System.out.println(UserInterface.getInstance().getShooterPositionComponentData());
+        arm.setPivotProfile(UserInterface.getInstance().getShooterPositionComponentData());
     }
 
     @Override

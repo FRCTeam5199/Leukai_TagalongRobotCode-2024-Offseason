@@ -35,7 +35,7 @@ public class Robot extends TimedRobot {
 
         m_robotContainer = new RobotContainer();
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
-        // userInterface.init();
+        userInterface.init();
     }
 
     @Override

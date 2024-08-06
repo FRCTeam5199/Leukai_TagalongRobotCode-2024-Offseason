@@ -9,6 +9,10 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.networktables.GenericEntry;
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.Autos;
@@ -22,6 +26,11 @@ public class UserInterface {
 
     private static final Field2d field2d = new Field2d();
     private static Pose2d robotStartPose2d;
+
+    // Shuffleboard
+    private static ShuffleboardTab shuffleboardTestTab = Shuffleboard.getTab("Test");
+    private static GenericEntry shuffleboardShooterPositionComponent;
+    
     // private static List<Translation2d> robotTranslation2ds;
 
     private UserInterface() {}
@@ -43,6 +52,11 @@ public class UserInterface {
     private void initalizeWidgets() {
         SmartDashboard.putData("Auto Selector", Autos.getInstance(commandSwerveDrivetrain).getAutoChooser());
         SmartDashboard.putData("Field 2D", field2d);
+
+        shuffleboardShooterPositionComponent = shuffleboardTestTab.add("Shooter Position", 0)
+            .withWidget(BuiltInWidgets.kTextView)
+            .withPosition(0, 0)
+            .withSize(1, 1).getEntry();
     }
 
     public void update() {
@@ -52,6 +66,13 @@ public class UserInterface {
     public void updateWidgets() {
         field2d.setRobotPose(commandSwerveDrivetrain.getPose());
         // field2d.getObject("traj").setTrajectory(generateRobotTrajectory());
+    }
+
+    public float getShooterPositionComponentData() {
+        if (shuffleboardShooterPositionComponent != null) {
+            return shuffleboardShooterPositionComponent.getFloat(0);
+        }
+        return 0;
     }
 
     // private Trajectory generateRobotTrajectory() {
