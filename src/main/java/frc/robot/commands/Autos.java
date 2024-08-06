@@ -96,18 +96,38 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("6 piece red part 2 alt 2");
     }
 
-    public Command sixPiece(){
-        return sixPieceRedPart1();
+    /////////////////////////////////////
+
+    public Command sixPieceBluePart1(){
+        return AutoBuilder.buildAuto("6 piece blue part 1");
     }
 
+    public Command sixPieceBluePart2(){
+        part2Finished = false;
+        return AutoBuilder.buildAuto("6 piece blue part 2").andThen(()-> part2Finished = true);
+    }
+
+    public Command sixPieceBlueNote5Check(){
+        return AutoBuilder.buildAuto("6 piece blue note 6 check");
+    }
+
+    public Command sixPieceBluePart2Alt1(){
+        alt1 = false;
+        return AutoBuilder.buildAuto("6 piece blue part 2 alt 1").andThen(()-> alt1 = true);
+    }
+        public Command sixPieceBluePart2Alt2(){
+        return AutoBuilder.buildAuto("6 piece blue part 2 alt 2");
+    }
+
+
    
-    public Command sixPieceRedwithAlt() {
+    public Command sixPieceBluewithAlt() {
         return new SequentialCommandGroup(
-            sixPieceRedPart1(),
-            sixPieceRedPart2().unless(()-> !objectDetection.notePresent()),
-            sixPieceRedNote5Check().unless(()-> part2Finished == true),
-            sixPieceRedPart2Alt1().unless(()-> !objectDetection.notePresent()),
-            sixPieceRedPart2Alt2().unless(()-> alt1 == true || part2Finished == true)
+            sixPieceBluePart1(),
+            sixPieceBluePart2().unless(()-> !objectDetection.notePresent()),
+            sixPieceBlueNote5Check().unless(()-> part2Finished == true),
+            sixPieceBluePart2Alt1().unless(()-> !objectDetection.notePresent()),
+            sixPieceBluePart2Alt2().unless(()-> alt1 == true || part2Finished == true)
         );
     }
 

@@ -14,7 +14,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "note 6 to note 6 shoot alt blue"
+            "pathName": "note 6 to note 7"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 7 to shoot"
           }
         }
       ]

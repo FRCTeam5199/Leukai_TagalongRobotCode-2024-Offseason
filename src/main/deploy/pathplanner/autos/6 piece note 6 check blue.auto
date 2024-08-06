@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 7.598321246464557,
-      "y": 6.232443307116744
+      "x": 7.16,
+      "y": 7.41
     },
-    "rotation": -37.40999999999997
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "note 6 to note 6 shoot alt blue"
+            "pathName": "note 4 to note 6 check"
           }
         }
       ]
