@@ -123,8 +123,8 @@ public class UserInterface {
             shuffleboardAmpTrapElevatorPositionComponent.setDouble(ampTrapSubsystem.getElevator().getElevatorHeightM());
         } else {
             shooterSubsystem.getPivot().setPivotProfile(shuffleboardShooterArmPositionComponent.getDouble(shooterSubsystem.getPivot().getPivotPosition()));
-            shooterSubsystem.getFlywheel(0).setFlywheelControl(shuffleboardShooterLeftFlywheelVelocityComponent.getDouble(shooterSubsystem.getFlywheel(0).getFlywheelVelocity()), shuffleboardShooterLeftFlywheelFeedForwardComponent.getBoolean(false));
-            shooterSubsystem.getFlywheel(1).setFlywheelControl(shuffleboardShooterRightFlywheelVelocityComponent.getDouble(shooterSubsystem.getFlywheel(1).getFlywheelVelocity()), shuffleboardShooterRightFlywheelFeedForwardComponent.getBoolean(false));
+            // shooterSubsystem.getFlywheel(0).setFlywheelControl(shuffleboardShooterLeftFlywheelVelocityComponent.getDouble(shooterSubsystem.getFlywheel(0).getFlywheelVelocity()), shuffleboardShooterLeftFlywheelFeedForwardComponent.getBoolean(false));
+            // shooterSubsystem.getFlywheel(1).setFlywheelControl(shuffleboardShooterRightFlywheelVelocityComponent.getDouble(shooterSubsystem.getFlywheel(1).getFlywheelVelocity()), shuffleboardShooterRightFlywheelFeedForwardComponent.getBoolean(false));
 
             ampTrapSubsystem.getElevator().setElevatorHeight(shuffleboardAmpTrapElevatorPositionComponent.getDouble(ampTrapSubsystem.getElevator().getElevatorHeightM()));
         }

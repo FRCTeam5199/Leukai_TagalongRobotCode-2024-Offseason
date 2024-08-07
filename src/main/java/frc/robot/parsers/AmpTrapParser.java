@@ -19,12 +19,12 @@ public class AmpTrapParser {
 
       elevatorParser = new ElevatorParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/ampTrap"),
-          ampTrapConf.elevatorFile
+          ampTrapConf.ampTrapFile
       );
 
       rollerParser = new RollerParser(
           new File(Filesystem.getDeployDirectory().getAbsolutePath() + "/configs/ampTrap"),
-          ampTrapConf.elevatorFile
+          ampTrapConf.ampTrapFile
       );
 
     } catch (Exception err) {
