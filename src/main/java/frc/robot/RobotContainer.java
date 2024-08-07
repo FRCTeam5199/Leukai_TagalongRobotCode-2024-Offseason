@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
 import frc.robot.commands.base.ClimberCommands;
+import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
@@ -50,19 +51,13 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
+    private double armAutoAimAngle;
+    private PivotToCommand armAutoAim = new PivotToCommand(
+            shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
+    );
 
     public RobotContainer() {
         configureBindings();
-    }
-
-    public static void getAngle() {
-        double distance;
-        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
-            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
-        else
-            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
-        ScoreCommands.armAutoAimAngle = LookUpTable.findValue(distance);
     }
 
     private void configureBindings() {
@@ -96,10 +91,7 @@ public class RobotContainer {
         commandXboxController.leftTrigger().whileTrue(new ParallelCommandGroup(
                 ScoreCommands.driveAutoTurn(commandXboxController,
                         fieldCentricSwerveDrive),
-                new SequentialCommandGroup(
-                        new InstantCommand(RobotContainer::getAngle),
-                        ScoreCommands.moveShooterToAutoAim(60)
-                )
+                armAutoAim.beforeStarting(() -> shooterSubsystem.setShooterSpeeds(60))
         )).onFalse(ScoreCommands.moveShooterToStable());
 
 //                .onFalse(ScoreCommands.moveShooterToStable());
@@ -108,9 +100,9 @@ public class RobotContainer {
                 .onFalse(ScoreCommands.elevatorStable());
 //        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
 //        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
-//        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
-//        ).onFalse(ClimberCommands.setClimberPowers(0));
-//        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
+        ).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
 //        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10));
 //        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30));
@@ -132,6 +124,17 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return autos.sixPieceRedwithAlt();
+    }
+
+    public void periodic() {
+        double distance;
+        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+        else
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+        armAutoAimAngle = LookUpTable.findValue(distance);
+        armAutoAim.changeSetpoint(armAutoAimAngle);
     }
 
     public void onEnable() {

@@ -42,8 +42,8 @@
   },
   "defaultTolerances": {
     "unit": "deg",
-    "lowerTolerance": 2.0,
-    "upperTolerance": 2.0
+    "lowerTolerance": 1.0,
+    "upperTolerance": 1.0
   },
   "encoderConfig": {
     "zeroToOne": true,

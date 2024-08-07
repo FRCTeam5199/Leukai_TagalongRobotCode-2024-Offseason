@@ -7,7 +7,7 @@ public enum ShooterPivotAngles implements TagalongAngle {
     STABLE(12),
     LOW(25),
     MID(30),
-    MAX(52);
+    MAX(58);
     private Rotation2d value;
 
     ShooterPivotAngles(double degree) {

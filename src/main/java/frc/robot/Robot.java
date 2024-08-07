@@ -20,15 +20,11 @@ import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 
 public class Robot extends TimedRobot {
-    private Command m_autonomousCommand;
-
-    private RobotContainer m_robotContainer;
     private final UserInterface userInterface = UserInterface.getInstance();
-
     private final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
-    
     private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
-
+    private Command m_autonomousCommand;
+    private RobotContainer m_robotContainer;
 
     @Override
     public void robotInit() {
@@ -41,6 +37,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
+        m_robotContainer.periodic();
     }
 
     @Override
@@ -98,10 +95,10 @@ public class Robot extends TimedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.cancel();
         }
-        
+
         m_robotContainer.onEnable();
-                
-        
+
+
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsTeleop);
 
 
