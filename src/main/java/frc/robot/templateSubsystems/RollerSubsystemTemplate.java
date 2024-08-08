@@ -29,7 +29,7 @@ public class RollerSubsystemTemplate extends SubsystemBase {
     private TrapezoidProfile.State currentState;
     private TrapezoidProfile.State goalState;
     private NeutralModeValue defaultNeutralMode;
-    private double gearRatio;
+    private double gearRatio = 1d;
     private boolean followLastRollerProfile = false;
 
     public RollerSubsystemTemplate(int id, TrapezoidProfile.Constraints constraints,
@@ -73,11 +73,11 @@ public class RollerSubsystemTemplate extends SubsystemBase {
     }
 
     public double getDegrees() {
-        return motor.getPosition().getValueAsDouble() * gearRatio / 360;
+        return motor.getPosition().getValueAsDouble() * gearRatio / 360d;
     }
 
     public double getDegreesFromRotations(double rotations) {
-        return rotations * gearRatio / 360;
+        return rotations * gearRatio * 360d;
     }
 
     public double getRotations() {
@@ -85,7 +85,7 @@ public class RollerSubsystemTemplate extends SubsystemBase {
     }
 
     public double getRotationsFromDegrees(double degrees) {
-        return degrees * 360 / gearRatio;
+        return degrees / 360d / gearRatio;
     }
 
     public double getVelocity() {
@@ -106,7 +106,7 @@ public class RollerSubsystemTemplate extends SubsystemBase {
     public void setRollerProfile(double goalAngle, double goalVelocity) {
         motor.setNeutralMode(NeutralModeValue.Coast);
         followLastRollerProfile = true;
-        
+
         goalState.position = getRotationsFromDegrees(goalAngle);
         goalState.velocity = goalVelocity;
 
@@ -120,9 +120,12 @@ public class RollerSubsystemTemplate extends SubsystemBase {
         motor.setControl(
                 positionVoltage.withPosition(nextState.position)
                         .withFeedForward(feedforward.calculate(nextState.velocity,
-                                (nextState.velocity - currentState.velocity) / .2)));
+                                (nextState.velocity - currentState.velocity) / timer.get())));
 
         currentState = nextState;
+        System.out.println(goalState.position);
+//        System.out.println(currentState.position);
+        timer.restart();
     }
 
     public boolean isProfileFinished() {

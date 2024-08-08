@@ -21,12 +21,7 @@ import frc.robot.commands.base.ClimberCommands;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.Climber;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
-import frc.robot.subsystems.ObjectDetectionSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.*;
 import frc.robot.utility.LookUpTable;
 
 public class RobotContainer {
@@ -40,6 +35,7 @@ public class RobotContainer {
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final NoteElevator noteElevator = NoteElevator.getInstance();
+    public static final TestRollerSubsystem testRollerSubsystem = TestRollerSubsystem.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
@@ -109,10 +105,12 @@ public class RobotContainer {
 //        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50));
 //        commandXboxController.povRight().onTrue(ScoreCommands.setShooterSpeeds(90));
 
-        commandXboxController.povDown().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE, 0));
-        commandXboxController.povLeft().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW, 0));
-        commandXboxController.povUp().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
-        commandXboxController.povRight().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 0));
+//        commandXboxController.povDown().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE, 0));
+//        commandXboxController.povLeft().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW, 0));
+//        commandXboxController.povUp().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
+//        commandXboxController.povRight().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 0));
+        commandXboxController.povDown()
+                .onTrue(new InstantCommand(() -> testRollerSubsystem.setRollerProfile(360, 0)));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
             // Seed field relative pose that is alliance dependent
