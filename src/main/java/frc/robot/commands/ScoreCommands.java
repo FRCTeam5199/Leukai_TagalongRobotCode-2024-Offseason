@@ -4,9 +4,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
-import edu.wpi.first.math.trajectory.TrapezoidProfile.State;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -86,15 +83,19 @@ public class ScoreCommands {
     public static Command ampScore() {
         return new SequentialCommandGroup(
                 moveElevatorToSetpoint(ElevatorHeights.AMP),
-                new FunctionalCommand(
-                        () -> indexerSubsystem.setRollerSpeeds(0, 30, 0),
-                        () -> {
-                        },
-                        interrupted -> elevatorStable(),
-                        () -> false,
-                        indexerSubsystem
-                ).until(() -> !indexerSubsystem.isNoteInAmpTrap())
+                spinRollersForAmpOrTrapScore()
         ).unless(() -> !indexerSubsystem.isNoteInAmpTrap());
+    }
+
+    public static Command spinRollersForAmpOrTrapScore() {
+        return new FunctionalCommand(
+                () -> indexerSubsystem.setRollerSpeeds(0, 30, 0),
+                () -> {
+                },
+                interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
+                () -> false,
+                indexerSubsystem
+        );
     }
 
     public static double getDistance(double[] robotCoords, double[] speakerCoords) {

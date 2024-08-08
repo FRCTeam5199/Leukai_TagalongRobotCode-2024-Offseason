@@ -6,15 +6,12 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
 import frc.robot.commands.base.ClimberCommands;
@@ -76,14 +73,15 @@ public class RobotContainer {
         );
 
 
-        commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
+        commandXboxController.rightTrigger().onTrue(IntakeCommands.intake()).onFalse(IntakeCommands.stopRollers());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
         commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
 //        commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
 
-        commandXboxController.x().onTrue(ClimberCommands.scoreTrap());
-//        commandXboxController.povUp().onTrue(ClimberCommands.toggleElevatorTrap());
-//        commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
+        commandXboxController.y().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
+        commandXboxController.x().onTrue(ScoreCommands.spinRollersForAmpOrTrapScore()).onFalse(IntakeCommands.stopRollers());
+        commandXboxController.povUp().onTrue(ClimberCommands.moveElevatorToTrap());
+        commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
 
 //        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
 //                .onFalse(ScoreCommands.moveShooterToStable());
@@ -100,19 +98,19 @@ public class RobotContainer {
                 .onFalse(ScoreCommands.elevatorStable());
 //        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
 //        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
-//        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
-//        ).onFalse(ClimberCommands.setClimberPowers(0));
-//        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
+        ).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
 //        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10));
 //        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30));
 //        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50));
 //        commandXboxController.povRight().onTrue(ScoreCommands.setShooterSpeeds(90));
 
-        commandXboxController.povDown().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE, 0));
-        commandXboxController.povLeft().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW, 0));
-        commandXboxController.povUp().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
-        commandXboxController.povRight().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 0));
+//        commandXboxController.povDown().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE, 0));
+//        commandXboxController.povLeft().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW, 0));
+//        commandXboxController.povUp().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
+//        commandXboxController.povRight().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 0));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
             // Seed field relative pose that is alliance dependent

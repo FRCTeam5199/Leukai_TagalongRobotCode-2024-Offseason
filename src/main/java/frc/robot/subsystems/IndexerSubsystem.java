@@ -162,6 +162,12 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         indexer.setRollerProfile(indexerRotations, 0);
     }
 
+    public void setRollerPowers(double intakePercent, double ampTrapPercent, double indexerPercent) {
+        intake.setRollerPower(intakePercent);
+        ampTrap.setRollerPower(ampTrapPercent);
+        indexer.setRollerPower(indexerPercent);
+    }
+
     public void followLastRollerProfiles() {
         intake.followLastRollerProfile();
         ampTrap.followLastRollerProfile();
