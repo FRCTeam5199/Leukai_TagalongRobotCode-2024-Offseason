@@ -1,5 +1,6 @@
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
@@ -11,6 +12,7 @@ public class IntakeCommands {
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    private static final Timer timer = new Timer();
 
     private static Command setElevatorToStable() {
         return new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 0);
@@ -39,18 +41,22 @@ public class IntakeCommands {
 
     private static Command resettleNoteBackwards() {
         return new FunctionalCommand(
-                () -> indexerSubsystem.setRollerSpeeds(0, 10, -5),
                 () -> {
+                    timer.restart();
+                    indexerSubsystem.setRollerSpeeds(-5, 10, -5);
+                },
+                () -> {
+                    System.out.println("Timer: " + timer.get());
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
-                () -> !indexerSubsystem.isNoteInIndexer(),
+                () -> timer.get() > .5,
                 indexerSubsystem
         );
     }
 
     private static Command resettleNoteForwards() {
         return new FunctionalCommand(
-                () -> indexerSubsystem.setRollerSpeeds(0, -10, 5),
+                () -> indexerSubsystem.setRollerSpeeds(5, -10, 5),
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
@@ -66,6 +72,14 @@ public class IntakeCommands {
                         () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap())
                 ),
                 new SequentialCommandGroup(
+                        resettleNoteBackwards(),
+                        resettleNoteForwards(),
+                        resettleNoteBackwards(),
+                        resettleNoteForwards(),
+                        resettleNoteBackwards(),
+                        resettleNoteForwards(),
+                        resettleNoteBackwards(),
+                        resettleNoteForwards(),
                         resettleNoteBackwards(),
                         resettleNoteForwards()
                 ).unless(indexerSubsystem::isNoteInAmpTrap)
