@@ -6,7 +6,7 @@ import frc.robot.tagalong.TagalongAngle;
 public enum ShooterPivotAngles implements TagalongAngle {
     STABLE(12),
     LOW(25),
-    MID(37),
+    MID(30),
     MAX(50);
     private Rotation2d value;
 

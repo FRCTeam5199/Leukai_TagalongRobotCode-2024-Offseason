@@ -31,10 +31,7 @@ public class IntakeCommands {
                 },
                 () -> {
                 },
-                interrupted -> {
-                    System.out.println(interrupted);
-                    indexerSubsystem.setRollerSpeeds(0, 0, 0);
-                },
+                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
                 () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap()),
                 indexerSubsystem
         );
@@ -103,7 +100,7 @@ public class IntakeCommands {
                 new SequentialCommandGroup(
                         setElevatorToStable(),
                         new FunctionalCommand(
-                                () -> indexerSubsystem.setRollerSpeeds(-25, -50, 0),
+                                () -> indexerSubsystem.setRollerSpeeds(-10, -20, 0),
                                 () -> {
                                     if (indexerSubsystem.isNoteInIntake()) {
                                         indexerSubsystem.setRollerSpeeds(25, -50, 10);

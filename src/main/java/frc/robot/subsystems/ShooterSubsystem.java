@@ -47,6 +47,8 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     public TagalongFlywheel getFlywheel() {
         return shooterLeft;
     }
+//0.08, 0.16393442622950819672131147540984, 0.5
+    //0.08, 0.14367816091954022988505747126437, 0.5
 
     @Override
     public TagalongFlywheel getFlywheel(int i) {
@@ -97,7 +99,8 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.periodic();
 
         updateShuffleboard();
-//        System.out.println("Reached Shooter Conditions: " + hasShotNote(60));
+        System.out.println("Shooter Left: " + shooterLeft.getFlywheelVelocity());
+        System.out.println("Shooter Right: " + shooterRight.getFlywheelVelocity());
     }
 
     @Override
@@ -144,8 +147,12 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     public void moveShooterToSetpointAndSpeed(double setpoint, double targetSpeed) {
         arm.setPivotProfile(setpoint);
 
-        shooterLeft.setFlywheelControl(targetSpeed, true);
-        shooterRight.setFlywheelControl(.5 * targetSpeed, true);
+        if (targetSpeed == 0) {
+            shooterSubsystem.setFlywheelPowers(0);
+        } else {
+            shooterLeft.setFlywheelControl(targetSpeed, true);
+            shooterRight.setFlywheelControl(.5 * targetSpeed, true);
+        }
     }
 
     public void followLastPivotProfile() {
@@ -156,5 +163,15 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         double percentageOfMaxSpeed = .97;
         return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
                 && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
+    }
+
+    public void setShooterSpeeds(double rps) {
+        shooterLeft.setFlywheelControl(rps / 2, true);
+        shooterRight.setFlywheelControl(rps, true);
+    }
+
+    public void setFlywheelPowers(double percent) {
+        shooterLeft.setFlywheelPower(percent);
+        shooterRight.setFlywheelPower(percent);
     }
 }

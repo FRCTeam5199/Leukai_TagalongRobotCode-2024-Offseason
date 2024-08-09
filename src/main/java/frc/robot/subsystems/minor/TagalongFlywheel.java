@@ -59,8 +59,8 @@ public class TagalongFlywheel
         _flywheelFF = _flywheelConf.feedforward.getSimpleMotorFeedforward();
 
         _flywheelMotorConfig = _flywheelConf.flywheelMotorControl.getFullMotorConfiguration();
-        // _flywheelMotorConfig.Voltage.PeakReverseVoltage = 0.0;
-        // _flywheelFollowerMotorConfig.Voltage.PeakReverseVoltage = 0.0;
+        _flywheelMotorConfig.Voltage.PeakReverseVoltage = 0.0;
+//         _flywheelFollowerMotorConfig.Voltage.PeakReverseVoltage = 0.0;
         _flywheelMotorSlot0 = _flywheelConf.flywheelMotorControl.getSlot0();
 
         configFlywheelMotor();
