@@ -6,17 +6,17 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
 import frc.robot.commands.base.ClimberCommands;
+import frc.robot.commands.base.PivotToCommand;
+import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -24,6 +24,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.LookUpTable;
 
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
@@ -47,6 +48,10 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
+    private double armAutoAimAngle;
+    private PivotToCommand armAutoAim = new PivotToCommand(
+            shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
+    );
 
     public RobotContainer() {
         configureBindings();
@@ -68,31 +73,44 @@ public class RobotContainer {
         );
 
 
-        commandXboxController.rightTrigger().onTrue(IntakeCommands.intake());
+        commandXboxController.rightTrigger().onTrue(IntakeCommands.intake()).onFalse(IntakeCommands.stopRollers());
         commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
         commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
 //        commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
 
-        commandXboxController.x().onTrue(ClimberCommands.scoreTrap());
-        commandXboxController.povUp().onTrue(ClimberCommands.toggleElevatorTrap());
+        commandXboxController.y().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
+        commandXboxController.x().onTrue(ScoreCommands.spinRollersForAmpOrTrapScore()).onFalse(IntakeCommands.stopRollers());
+        commandXboxController.povUp().onTrue(ClimberCommands.moveElevatorToTrap());
         commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
 
-        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
-                .onFalse(ScoreCommands.moveShooterToStable());
+//        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
+//                .onFalse(ScoreCommands.moveShooterToStable());
+
+        commandXboxController.leftTrigger().whileTrue(new ParallelCommandGroup(
+                ScoreCommands.driveAutoTurn(commandXboxController,
+                        fieldCentricSwerveDrive),
+                armAutoAim.beforeStarting(() -> shooterSubsystem.setShooterSpeeds(60))
+        )).onFalse(ScoreCommands.moveShooterToStable());
+
 //                .onFalse(ScoreCommands.moveShooterToStable());
         commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
                 .onFalse(ScoreCommands.elevatorStable());
 //        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
 //        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
-        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
+        ).onFalse(ClimberCommands.setClimberPowers(0));
         commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
 //        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10));
 //        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30));
 //        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50));
 //        commandXboxController.povRight().onTrue(ScoreCommands.setShooterSpeeds(90));
-        commandXboxController.y().whileTrue(ScoreCommands.driveAutoTurn(commandXboxController, fieldCentricSwerveDrive));
+
+//        commandXboxController.povDown().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE, 0));
+//        commandXboxController.povLeft().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW, 0));
+//        commandXboxController.povUp().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
+//        commandXboxController.povRight().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 0));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
             // Seed field relative pose that is alliance dependent
@@ -109,6 +127,17 @@ public class RobotContainer {
 
     public Command getAutonomousCommand() {
         return autos.sixPieceRedwithAlt();
+    }
+
+    public void periodic() {
+        double distance;
+        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+        else
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+        armAutoAimAngle = LookUpTable.findValue(distance);
+        armAutoAim.changeSetpoint(armAutoAimAngle);
     }
 
     public void onEnable() {

@@ -38,12 +38,12 @@
   "positionalLimits": {
     "unit": "deg",
     "min": 0.0,
-    "max": 60.0
+    "max": 58.0
   },
   "defaultTolerances": {
     "unit": "deg",
-    "lowerTolerance": 2.0,
-    "upperTolerance": 2.0
+    "lowerTolerance": 0.125,
+    "upperTolerance": 0.125
   },
   "encoderConfig": {
     "zeroToOne": true,
