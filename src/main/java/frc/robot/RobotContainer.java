@@ -110,7 +110,7 @@ public class RobotContainer {
 //        commandXboxController.povUp().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
 //        commandXboxController.povRight().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 0));
         commandXboxController.povDown()
-                .onTrue(new InstantCommand(() -> testRollerSubsystem.setRollerProfile(360, 0)));
+                .onTrue(new InstantCommand(() -> testRollerSubsystem.setRollerProfile(10, 0)));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
             // Seed field relative pose that is alliance dependent

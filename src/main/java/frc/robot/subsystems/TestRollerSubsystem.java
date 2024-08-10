@@ -10,8 +10,8 @@ public class TestRollerSubsystem extends RollerSubsystemTemplate {
 
     private TestRollerSubsystem() {
         super(TestRollerConstants.INDEXER_ID, TestRollerConstants.INDEXER_CONSTRAINTS, TestRollerConstants.INDEXER_PID,
-                TestRollerConstants.INDEXER_FEEDFORWARD, TestRollerConstants.INDEXER_LOWER_TOLERANCE,
-                TestRollerConstants.INDEXER_UPPER_TOLERANCE, TestRollerConstants.INDEXER_GEAR_RATIO);
+                TestRollerConstants.INDEXER_FEEDFORWARD, TestRollerConstants.INDEXER_LOWER_TOLERANCE_ROLLER_ROTATIONS,
+                TestRollerConstants.INDEXER_UPPER_TOLERANCE_ROLLER_ROTATIONS, TestRollerConstants.INDEXER_GEAR_RATIO);
 
         configureMotor(false, true, 40, 40);
     }

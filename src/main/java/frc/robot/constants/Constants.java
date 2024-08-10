@@ -16,8 +16,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.constants.enums.FieldVersions;
 import frc.robot.utility.PID;
 
-import javax.swing.text.Utilities;
-
 public class Constants {
     public static final RobotVersions CRobot = RobotVersions.COMP_BOT;
     public static final FieldVersions CField = FieldVersions.THEORETICAL_FIELD;
@@ -90,8 +88,8 @@ public class Constants {
         public static final PID INDEXER_PID = new PID(0, 0, 0);
         public static final SimpleMotorFeedforward INDEXER_FEEDFORWARD
                 = new SimpleMotorFeedforward(0.23, .11904761904761904761904761904762, 0);
-        public static final double INDEXER_LOWER_TOLERANCE = 0;
-        public static final double INDEXER_UPPER_TOLERANCE = 0;
+        public static final double INDEXER_LOWER_TOLERANCE_ROLLER_ROTATIONS = 1;
+        public static final double INDEXER_UPPER_TOLERANCE_ROLLER_ROTATIONS = 1;
         public static final double[][] INDEXER_GEAR_RATIO = new double[][]{{1, 1}};
     }
 }

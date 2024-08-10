@@ -11,7 +11,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.Constants;
 import frc.robot.utility.PID;
 
 
@@ -23,8 +22,8 @@ public class RollerSubsystemTemplate extends SubsystemBase {
     private final VelocityVoltage velocityVoltage;
     private final Slot0Configs slot0Configs;
     private final SimpleMotorFeedforward feedforward;
-    private final double lowerTolerance;
-    private final double upperTolerance;
+    private final double lowerToleranceRollerRotations;
+    private final double upperToleranceRollerRotations;
     private final Timer timer;
     private TrapezoidProfile.State currentState;
     private TrapezoidProfile.State goalState;
@@ -34,7 +33,8 @@ public class RollerSubsystemTemplate extends SubsystemBase {
 
     public RollerSubsystemTemplate(int id, TrapezoidProfile.Constraints constraints,
                                    PID pid, SimpleMotorFeedforward feedforward,
-                                   double lowerTolerance, double upperTolerance, double[][] gearRatios) {
+                                   double lowerToleranceRollerRotations, double upperToleranceRollerRotations,
+                                   double[][] gearRatios) {
         motor = new TalonFX(id);
         motorConfig = new TalonFXConfiguration();
 
@@ -50,8 +50,8 @@ public class RollerSubsystemTemplate extends SubsystemBase {
         positionVoltage = new PositionVoltage(0).withSlot(0).withEnableFOC(true);
         velocityVoltage = new VelocityVoltage(0).withSlot(0).withEnableFOC(true);
 
-        this.lowerTolerance = lowerTolerance;
-        this.upperTolerance = upperTolerance;
+        this.lowerToleranceRollerRotations = lowerToleranceRollerRotations;
+        this.upperToleranceRollerRotations = upperToleranceRollerRotations;
 
         for (double[] ratio : gearRatios) {
             this.gearRatio *= ratio[1] / ratio[0];
@@ -76,16 +76,36 @@ public class RollerSubsystemTemplate extends SubsystemBase {
         return motor.getPosition().getValueAsDouble() * gearRatio / 360d;
     }
 
-    public double getDegreesFromRotations(double rotations) {
-        return rotations * gearRatio * 360d;
-    }
-
-    public double getRotations() {
+    public double getMotorRotations() {
         return motor.getPosition().getValueAsDouble();
     }
 
-    public double getRotationsFromDegrees(double degrees) {
+    public double getRollerRotations() {
+        return motor.getPosition().getValueAsDouble() * gearRatio;
+    }
+
+    public double getDegreesFromRollerRotations(double rollerRotations) {
+        return rollerRotations * gearRatio * 360d;
+    }
+
+    public double getDegreesFromMotorRotations(double motorRotations) {
+        return motorRotations / 360d;
+    }
+
+    public double getRollerRotationsFromDegrees(double degrees) {
         return degrees / 360d / gearRatio;
+    }
+
+    public double getRollerRotationsFromMotorRotations(double motorRotations) {
+        return motorRotations * gearRatio;
+    }
+
+    public double getMotorRotationsFromRollerRotations(double rollerRotations) {
+        return rollerRotations / gearRatio;
+    }
+
+    public double getMotorRotationsFromDegrees(double degrees) {
+        return degrees / 360d;
     }
 
     public double getVelocity() {
@@ -98,20 +118,21 @@ public class RollerSubsystemTemplate extends SubsystemBase {
 
     public void setRollerVelocity(double rps) {
         followLastRollerProfile = false;
+        motor.setNeutralMode(NeutralModeValue.Coast);
         motor.setControl(velocityVoltage.withVelocity(rps).withFeedForward(
                 feedforward.calculate(rps, 0)
         ));
     }
 
-    public void setRollerProfile(double goalAngle, double goalVelocity) {
+    public void setRollerProfile(double goalRotations, double goalVelocity) {
         motor.setNeutralMode(NeutralModeValue.Coast);
         followLastRollerProfile = true;
 
-        goalState.position = getRotationsFromDegrees(goalAngle);
+        goalState.position = getMotorRotationsFromRollerRotations(goalRotations);
         goalState.velocity = goalVelocity;
 
         currentState = profile.calculate(0, currentState, goalState);
-        currentState.position = getRotations();
+        currentState.position = getMotorRotations();
         timer.restart();
     }
 
@@ -123,8 +144,6 @@ public class RollerSubsystemTemplate extends SubsystemBase {
                                 (nextState.velocity - currentState.velocity) / timer.get())));
 
         currentState = nextState;
-        System.out.println(goalState.position);
-//        System.out.println(currentState.position);
         timer.restart();
     }
 
@@ -134,13 +153,20 @@ public class RollerSubsystemTemplate extends SubsystemBase {
 
     public boolean isRollerAtGoalState() {
         return isProfileFinished() &&
-                getDegrees() > getDegreesFromRotations(goalState.position) - lowerTolerance
-                && getDegrees() < getDegreesFromRotations(goalState.position) + upperTolerance;
+                getRollerRotations() > getRollerRotationsFromMotorRotations(goalState.position) - lowerToleranceRollerRotations
+                && getRollerRotations() < getRollerRotationsFromMotorRotations(goalState.position) + upperToleranceRollerRotations;
     }
 
     @Override
     public void periodic() {
         if (followLastRollerProfile) followLastRollerProfile();
-        if (getVelocity() == 0) motor.setNeutralMode(defaultNeutralMode);
+        if (isRollerAtGoalState()) {
+            setRollerPower(0d);
+            followLastRollerProfile = false;
+        }
+        if (getVelocity() == 0 && getMotorRotations() != 0) {
+            motor.setNeutralMode(defaultNeutralMode);
+            motor.setPosition(0d);
+        }
     }
 }
