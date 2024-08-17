@@ -6,6 +6,11 @@ package frc.robot;
 
 import java.util.Optional;
 
+import frc.robot.commands.Autos;
+import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.ShooterPivotAngles;
+import frc.robot.commands.base.PivotToCommand;
+
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -18,6 +23,8 @@ import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.LookUpTable;
 
 public class Robot extends TimedRobot {
     private final UserInterface userInterface = UserInterface.getInstance();
@@ -25,6 +32,9 @@ public class Robot extends TimedRobot {
     private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
+    private PivotToCommand aim = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
+
+    public double armAngle;
 
     @Override
     public void robotInit() {
@@ -38,6 +48,11 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         m_robotContainer.periodic();
+
+        
+        System.out.println("Left " + ShooterSubsystem.getInstance().getFlywheel(0).getFlywheelVelocity());
+        System.out.println("Right " + ShooterSubsystem.getInstance().getFlywheel(1).getFlywheelVelocity());
+
     }
 
     @Override
@@ -84,7 +99,22 @@ public class Robot extends TimedRobot {
 
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
+
+              double distance;
+            double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+                distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+            else
+                distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+
+            armAngle = LookUpTable.findValue(distance);
+
+
+
+
+        
     }
+
 
     @Override
     public void autonomousExit() {

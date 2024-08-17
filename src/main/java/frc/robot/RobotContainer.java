@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
@@ -48,8 +49,8 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
-    private double armAutoAimAngle;
-    private PivotToCommand armAutoAim = new PivotToCommand(
+    public double armAutoAimAngle;
+    public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
 
@@ -87,7 +88,7 @@ public class RobotContainer {
 //                .onFalse(ScoreCommands.moveShooterToStable());
 
         commandXboxController.leftTrigger().whileTrue(new ParallelCommandGroup(
-                ScoreCommands.driveAutoTurn(commandXboxController,
+                ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
                         fieldCentricSwerveDrive),
                 armAutoAim.beforeStarting(() -> shooterSubsystem.setShooterSpeeds(60))
         )).onFalse(ScoreCommands.moveShooterToStable());
@@ -126,7 +127,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autos.sixPieceRedwithAlt();
+        return autos.sixPieceRed();
     }
 
     public void periodic() {
@@ -138,6 +139,7 @@ public class RobotContainer {
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
         armAutoAimAngle = LookUpTable.findValue(distance);
         armAutoAim.changeSetpoint(armAutoAimAngle);
+        Autos.aiming.changeSetpoint(armAutoAimAngle);
     }
 
     public void onEnable() {

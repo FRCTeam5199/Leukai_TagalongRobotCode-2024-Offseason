@@ -1,16 +1,22 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.UserInterface;
+import frc.robot.commands.ScoreCommands;
+import frc.robot.constants.Constants;
 import frc.robot.parsers.ShooterParser;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
+import frc.robot.utility.LookUpTable;
 
 import java.sql.SQLOutput;
+
+import static frc.robot.RobotContainer.commandSwerveDrivetrain;
 
 public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
     private static ShooterSubsystem shooterSubsystem;
@@ -153,7 +159,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
             shooterSubsystem.setFlywheelPowers(0);
         } else {
             shooterLeft.setFlywheelControl(targetSpeed, true);
-            shooterRight.setFlywheelControl(.5 * targetSpeed, true);
+            shooterRight.setFlywheelControl(.57 * targetSpeed, true);
         }
     }
 
@@ -162,7 +168,8 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     }
 
     public boolean reachedShootingCondtions(double targetSpeed) {
-        double percentageOfMaxSpeed = .97;
+        double percentageOfMaxSpeed = 1;
+        
         return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
                 && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
     }
@@ -170,6 +177,18 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     public void setShooterSpeeds(double rps) {
         shooterLeft.setFlywheelControl(rps, true);
         shooterRight.setFlywheelControl(rps * .57, true);
+    }
+
+    public double getAutoAimAngle(){
+        double distance;
+        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+        else
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+
+        double armAngle = LookUpTable.findValue(distance);
+        return armAngle;
     }
 
     public void setFlywheelPowers(double percent) {

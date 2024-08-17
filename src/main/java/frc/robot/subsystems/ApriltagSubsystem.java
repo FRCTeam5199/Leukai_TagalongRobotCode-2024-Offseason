@@ -36,7 +36,6 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        System.out.println("Distance from Red Speaker: " + getDistanceFromRedSpeaker());
     }
 
     public double getDistanceFromRedSpeaker() {

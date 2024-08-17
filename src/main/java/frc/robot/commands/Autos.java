@@ -9,12 +9,18 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.Robot;
+import frc.robot.RobotContainer;
+import frc.robot.commands.base.PivotToCommand;
+import frc.robot.constants.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.LookUpTable;
 
 public class Autos extends Command {
     private static Autos autos;
@@ -23,6 +29,7 @@ public class Autos extends Command {
     public boolean part2Finished = false;
     public boolean alt1 = false;
 
+    public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
@@ -41,7 +48,15 @@ public class Autos extends Command {
                 pathFollowerConfig, () -> false, swerveDrive);
 
         NamedCommands.registerCommand("intake", IntakeCommands.intake());
-        NamedCommands.registerCommand("autoShoot", ScoreCommands.moveShooterToAutoAimAndAutoShoot(60));
+        NamedCommands.registerCommand("autoShoot",
+                new InstantCommand(()-> aiming.initialize())
+                  .andThen(()->aiming.execute())
+                  .andThen(()-> aiming.end(aiming.isFinished()))
+                        .andThen(ScoreCommands.setShooterSpeeds(60)).until(()->RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
+                  .andThen(ScoreCommands.indexerFeedCommand(60))
+                  .until(()-> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+
     }
 
   public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {

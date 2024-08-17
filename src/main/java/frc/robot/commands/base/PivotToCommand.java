@@ -95,6 +95,7 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
         // if (!interrupted) {
         _pivot.setHoldPivotPosition(_holdPositionAfter);
         // }
+
     }
 
     @Override
@@ -102,7 +103,8 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
         return _pivot.isPivotProfileFinished() && _pivot.inPivotTolerance(_lowerBound, _upperBound);
     }
 
-    public void changeSetpoint(double angle) {
-        _goalPositionRot = Rotation2d.fromDegrees(angle).getRotations();
+
+    public void changeSetpoint(double degrees) {
+        _goalPositionRot = Rotation2d.fromDegrees(degrees).getRotations();
     }
 }

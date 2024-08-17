@@ -31,21 +31,21 @@ public class ScoreCommands {
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static PIDController driveRotationalPIDController;
 
-    public static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive) {
+    public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, 16.58, 5.59, 180),
-                driveAutoTurn(commandXboxController, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
+                driveAutoTurn(driveX,driveY, fieldCentricSwerveDrive, 16.58, 5.59, 180),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
-    private static Command driveAutoTurn(CommandXboxController commandXboxController, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
+    private static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
                 () -> driveRotationalPIDController = new PIDController(0.2, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
-                                    .withVelocityX(-commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withVelocityY(-commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withVelocityX(-driveY * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withVelocityY(-driveX * TunerConstants.kSpeedAt12VoltsMps)
                                     .withRotationalRate(driveRotationalPIDController.calculate(
                                             commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
                                             Units.radiansToDegrees(Math.atan(
@@ -60,11 +60,48 @@ public class ScoreCommands {
         );
     }
 
+    private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
+        return new FunctionalCommand(
+                () -> driveRotationalPIDController = new PIDController(0.01, 0, 0),
+                () -> {
+                    commandSwerveDrivetrain.setControl(
+                            fieldCentricSwerveDrive
+                                    .withVelocityX(-driveY * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withVelocityY(-driveX * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withRotationalRate(driveRotationalPIDController.calculate(
+                                            commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
+                                            Units.radiansToDegrees(Math.atan(
+                                                    (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
+                },
+                interrupted -> {
+                },
+                () -> {
+                    return false;
+                },
+                commandSwerveDrivetrain
+        );
+    }
+
+    public static Command autonAutoTurn(FieldCentric fieldCentric){
+        return new ConditionalCommand(
+                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 180),
+                autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, 0),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+
+    }
+
     public static Command elevatorStable() {
         return new ParallelCommandGroup(
                 new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE),
                 new InstantCommand(() -> indexerSubsystem.setRollerSpeeds(0, 0, 0))
         );
+    }
+
+    public static double getShotAngle(){
+        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
+        return Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX())));
+        }else return Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX())));
+
     }
 
     public static Command moveElevatorToSetpoint(ElevatorHeights elevatorHeight) {
@@ -114,11 +151,12 @@ public class ScoreCommands {
                 () -> {
 
                 },
-                interrupted -> shooterSubsystem.setFlywheelPowers(0),
+                interrupted -> shooterSubsystem.setShooterSpeeds(60),
                 () -> false,
                 shooterSubsystem
         );
     }
+
 
     public static Command moveShooterToAutoAimAndAutoShoot(double targetSpeed) {
         return new SequentialCommandGroup(

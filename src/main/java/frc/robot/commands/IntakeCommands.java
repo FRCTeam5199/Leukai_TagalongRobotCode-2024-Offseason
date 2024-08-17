@@ -26,9 +26,9 @@ public class IntakeCommands {
         return new FunctionalCommand(
                 () -> {
                     if (indexerSubsystem.getAmpMode()) {
-                        indexerSubsystem.setRollerSpeeds(100, 60, 0);
+                        indexerSubsystem.setRollerSpeeds(120, 60, 0);
                     } else {
-                        indexerSubsystem.setRollerSpeeds(100, -60, 10);
+                        indexerSubsystem.setRollerSpeeds(120, -60, 10);
                     }
                 },
                 () -> {
@@ -49,7 +49,7 @@ public class IntakeCommands {
                     System.out.println("Timer: " + timer.get());
                 },
                 interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
-                () -> timer.get() > .5,
+                () -> timer.get() > .2,
                 indexerSubsystem
         );
     }
@@ -83,19 +83,10 @@ public class IntakeCommands {
                         () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap())
                 ),
                 new SequentialCommandGroup(
-                        resettleNoteBackwards(),
-                        resettleNoteForwards(),
-                        resettleNoteBackwards(),
-                        resettleNoteForwards(),
-                        resettleNoteBackwards(),
-                        resettleNoteForwards(),
-                        resettleNoteBackwards(),
-                        resettleNoteForwards(),
-                        resettleNoteBackwards(),
-                        resettleNoteForwards()
+
                 ).unless(indexerSubsystem::isNoteInAmpTrap)
         ).unless(
-                () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap())
+                () -> (indexerSubsystem.isNoteInAmpTrap())
         );
     }
 
