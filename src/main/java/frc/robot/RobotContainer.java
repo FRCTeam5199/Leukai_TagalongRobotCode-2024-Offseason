@@ -42,6 +42,10 @@ public class RobotContainer {
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    public double armAutoAimAngle;
+    public PivotToCommand armAutoAim = new PivotToCommand(
+            shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
+    );
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -49,10 +53,6 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
-    public double armAutoAimAngle;
-    public PivotToCommand armAutoAim = new PivotToCommand(
-            shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
-    );
 
     public RobotContainer() {
         configureBindings();
@@ -137,6 +137,7 @@ public class RobotContainer {
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+        System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
         armAutoAim.changeSetpoint(armAutoAimAngle);
         Autos.aiming.changeSetpoint(armAutoAimAngle);

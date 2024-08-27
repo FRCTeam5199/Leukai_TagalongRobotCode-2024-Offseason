@@ -30,11 +30,10 @@ public class Robot extends TimedRobot {
     private final UserInterface userInterface = UserInterface.getInstance();
     private final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
+    public double armAngle;
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
     private PivotToCommand aim = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
-
-    public double armAngle;
 
     @Override
     public void robotInit() {
@@ -48,11 +47,6 @@ public class Robot extends TimedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         m_robotContainer.periodic();
-
-        
-        System.out.println("Left " + ShooterSubsystem.getInstance().getFlywheel(0).getFlywheelVelocity());
-        System.out.println("Right " + ShooterSubsystem.getInstance().getFlywheel(1).getFlywheelVelocity());
-
     }
 
     @Override
@@ -100,19 +94,16 @@ public class Robot extends TimedRobot {
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
 
-              double distance;
-            double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
-            if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
-                distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
-            else
-                distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+        double distance;
+        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+        else
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-            armAngle = LookUpTable.findValue(distance);
-
-
+        armAngle = LookUpTable.findValue(distance);
 
 
-        
     }
 
 

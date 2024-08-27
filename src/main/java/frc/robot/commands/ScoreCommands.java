@@ -33,7 +33,7 @@ public class ScoreCommands {
 
     public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                driveAutoTurn(driveX,driveY, fieldCentricSwerveDrive, 16.58, 5.59, 180),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 185),
                 driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
@@ -82,7 +82,7 @@ public class ScoreCommands {
         );
     }
 
-    public static Command autonAutoTurn(FieldCentric fieldCentric){
+    public static Command autonAutoTurn(FieldCentric fieldCentric) {
         return new ConditionalCommand(
                 autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 180),
                 autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, 0),
@@ -97,10 +97,11 @@ public class ScoreCommands {
         );
     }
 
-    public static double getShotAngle(){
-        if(DriverStation.getAlliance().get() == DriverStation.Alliance.Red){
-        return Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX())));
-        }else return Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX())));
+    public static double getShotAngle() {
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            return Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX())));
+        } else
+            return Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX())));
 
     }
 
