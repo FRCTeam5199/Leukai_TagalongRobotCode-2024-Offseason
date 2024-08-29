@@ -53,9 +53,7 @@ public class ScoreCommands {
                 },
                 interrupted -> {
                 },
-                () -> {
-                    return false;
-                },
+                () -> false,
                 commandSwerveDrivetrain
         );
     }
@@ -75,9 +73,7 @@ public class ScoreCommands {
                 },
                 interrupted -> {
                 },
-                () -> {
-                    return false;
-                },
+                () -> false,
                 commandSwerveDrivetrain
         );
     }
