@@ -10,16 +10,17 @@ public class LookUpTable {
             //Distances, Averages
 
             add(new Pair<>(1.37, 58d));
-            add(new Pair<>(2.32, 47.75));
+            add(new Pair<>(1.92, 47.75));
             add(new Pair<>(2.32, 44.625));
             add(new Pair<>(2.75, 39.75));
             add(new Pair<>(3.15, 36.5));
             add(new Pair<>(3.44, 34.75));
             add(new Pair<>(3.76, 34d));
             add(new Pair<>(4.14, 32d));
+            add(new Pair<>(4.48, 30.875));
             add(new Pair<>(4.77, 30.625));
-            add(new Pair<>(5.43, 28.75));
         }
+
     };
 
     /*Distances, Low Value, High Value
@@ -30,6 +31,7 @@ public class LookUpTable {
     3.46, 34, 35.5
     3.76, 33.5, 34.5
     4.14, 31.5, 32.5
+    4.48, 30.25, 31.5
     4.77, 30.5, 30.75
 
      */

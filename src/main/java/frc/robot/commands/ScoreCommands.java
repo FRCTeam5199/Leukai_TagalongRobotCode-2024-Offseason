@@ -216,7 +216,7 @@ public class ScoreCommands {
 
     public static Command indexerFeedCommand(double targetSpeed) {
         return new FunctionalCommand(
-                () -> indexerSubsystem.setRollerSpeeds(0, -80, 40),
+                () -> indexerSubsystem.setRollerSpeeds(0, -100, 50),
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
