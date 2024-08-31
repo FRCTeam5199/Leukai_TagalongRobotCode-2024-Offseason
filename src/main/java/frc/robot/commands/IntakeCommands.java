@@ -79,12 +79,7 @@ public class IntakeCommands {
     public static Command intake() {
         return new SequentialCommandGroup(
                 setElevatorToStable(),
-                spinRollersForIntake().until(
-                        () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap())
-                ),
-                new SequentialCommandGroup(
-
-                ).unless(indexerSubsystem::isNoteInAmpTrap)
+                spinRollersForIntake()
         ).unless(
                 () -> (indexerSubsystem.isNoteInAmpTrap())
         );
