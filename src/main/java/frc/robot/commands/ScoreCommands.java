@@ -90,6 +90,7 @@ public class ScoreCommands {
 
     }
 
+
     public static Command elevatorStable() {
         return new ParallelCommandGroup(
                 new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE),
@@ -103,6 +104,10 @@ public class ScoreCommands {
         } else
             return Units.radiansToDegrees(Math.atan((5.59 - commandSwerveDrivetrain.getPose().getY()) / (16.58 - commandSwerveDrivetrain.getPose().getX())));
 
+    }
+
+    public static Command subWooferShot(){
+        return moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 45).andThen(indexerFeedCommand(45));
     }
 
     public static Command moveElevatorToSetpoint(ElevatorHeights elevatorHeight) {

@@ -31,6 +31,8 @@ public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
             Ports.DRIVER_XBOX_USB_PORT);
 
+    public double prevArmAngle = 0;
+
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
     // NoteElevator noteElevator = new
     // NoteElevator("configs/notevator/notevatorConf.json");
@@ -132,6 +134,7 @@ public class RobotContainer {
 
     public void periodic() {
         double distance;
+
         double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
@@ -140,7 +143,10 @@ public class RobotContainer {
         System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
         armAutoAim.changeSetpoint(armAutoAimAngle);
-        Autos.aiming.changeSetpoint(armAutoAimAngle);
+        if(armAutoAimAngle != prevArmAngle) {
+            Autos.aiming.changeSetpoint(armAutoAimAngle);
+            prevArmAngle = armAutoAimAngle;
+        }
     }
 
     public void onEnable() {

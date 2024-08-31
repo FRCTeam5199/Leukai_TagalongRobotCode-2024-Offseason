@@ -33,7 +33,6 @@ public class Robot extends TimedRobot {
     public double armAngle;
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
-    private PivotToCommand aim = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
 
     @Override
     public void robotInit() {
@@ -104,7 +103,13 @@ public class Robot extends TimedRobot {
         armAngle = LookUpTable.findValue(distance);
 
 
+        Autos.aiming.initialize();
+        Autos.aiming.execute();
+        Autos.aiming.end(Autos.aiming.isFinished());
+
+        
     }
+
 
 
     @Override

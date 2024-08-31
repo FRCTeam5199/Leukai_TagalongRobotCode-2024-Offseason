@@ -34,7 +34,7 @@ public class Autos extends Command {
     SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
             new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
-            new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
+            new com.pathplanner.lib.util.PIDConstants(4.5, 0, 0),
             5.76072, .375, new ReplanningConfig(true, true));
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
@@ -49,13 +49,13 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("intake", IntakeCommands.intake());
         NamedCommands.registerCommand("autoShoot",
-                new InstantCommand(()-> aiming.initialize())
-                  .andThen(()->aiming.execute())
-                  .andThen(()-> aiming.end(aiming.isFinished()))
-                        .andThen(ScoreCommands.setShooterSpeeds(60)).until(()->RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
+                        ScoreCommands.setShooterSpeeds(60)
+                                .until(()->RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
                   .andThen(ScoreCommands.indexerFeedCommand(60))
                   .until(()-> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
+
+        NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(()->aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true, .04)));
 
     }
 
@@ -73,7 +73,7 @@ public class Autos extends Command {
 //    }
 
     public Command sixPieceRed() {
-        return AutoBuilder.buildAuto("6 piece red shoot");
+        return new SequentialCommandGroup(AutoBuilder.buildAuto("6 piece red shoot"));
     }
 
     public Command sixPieceRedPart1(){

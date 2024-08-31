@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 14.01579021426133,
-        "y": 4.275066580975393
+        "x": 13.94,
+        "y": 4.23
       },
       "prevControl": {
-        "x": 14.374657614401265,
-        "y": 4.659822872379559
+        "x": 14.298867400139935,
+        "y": 4.614756291404166
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,6 +42,23 @@
               "type": "named",
               "data": {
                 "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.5,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "adjustPivotSpeed"
               }
             }
           ]
