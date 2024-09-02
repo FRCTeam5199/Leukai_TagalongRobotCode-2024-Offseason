@@ -5,6 +5,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -60,7 +61,7 @@ public class ScoreCommands {
 
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(0.01, 0, 0),
+                () -> driveRotationalPIDController = new PIDController(.6, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
@@ -73,7 +74,15 @@ public class ScoreCommands {
                 },
                 interrupted -> {
                 },
-                () -> false,
+                () -> {
+                    if (commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees() > (Units.radiansToDegrees(Math.atan((targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) + 5) || commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees() < (Units.radiansToDegrees(Math.atan((targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) - 5)){
+                       System.out.println("Not at target: Current Rotation: " + commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees() + " Target Rotation: " + Units.radiansToDegrees(Math.atan((targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))));
+                        return false;
+                    }else{
+                        System.out.println("At Target");
+                        return true;
+                    }
+                },
                 commandSwerveDrivetrain
         );
     }

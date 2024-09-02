@@ -140,7 +140,7 @@ public class RobotContainer {
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
-        System.out.println("Distance: " + distance);
+        //System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
         armAutoAim.changeSetpoint(armAutoAimAngle);
         if(armAutoAimAngle != prevArmAngle) {

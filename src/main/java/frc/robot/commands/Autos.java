@@ -55,8 +55,9 @@ public class Autos extends Command {
                   .until(()-> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
-        NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(()->aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true, .04)));
+        NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(()->aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true, .037)));
 
+        NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
     }
 
   public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
@@ -106,9 +107,9 @@ public class Autos extends Command {
         return new SequentialCommandGroup(
             sixPieceRedPart1(),
             sixPieceRedPart2().unless(()-> !objectDetection.notePresent()),
-            sixPieceRedNote5Check().unless(()-> part2Finished == true),
+            sixPieceRedNote5Check().unless(()-> part2Finished),
             sixPieceRedPart2Alt1().unless(()-> !objectDetection.notePresent()),
-            sixPieceRedPart2Alt2().unless(()-> alt1 == true || part2Finished == true)
+            sixPieceRedPart2Alt2().unless(()-> alt1 || part2Finished)
         );
     }
 
