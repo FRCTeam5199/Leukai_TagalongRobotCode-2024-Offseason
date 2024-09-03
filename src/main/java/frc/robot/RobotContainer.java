@@ -30,9 +30,6 @@ import frc.robot.utility.LookUpTable;
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
             Ports.DRIVER_XBOX_USB_PORT);
-
-    public double prevArmAngle = 0;
-
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
     // NoteElevator noteElevator = new
     // NoteElevator("configs/notevator/notevatorConf.json");
@@ -44,10 +41,12 @@ public class RobotContainer {
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    public double prevArmAngle = 0;
     public double armAutoAimAngle;
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
+    private double shooterRPS = 60;
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -92,7 +91,7 @@ public class RobotContainer {
         commandXboxController.leftTrigger().whileTrue(new ParallelCommandGroup(
                 ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
                         fieldCentricSwerveDrive),
-                armAutoAim.beforeStarting(() -> shooterSubsystem.setShooterSpeeds(60))
+                armAutoAim.beforeStarting(() -> shooterSubsystem.setShooterSpeeds(shooterRPS))
         )).onFalse(ScoreCommands.moveShooterToStable());
 
 //                .onFalse(ScoreCommands.moveShooterToStable());
@@ -140,10 +139,12 @@ public class RobotContainer {
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
-        //System.out.println("Distance: " + distance);
+        System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
-        armAutoAim.changeSetpoint(armAutoAimAngle);
-        if(armAutoAimAngle != prevArmAngle) {
+        if (distance > 4.77) shooterRPS = 70;
+        else shooterRPS = 60;
+        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+        if (armAutoAimAngle != prevArmAngle) {
             Autos.aiming.changeSetpoint(armAutoAimAngle);
             prevArmAngle = armAutoAimAngle;
         }

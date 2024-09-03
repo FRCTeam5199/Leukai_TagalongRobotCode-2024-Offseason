@@ -105,7 +105,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.periodic();
 
         updateShuffleboard();
-        //System.out.println("Shooter Left: " + shooterLeft.getFlywheelVelocity());
+//        System.out.println("Shooter LEFT: " + shooterLeft.getFlywheelVelocity());
 //        System.out.println("Shooter RIGHT: " + shooterRight.getFlywheelVelocity());
         // System.out.println(UserInterface.getInstance().getShooterPositionComponentData());
 //        System.out.println("Arm Pivot Position: " + Rotation2d.fromRotations(arm.getPivotPosition()).getDegrees());
@@ -168,10 +168,10 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     }
 
     public boolean reachedShootingCondtions(double targetSpeed) {
-        double percentageOfMaxSpeed = 1;
-        
+        double percentageOfMaxSpeed = .97;
+
         return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
-                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
+                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .57 * percentageOfMaxSpeed;
     }
 
     public void setShooterSpeeds(double rps) {
@@ -179,7 +179,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         shooterRight.setFlywheelControl(rps * .57, true);
     }
 
-    public double getAutoAimAngle(){
+    public double getAutoAimAngle() {
         double distance;
         double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)

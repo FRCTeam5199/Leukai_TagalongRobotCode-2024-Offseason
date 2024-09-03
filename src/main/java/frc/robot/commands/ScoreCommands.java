@@ -61,7 +61,7 @@ public class ScoreCommands {
 
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(.6, 0, 0),
+                () -> driveRotationalPIDController = new PIDController(0.2, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
@@ -74,15 +74,9 @@ public class ScoreCommands {
                 },
                 interrupted -> {
                 },
-                () -> {
-                    if (commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees() > (Units.radiansToDegrees(Math.atan((targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) + 5) || commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees() < (Units.radiansToDegrees(Math.atan((targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) - 5)){
-                       System.out.println("Not at target: Current Rotation: " + commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees() + " Target Rotation: " + Units.radiansToDegrees(Math.atan((targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))));
-                        return false;
-                    }else{
-                        System.out.println("At Target");
-                        return true;
-                    }
-                },
+                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + 2)).getDegrees() >= Units.radiansToDegrees(Math.atan(
+                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset - 2)).getDegrees() <= Units.radiansToDegrees(Math.atan(
+                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))),
                 commandSwerveDrivetrain
         );
     }
@@ -111,7 +105,7 @@ public class ScoreCommands {
 
     }
 
-    public static Command subWooferShot(){
+    public static Command subWooferShot() {
         return moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 45).andThen(indexerFeedCommand(45));
     }
 
@@ -230,7 +224,7 @@ public class ScoreCommands {
 
     public static Command indexerFeedCommand(double targetSpeed) {
         return new FunctionalCommand(
-                () -> indexerSubsystem.setRollerSpeeds(0, -100, 50),
+                () -> indexerSubsystem.setRollerSpeeds(50, -100, 50),
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),

@@ -8,15 +8,14 @@ public class LookUpTable {
     public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
         {
             //Distances, Averages
-
             add(new Pair<>(1.37, 58d));
             add(new Pair<>(1.92, 47.75));
             add(new Pair<>(2.32, 44.625));
             add(new Pair<>(2.75, 39.75));
             add(new Pair<>(3.15, 36.5));
             add(new Pair<>(3.44, 34.75));
-            add(new Pair<>(3.76, 34d));
-            add(new Pair<>(4.14, 32d));
+            add(new Pair<>(3.87, 32.375));
+            add(new Pair<>(4.14, 31.75));
             add(new Pair<>(4.48, 30.875));
             add(new Pair<>(4.77, 30.625));
         }
@@ -24,15 +23,19 @@ public class LookUpTable {
     };
 
     /*Distances, Low Value, High Value
+    ------60 RPS--------
     1.92, 45.5, 50
     2.32, 43, 46.25
     2.75, 38, 41.5
     3.15, 35, 38
     3.46, 34, 35.5
-    3.76, 33.5, 34.5
-    4.14, 31.5, 32.5
+    3.87, 31.25, 33.5
+    4.14, 31.25, 32.25
     4.48, 30.25, 31.5
     4.77, 30.5, 30.75
+    -------70 RPS-------
+    4.82, 27.25, 28
+
 
      */
     public static double findValue(double distance) {

@@ -32,6 +32,12 @@
         {
           "type": "named",
           "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autoShoot"
           }
         },
@@ -50,6 +56,12 @@
         {
           "type": "named",
           "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autoShoot"
           }
         },
@@ -57,6 +69,12 @@
           "type": "path",
           "data": {
             "pathName": "note 2 to note 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
           }
         },
         {
