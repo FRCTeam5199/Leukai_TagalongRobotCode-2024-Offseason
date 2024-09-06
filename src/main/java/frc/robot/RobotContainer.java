@@ -98,12 +98,11 @@ public class RobotContainer {
         commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
                 .onFalse(ScoreCommands.elevatorStable());
-//        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
-//        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
-        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
-        ).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
         commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
+
+        //Testing shooter pivot and speeds
 //        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10));
 //        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30));
 //        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50));
@@ -143,7 +142,7 @@ public class RobotContainer {
         armAutoAimAngle = LookUpTable.findValue(distance);
         if (distance > 4.77) shooterRPS = 70;
         else shooterRPS = 60;
-        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+        armAutoAim.changeSetpoint(armAutoAimAngle);
         if (armAutoAimAngle != prevArmAngle) {
             Autos.aiming.changeSetpoint(armAutoAimAngle);
             prevArmAngle = armAutoAimAngle;
