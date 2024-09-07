@@ -22,8 +22,8 @@ public class RollerSubsystemTemplate extends SubsystemBase {
     private final VelocityVoltage velocityVoltage;
     private final Slot0Configs slot0Configs;
     private final SimpleMotorFeedforward feedforward;
-    private final double lowerToleranceRollerRotations;
-    private final double upperToleranceRollerRotations;
+    private final double lowerToleranceRollerRot;
+    private final double upperToleranceRollerRot;
     private final Timer timer;
     private TrapezoidProfile.State currentState;
     private TrapezoidProfile.State goalState;
@@ -33,7 +33,7 @@ public class RollerSubsystemTemplate extends SubsystemBase {
 
     public RollerSubsystemTemplate(int id, TrapezoidProfile.Constraints constraints,
                                    PID pid, SimpleMotorFeedforward feedforward,
-                                   double lowerToleranceRollerRotations, double upperToleranceRollerRotations,
+                                   double lowerToleranceRollerRot, double upperToleranceRollerRot,
                                    double[][] gearRatios) {
         motor = new TalonFX(id);
         motorConfig = new TalonFXConfiguration();
@@ -50,8 +50,8 @@ public class RollerSubsystemTemplate extends SubsystemBase {
         positionVoltage = new PositionVoltage(0).withSlot(0).withEnableFOC(true);
         velocityVoltage = new VelocityVoltage(0).withSlot(0).withEnableFOC(true);
 
-        this.lowerToleranceRollerRotations = lowerToleranceRollerRotations;
-        this.upperToleranceRollerRotations = upperToleranceRollerRotations;
+        this.lowerToleranceRollerRot = lowerToleranceRollerRot;
+        this.upperToleranceRollerRot = upperToleranceRollerRot;
 
         for (double[] ratio : gearRatios) {
             this.gearRatio *= ratio[1] / ratio[0];
@@ -76,44 +76,44 @@ public class RollerSubsystemTemplate extends SubsystemBase {
         return motor.getPosition().getValueAsDouble() * gearRatio / 360d;
     }
 
-    public double getMotorRotations() {
+    public double getMotorRot() {
         return motor.getPosition().getValueAsDouble();
     }
 
-    public double getRollerRotations() {
+    public double getRollerRot() {
         return motor.getPosition().getValueAsDouble() * gearRatio;
     }
 
-    public double getDegreesFromRollerRotations(double rollerRotations) {
-        return rollerRotations * gearRatio * 360d;
+    public double getDegreesFromRollerRot(double rollerRot) {
+        return rollerRot * gearRatio * 360d;
     }
 
-    public double getDegreesFromMotorRotations(double motorRotations) {
-        return motorRotations * 360d;
+    public double getDegreesFromMotorRot(double motorRot) {
+        return motorRot * 360d;
     }
 
-    public double getRollerRotationsFromDegrees(double degrees) {
+    public double getRollerRotFromDegrees(double degrees) {
         return degrees / 360d / gearRatio;
     }
 
-    public double getMotorRotationsFromDegrees(double degrees) {
+    public double getMotorRotFromDegrees(double degrees) {
         return degrees / 360d;
     }
 
-    public double getRollerRotationsFromMotorRotations(double motorRotations) {
-        return motorRotations * gearRatio;
+    public double getRollerRotFromMotorRot(double motorRot) {
+        return motorRot * gearRatio;
     }
 
-    public double getMotorRotationsFromRollerRotations(double rollerRotations) {
-        return rollerRotations / gearRatio;
+    public double getMotorRotFromRollerRot(double rollerRot) {
+        return rollerRot / gearRatio;
     }
 
-    public double getVelocity() {
+    public double getMotorVelocity() {
         return motor.getVelocity().getValueAsDouble();
     }
 
-    public void setRollerPower(double percent) {
-        motor.set(percent);
+    public double getRollerVelocity() {
+        return getRollerRotFromMotorRot(motor.getVelocity().getValueAsDouble());
     }
 
     public void setRollerVelocity(double rps) {
@@ -124,15 +124,19 @@ public class RollerSubsystemTemplate extends SubsystemBase {
         ));
     }
 
-    public void setRollerProfile(double goalRotations, double goalVelocity) {
+    public void setRollerPower(double percent) {
+        motor.set(percent);
+    }
+
+    public void setRollerProfile(double goalRot, double goalVelocity) {
         motor.setNeutralMode(NeutralModeValue.Coast);
         followLastRollerProfile = true;
 
-        goalState.position = getMotorRotationsFromRollerRotations(goalRotations);
+        goalState.position = getMotorRotFromRollerRot(goalRot);
         goalState.velocity = goalVelocity;
 
         currentState = profile.calculate(0, currentState, goalState);
-        currentState.position = getMotorRotations();
+        currentState.position = getMotorRot();
         timer.restart();
     }
 
@@ -153,8 +157,8 @@ public class RollerSubsystemTemplate extends SubsystemBase {
 
     public boolean isRollerAtGoalState() {
         return isProfileFinished() &&
-                getRollerRotations() > getRollerRotationsFromMotorRotations(goalState.position) - lowerToleranceRollerRotations
-                && getRollerRotations() < getRollerRotationsFromMotorRotations(goalState.position) + upperToleranceRollerRotations;
+                getRollerRot() > getRollerRotFromMotorRot(goalState.position) - lowerToleranceRollerRot
+                && getRollerRot() < getRollerRotFromMotorRot(goalState.position) + upperToleranceRollerRot;
     }
 
     @Override
@@ -164,7 +168,7 @@ public class RollerSubsystemTemplate extends SubsystemBase {
             setRollerPower(0d);
             followLastRollerProfile = false;
         }
-        if (getVelocity() == 0 && getMotorRotations() != 0) {
+        if (getMotorVelocity() == 0 && getMotorRot() != 0) {
             motor.setNeutralMode(defaultNeutralMode);
             motor.setPosition(0d);
         }
