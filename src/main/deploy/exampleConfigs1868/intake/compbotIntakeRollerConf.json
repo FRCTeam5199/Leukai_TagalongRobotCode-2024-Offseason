@@ -5,7 +5,7 @@
     "id": 41,
     "canbus": "rio"
   },
-  "gearRatio": [[24, 12]],
+  "gearRatio": [[12, 16]],
   "feedforward": {
     "s": 0.0,
     "v": 0.0,
