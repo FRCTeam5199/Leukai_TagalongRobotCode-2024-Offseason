@@ -61,7 +61,7 @@ public class ScoreCommands {
 
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(0.2, 0, 0),
+                () -> driveRotationalPIDController = new PIDController(0.1, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
