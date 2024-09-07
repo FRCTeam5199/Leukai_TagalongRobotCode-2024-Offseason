@@ -89,11 +89,15 @@ public class RollerSubsystemTemplate extends SubsystemBase {
     }
 
     public double getDegreesFromMotorRotations(double motorRotations) {
-        return motorRotations / 360d;
+        return motorRotations * 360d;
     }
 
     public double getRollerRotationsFromDegrees(double degrees) {
         return degrees / 360d / gearRatio;
+    }
+
+    public double getMotorRotationsFromDegrees(double degrees) {
+        return degrees / 360d;
     }
 
     public double getRollerRotationsFromMotorRotations(double motorRotations) {
@@ -102,10 +106,6 @@ public class RollerSubsystemTemplate extends SubsystemBase {
 
     public double getMotorRotationsFromRollerRotations(double rollerRotations) {
         return rollerRotations / gearRatio;
-    }
-
-    public double getMotorRotationsFromDegrees(double degrees) {
-        return degrees / 360d;
     }
 
     public double getVelocity() {
