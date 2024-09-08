@@ -6,8 +6,14 @@
     "canbus": "rio"
   },
   "gearRatio": [
-    [48, 14],
-    [48, 24]
+    [
+      48,
+      14
+    ],
+    [
+      48,
+      24
+    ]
   ],
   "drumDiameter": {
     "unit": "in",
@@ -36,7 +42,7 @@
   },
   "motorControl": {
     "clockwisePositive": false,
-    "brakeMode": false,
+    "brakeMode": true,
     "motorCurrentLimits": {
       "statorEnableLimit": true,
       "statorPeakLimit": 80,
@@ -45,7 +51,7 @@
       "supplyContinuousLimit": 60,
       "peakDuration": 0.8
     },
-      "motor": {
+    "motor": {
       "slot0PIDConstants": {
         "p": 2.0,
         "i": 0.0,
@@ -84,7 +90,7 @@
       "supplyContinuousLimit": 60,
       "peakDuration": 0.8
     },
-      "motor": {
+    "motor": {
       "slot0PIDConstants": {
         "p": 1.5,
         "i": 0.1,
