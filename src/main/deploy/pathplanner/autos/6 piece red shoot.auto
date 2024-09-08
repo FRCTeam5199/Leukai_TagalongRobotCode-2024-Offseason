@@ -102,15 +102,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "autoShootFast"
           }
         },
         {
@@ -134,13 +128,7 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
+            "name": "autoShootFast"
           }
         }
       ]

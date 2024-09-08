@@ -8,7 +8,7 @@ public class LookUpTable {
     public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
         {
             //Distances, Averages
-            add(new Pair<>(1.37, 58d));
+            add(new Pair<>(1.37, 57d));
             add(new Pair<>(1.92, 46.75));
             add(new Pair<>(2.32, 43.125));
             add(new Pair<>(2.75, 38.75));

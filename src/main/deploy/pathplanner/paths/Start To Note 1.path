@@ -49,10 +49,10 @@
       }
     },
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0.5,
+      "name": "adjustPivotSpeedFast",
+      "waypointRelativePos": 0.45,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {

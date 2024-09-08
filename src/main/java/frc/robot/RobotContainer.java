@@ -41,8 +41,8 @@ public class RobotContainer {
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    public static double armAutoAimAngle;
     public double prevArmAngle = 0;
-    public double armAutoAimAngle;
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
@@ -139,7 +139,7 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-        System.out.println("Distance: " + distance);
+//        System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
         if (distance > 4.48) shooterRPS = 70;
         else shooterRPS = 60;
