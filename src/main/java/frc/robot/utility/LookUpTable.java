@@ -17,7 +17,9 @@ public class LookUpTable {
             add(new Pair<>(3.87, 32.375));
             add(new Pair<>(4.14, 31.75));
             add(new Pair<>(4.48, 30.875));
-            add(new Pair<>(4.77, 30.625));
+            add(new Pair<>(4.52, 27.125));
+            add(new Pair<>(4.81, 26.25));
+            add(new Pair<>(5.01, 25.875));
         }
 
     };
@@ -32,10 +34,10 @@ public class LookUpTable {
     3.87, 31.25, 33.5
     4.14, 31.25, 32.25
     4.48, 30.25, 31.5
-    4.77, 30.5, 30.75
     -------70 RPS-------
-    4.82, 27.25, 28
-
+    4.52, 26.25, 28
+    4.81, 25.75, 26.75
+    5.01, 25, 26.75
 
      */
     public static double findValue(double distance) {

@@ -132,16 +132,18 @@ public class RobotContainer {
 
     public void periodic() {
         double distance;
-
         double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+
         System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
-        if (distance > 4.77) shooterRPS = 70;
+        if (distance > 4.48) shooterRPS = 70;
         else shooterRPS = 60;
+
         armAutoAim.changeSetpoint(armAutoAimAngle);
         if (armAutoAimAngle != prevArmAngle) {
             Autos.aiming.changeSetpoint(armAutoAimAngle);
