@@ -98,8 +98,8 @@ public class RobotContainer {
         commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
                 .onFalse(ScoreCommands.elevatorStable());
-        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
-        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.65)).onFalse(ClimberCommands.setClimberPowers(0));
+        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.65)).onFalse(ClimberCommands.setClimberPowers(0));
 
 
         //Testing shooter pivot and speeds

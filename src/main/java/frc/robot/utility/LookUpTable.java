@@ -9,9 +9,9 @@ public class LookUpTable {
         {
             //Distances, Averages
             add(new Pair<>(1.37, 58d));
-            add(new Pair<>(1.92, 47.75));
-            add(new Pair<>(2.32, 44.125));
-            add(new Pair<>(2.75, 39.75));
+            add(new Pair<>(1.92, 46.75));
+            add(new Pair<>(2.32, 43.125));
+            add(new Pair<>(2.75, 38.75));
             add(new Pair<>(3.15, 36.5));
             add(new Pair<>(3.44, 34.75));
             add(new Pair<>(3.87, 32.375));
@@ -20,15 +20,17 @@ public class LookUpTable {
             add(new Pair<>(4.52, 27.125));
             add(new Pair<>(4.81, 26.25));
             add(new Pair<>(5.01, 25.875));
+            add(new Pair<>(5.25, 24.625));
+            add(new Pair<>(5.57, 24.75));
         }
 
     };
 
     /*Distances, Low Value, High Value
     ------60 RPS--------
-    1.92, 45.5, 50
-    2.32, 42.5, 45.75
-    2.75, 38, 41.5
+    1.92, 45.5, 49
+    2.32, 42.5, 44.75
+    2.75, 38, 40.5
     3.15, 35, 38
     3.46, 34, 35.5
     3.87, 31.25, 33.5
@@ -38,7 +40,8 @@ public class LookUpTable {
     4.52, 26.25, 28
     4.81, 25.75, 26.75
     5.01, 25, 26.75
-
+    5.25, 24, 25.25
+    5.57, 24.5, 25
      */
     public static double findValue(double distance) {
         if (distance < lookUpTable.get(0).getFirst()) {
