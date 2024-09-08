@@ -18,20 +18,26 @@ import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.LED.LEDSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 
 public class Robot extends TimedRobot {
     private final UserInterface userInterface = UserInterface.getInstance();
     private final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
+    private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
 
     @Override
     public void robotInit() {
-
         m_robotContainer = new RobotContainer();
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
         userInterface.init();
+        
+        ledSubsystem.init();
+        ledSubsystem.start();
+        ledSubsystem.setMode(LEDMode.SHOOTING);
     }
 
     @Override
@@ -98,9 +104,7 @@ public class Robot extends TimedRobot {
 
         m_robotContainer.onEnable();
 
-
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsTeleop);
-
 
         // This corresponds to what direction the driver is facing at a given time
         commandSwerveDrivetrain.setOperatorPerspectiveForward(Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));

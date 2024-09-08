@@ -11,16 +11,22 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.*;
+import frc.robot.commands.Autos;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.commands.base.ClimberCommands;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.*;
-import frc.robot.subsystems.testTemplateSubsystems.TestRollerSubsystem;
+import frc.robot.subsystems.AmpTrap;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.ObjectDetectionSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 
 public class RobotContainer {
@@ -28,13 +34,10 @@ public class RobotContainer {
             Ports.DRIVER_XBOX_USB_PORT);
 
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
-    // NoteElevator noteElevator = new
-    // NoteElevator("configs/notevator/notevatorConf.json");
     public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
-    public static final NoteElevator noteElevator = NoteElevator.getInstance();
-    public static final TestRollerSubsystem testRollerSubsystem = TestRollerSubsystem.getInstance();
+    public static final AmpTrap ampTrap = AmpTrap.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
@@ -93,23 +96,6 @@ public class RobotContainer {
         commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
                 .onFalse(ScoreCommands.elevatorStable());
-//        commandXboxController.povLeft().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.DOWN, ClimberHeights.DOWN));
-//        commandXboxController.povRight().onTrue(ClimberCommands.moveClimbersToSetpoint(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT));
-//        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)
-//        ).onFalse(ClimberCommands.setClimberPowers(0));
-//        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
-
-//        commandXboxController.povDown().onTrue(ScoreCommands.setShooterSpeeds(10));
-//        commandXboxController.povLeft().onTrue(ScoreCommands.setShooterSpeeds(30));
-//        commandXboxController.povUp().onTrue(ScoreCommands.setShooterSpeeds(50));
-//        commandXboxController.povRight().onTrue(ScoreCommands.setShooterSpeeds(90));
-
-//        commandXboxController.povDown().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE, 0));
-//        commandXboxController.povLeft().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW, 0));
-//        commandXboxController.povUp().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
-//        commandXboxController.povRight().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 0));
-        commandXboxController.povDown()
-                .onTrue(new InstantCommand(() -> testRollerSubsystem.setRollerProfile(10, 0)));
 
         commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
             // Seed field relative pose that is alliance dependent
@@ -143,14 +129,14 @@ public class RobotContainer {
         indexerSubsystem.onEnable();
         shooterSubsystem.onEnable();
         climberSubsystem.onEnable();
-        noteElevator.onEnable();
+        ampTrap.onEnable();
     }
 
     public void onDisable() {
         indexerSubsystem.onDisable();
         shooterSubsystem.onDisable();
         climberSubsystem.onDisable();
-        noteElevator.onEnable();
+        ampTrap.onEnable();
 
     }
 
@@ -158,20 +144,20 @@ public class RobotContainer {
         indexerSubsystem.disabledPeriodic();
         shooterSubsystem.disabledPeriodic();
         climberSubsystem.disabledPeriodic();
-        noteElevator.disabledPeriodic();
+        ampTrap.disabledPeriodic();
     }
 
     public void simulationInit() {
         indexerSubsystem.simulationInit();
         shooterSubsystem.simulationInit();
         climberSubsystem.simulationInit();
-        noteElevator.simulationInit();
+        ampTrap.simulationInit();
     }
 
     public void simulationPeriodic() {
         indexerSubsystem.simulationPeriodic();
         shooterSubsystem.simulationPeriodic();
         climberSubsystem.simulationPeriodic();
-        noteElevator.simulationPeriodic();
+        ampTrap.simulationPeriodic();
     }
 }

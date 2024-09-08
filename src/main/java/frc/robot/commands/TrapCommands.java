@@ -6,11 +6,11 @@ import frc.robot.commands.base.ClimberCommands;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
+import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class TrapCommands{
-    public static NoteElevator noteElevator;
+    public static AmpTrap noteElevator;
     public static ShooterSubsystem shooter;
     public static Climber climber;
     public static Command trapPrep(){
