@@ -47,40 +47,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "adjustPivotSpeedFast",
-      "waypointRelativePos": 0.25,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeedFast"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "adjustPivotSpeedSlow",
-      "waypointRelativePos": 0.7,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeedSlow"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {

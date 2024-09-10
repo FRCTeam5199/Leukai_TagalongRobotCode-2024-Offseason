@@ -49,8 +49,8 @@
       }
     },
     {
-      "name": "adjustPivotSpeedFast",
-      "waypointRelativePos": 0.45,
+      "name": "adjustPivotSpeed",
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "sequential",
         "data": {

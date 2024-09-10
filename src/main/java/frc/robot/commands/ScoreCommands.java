@@ -73,6 +73,7 @@ public class ScoreCommands {
                                                     (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
                 },
                 interrupted -> {
+                    System.out.println("Completed");
                 },
                 () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + 2)).getDegrees() >= Units.radiansToDegrees(Math.atan(
                         (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset - 2)).getDegrees() <= Units.radiansToDegrees(Math.atan(
@@ -83,7 +84,7 @@ public class ScoreCommands {
 
     public static Command autonAutoTurn(FieldCentric fieldCentric) {
         return new ConditionalCommand(
-                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 180),
+                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 185),
                 autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, 0),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
 

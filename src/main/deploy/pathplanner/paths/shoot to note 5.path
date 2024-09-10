@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 11.37,
-        "y": 6.65
+        "x": 11.88,
+        "y": 6.522935956000301
       },
       "prevControl": null,
       "nextControl": {
-        "x": 10.159465917982844,
-        "y": 6.310348848455705
+        "x": 10.669465917982846,
+        "y": 6.183284804456005
       },
       "isLocked": false,
       "linkedName": null
@@ -48,23 +48,6 @@
               "type": "named",
               "data": {
                 "name": "intake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "adjustPivotSpeedFast",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeedFast"
               }
             }
           ]

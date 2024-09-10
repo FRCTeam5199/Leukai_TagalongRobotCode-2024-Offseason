@@ -93,6 +93,8 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
         indexer.periodic();
 
         updateShuffleboard();
+
+//        System.out.println("Indexer Speed: " + indexer.getRollerMotor().getVelocity().getValueAsDouble());
     }
 
     public void disabledPeriodic() {

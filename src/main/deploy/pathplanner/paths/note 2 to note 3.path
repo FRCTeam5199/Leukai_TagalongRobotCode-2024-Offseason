@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 13.38,
-        "y": 7.19
+        "x": 13.598687168843668,
+        "y": 7.28
       },
       "prevControl": {
-        "x": 15.190969839021532,
-        "y": 6.508326513284107
+        "x": 15.4096570078652,
+        "y": 6.598326513284107
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,40 +42,6 @@
               "type": "named",
               "data": {
                 "name": "intake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "adjustPivotSpeedFast",
-      "waypointRelativePos": 0.2,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeedFast"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "adjustPivotSpeedSlow",
-      "waypointRelativePos": 0.7,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeedFast"
               }
             }
           ]

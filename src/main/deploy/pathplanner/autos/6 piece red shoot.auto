@@ -90,6 +90,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "increaseShooterSpeed"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "note 4 to shoot"
@@ -111,6 +117,12 @@
           "type": "path",
           "data": {
             "pathName": "shoot to note 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "increaseShooterSpeed"
           }
         },
         {

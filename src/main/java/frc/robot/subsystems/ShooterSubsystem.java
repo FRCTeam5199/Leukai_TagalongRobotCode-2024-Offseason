@@ -109,6 +109,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
 //        System.out.println("Shooter RIGHT: " + shooterRight.getFlywheelVelocity());
         // System.out.println(UserInterface.getInstance().getShooterPositionComponentData());
 //        System.out.println("Arm Pivot Position: " + Rotation2d.fromRotations(arm.getPivotPosition()).getDegrees());
+//        System.out.println("Reached Shooting Conditions: " + reachedShootingCondtions(60));
     }
 
     @Override
@@ -168,10 +169,10 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     }
 
     public boolean reachedShootingCondtions(double targetSpeed) {
-        double percentageOfMaxSpeed = .97;
+        double percentageOfMaxSpeed = .95;
 
-        return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
-                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .57 * percentageOfMaxSpeed;
+        return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() >= targetSpeed * percentageOfMaxSpeed
+                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() >= targetSpeed * .57 * percentageOfMaxSpeed;
     }
 
     public void setShooterSpeeds(double rps) {
