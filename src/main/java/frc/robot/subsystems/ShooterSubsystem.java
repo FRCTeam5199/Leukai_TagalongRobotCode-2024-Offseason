@@ -2,15 +2,14 @@ package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Filesystem;
-import frc.robot.UserInterface;
 import frc.robot.parsers.ShooterParser;
+import frc.robot.subsystems.LED.LEDSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
-
-import java.sql.SQLOutput;
 
 public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
     private static ShooterSubsystem shooterSubsystem;
@@ -163,8 +162,12 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
 
     public boolean reachedShootingCondtions(double targetSpeed) {
         double percentageOfMaxSpeed = .97;
-        return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
-                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
+        if (shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
+        && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed) {
+            LEDSubsystem.getInstance().setMode(LEDMode.REACHEDSHOOTINGSPEED);
+            return true;
+        }
+        return false;
     }
 
     public void setShooterSpeeds(double rps) {

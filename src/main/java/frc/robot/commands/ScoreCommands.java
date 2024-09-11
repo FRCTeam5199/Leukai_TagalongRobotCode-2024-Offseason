@@ -124,8 +124,7 @@ public class ScoreCommands {
     public static Command moveShooterToAutoAimAndAutoShoot(double targetSpeed) {
         return new SequentialCommandGroup(
                 new FunctionalCommand(
-                        () -> {
-                        },
+                        () -> {},
                         () -> {
                             double distance;
                             double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
