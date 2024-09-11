@@ -32,6 +32,12 @@
         {
           "type": "named",
           "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autoShoot"
           }
         },
@@ -44,6 +50,12 @@
         {
           "type": "named",
           "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autoShoot"
           }
         },
@@ -51,6 +63,12 @@
           "type": "path",
           "data": {
             "pathName": "note 2 to note 3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
           }
         },
         {
@@ -72,6 +90,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "increaseShooterSpeed"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "note 4 to shoot"
@@ -80,13 +104,25 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootFast"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "shoot to note 5"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "increaseShooterSpeed"
           }
         },
         {
@@ -98,12 +134,18 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootFast"
           }
         }
       ]
     }
   },
-  "folder": "6 Piece Stuff",
+  "folder": "6 Piece Red Autos",
   "choreoAuto": false
 }

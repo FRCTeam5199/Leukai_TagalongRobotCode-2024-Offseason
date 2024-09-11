@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.parsers.ShooterParser;
 import frc.robot.subsystems.minor.TagalongFlywheel;
@@ -149,7 +150,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
             shooterSubsystem.setFlywheelPowers(0);
         } else {
             shooterLeft.setFlywheelControl(targetSpeed, true);
-            shooterRight.setFlywheelControl(.5 * targetSpeed, true);
+            shooterRight.setFlywheelControl(.57 * targetSpeed, true);
         }
     }
 
@@ -158,14 +159,27 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
     }
 
     public boolean reachedShootingCondtions(double targetSpeed) {
-        double percentageOfMaxSpeed = .97;
-        return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * percentageOfMaxSpeed
-                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() > targetSpeed * .5 * percentageOfMaxSpeed;
+        double percentageOfMaxSpeed = .95;
+
+        return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() >= targetSpeed * percentageOfMaxSpeed
+                && shooterRight.getFlywheelMotor().getVelocity().getValueAsDouble() >= targetSpeed * .57 * percentageOfMaxSpeed;
     }
 
     public void setShooterSpeeds(double rps) {
         shooterLeft.setFlywheelControl(rps, true);
         shooterRight.setFlywheelControl(rps * .57, true);
+    }
+
+    public double getAutoAimAngle() {
+        double distance;
+        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
+        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
+        else
+            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
+
+        double armAngle = LookUpTable.findValue(distance);
+        return armAngle;
     }
 
     public void setFlywheelPowers(double percent) {

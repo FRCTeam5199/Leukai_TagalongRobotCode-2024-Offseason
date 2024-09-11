@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 7.793085099811956,
+      "y": 7.439979197870614
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 5 to note 5 shoot blue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 5 shoot to note 6 blue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 6 to note 6 shoot blue"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "6 Piece Blue",
+  "choreoAuto": false
+}

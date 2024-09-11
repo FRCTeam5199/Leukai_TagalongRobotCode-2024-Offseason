@@ -42,7 +42,7 @@
   },
   "motorControl": {
     "clockwisePositive": false,
-    "brakeMode": false,
+    "brakeMode": true,
     "motorCurrentLimits": {
       "statorEnableLimit": true,
       "statorPeakLimit": 80,

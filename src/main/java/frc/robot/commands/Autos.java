@@ -4,29 +4,34 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.LookUpTable;
 
 public class Autos extends Command {
+    public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
+    public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     private static Autos autos;
-
     public boolean part1Finished;
     public boolean part2Finished = false;
     public boolean alt1 = false;
-
-    public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     SwerveRequest.ApplyChassisSpeeds autonDrive = new SwerveRequest.ApplyChassisSpeeds();
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
             new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
-            new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
+            new com.pathplanner.lib.util.PIDConstants(4.5, 0, 0),
             5.76072, .375, new ReplanningConfig(true, true));
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
@@ -40,13 +45,34 @@ public class Autos extends Command {
                 pathFollowerConfig, () -> false, swerveDrive);
 
         NamedCommands.registerCommand("intake", IntakeCommands.intake());
-        NamedCommands.registerCommand("autoShoot", ScoreCommands.moveShooterToAutoAimAndAutoShoot(60));
+        NamedCommands.registerCommand("autoShoot",
+                ScoreCommands.setShooterSpeeds(60)
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
+                        .andThen(new InstantCommand(() -> System.out.println("indexing")))
+                        .andThen(ScoreCommands.indexerFeedCommand(60))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+        NamedCommands.registerCommand("autoShootFast",
+                ScoreCommands.setShooterSpeeds(70)
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(70))
+                        .andThen(new InstantCommand(() -> System.out.println("indexing")))
+                        .andThen(ScoreCommands.indexerFeedCommand(70))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+
+        NamedCommands.registerCommand("increaseShooterSpeed", new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70)));
+
+        NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
+                aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
+                        ShooterPivotAngles.STABLE.getRotations(), true, .052)));
+
+        NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
     }
 
-  public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
-    if (autos == null) autos = new Autos(commandSwerveDriveTrain);
-    return autos;
-  }
+    public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
+        if (autos == null) autos = new Autos(commandSwerveDriveTrain);
+        return autos;
+    }
 
 
 //    private void initalizeCommandsMap() {
@@ -60,55 +86,56 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("6 piece red shoot");
     }
 
-    public Command sixPieceRedPart1(){
+    public Command sixPieceRedPart1() {
         return AutoBuilder.buildAuto("6 piece red part 1");
     }
 
-    public Command sixPieceRedPart2(){
+    public Command sixPieceRedPart2() {
         part2Finished = false;
-        return AutoBuilder.buildAuto("6 piece red part 2").andThen(()-> part2Finished = true);
+        return AutoBuilder.buildAuto("6 piece red part 2").andThen(() -> part2Finished = true);
     }
 
-    public Command sixPieceRedNote5Check(){
+    public Command sixPieceRedNote5Check() {
         return AutoBuilder.buildAuto("6 piece red note 5 check");
     }
 
-    public Command sixPieceRedPart2Alt1(){
+    public Command sixPieceRedPart2Alt1() {
         alt1 = false;
-        return AutoBuilder.buildAuto("6 piece red part 2 alt 1").andThen(()-> alt1 = true);
+        return AutoBuilder.buildAuto("6 piece red part 2 alt 1").andThen(() -> alt1 = true);
     }
-        public Command sixPieceRedPart2Alt2(){
+
+    public Command sixPieceRedPart2Alt2() {
         return AutoBuilder.buildAuto("6 piece red part 2 alt 2");
     }
 
-    public Command sixPiece(){
+    public Command sixPiece() {
         return sixPieceRedPart1();
     }
 
 
     public Command sixPieceRedwithAlt() {
         return new SequentialCommandGroup(
-            sixPieceRedPart1(),
-            sixPieceRedPart2().unless(()-> !objectDetection.notePresent()),
-            sixPieceRedNote5Check().unless(()-> part2Finished == true),
-            sixPieceRedPart2Alt1().unless(()-> !objectDetection.notePresent()),
-            sixPieceRedPart2Alt2().unless(()-> alt1 == true || part2Finished == true)
+                sixPieceRedPart1(),
+                sixPieceRedPart2().unless(() -> !objectDetection.notePresent()),
+                sixPieceRedNote5Check().unless(() -> part2Finished),
+                sixPieceRedPart2Alt1().unless(() -> !objectDetection.notePresent()),
+                sixPieceRedPart2Alt2().unless(() -> alt1 || part2Finished)
         );
     }
 
-    public Command fourPieceRedMiddle(){
+    public Command fourPieceRedMiddle() {
         return AutoBuilder.buildAuto("4 piece source middle");
     }
 
-  private void initalizeAutoChooser() {
-    autoChooser = AutoBuilder.buildAutoChooser();
-  }
+    private void initalizeAutoChooser() {
+        autoChooser = AutoBuilder.buildAutoChooser();
+    }
 
-  public SendableChooser<Command> getAutoChooser() {
-    return autoChooser;
-  }
+    public SendableChooser<Command> getAutoChooser() {
+        return autoChooser;
+    }
 
-  public Command getSelectedAuton() {
-    return autoChooser.getSelected();
-  }
+    public Command getSelectedAuton() {
+        return autoChooser.getSelected();
+    }
 }

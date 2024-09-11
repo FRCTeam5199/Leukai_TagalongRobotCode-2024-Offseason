@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.18,
-        "y": 4.36
+        "x": 13.937884672922369,
+        "y": 4.226375617638543
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.89019249651338,
-        "y": 4.7330454548583845
+        "x": 14.64807716943575,
+        "y": 4.599421072496927
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.38,
-        "y": 5.55
+        "x": 14.463747076960349,
+        "y": 5.560508013068222
       },
       "prevControl": {
-        "x": 15.167939265978388,
-        "y": 5.517804013063089
+        "x": 14.62539969525965,
+        "y": 5.162011934106907
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,6 +47,23 @@
           ]
         }
       }
+    },
+    {
+      "name": "adjustPivotSpeed",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "adjustPivotSpeed"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -61,7 +78,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "6 Piece Red Paths",
+  "folder": "Red Paths",
   "previewStartingState": {
     "rotation": -153.51,
     "velocity": 0

@@ -1,0 +1,37 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 13.5,
+      "y": 7.05
+    },
+    "rotation": 175.7949294157728
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 3 to note 4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 3 to note 4 finish"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 4 to shoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "6 Piece Red Autos",
+  "choreoAuto": false
+}

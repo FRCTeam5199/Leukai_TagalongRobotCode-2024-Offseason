@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.827867105971182,
-        "y": 4.386721190503992
+        "x": 15.83,
+        "y": 4.39
       },
       "prevControl": null,
       "nextControl": {
-        "x": 15.72786710597118,
-        "y": 4.386721190503992
+        "x": 15.729999999999999,
+        "y": 4.39
       },
       "isLocked": false,
       "linkedName": null
@@ -43,7 +43,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "5199 new bot 4 piece far source path",
+  "folder": "Red Paths",
   "previewStartingState": {
     "rotation": -120.0,
     "velocity": 0.0

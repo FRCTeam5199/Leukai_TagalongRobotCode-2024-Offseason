@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 14.18,
-        "y": 4.356431195030721
+        "x": 13.94,
+        "y": 4.23
       },
       "prevControl": {
-        "x": 14.538867400139935,
-        "y": 4.741187486434887
+        "x": 14.298867400139935,
+        "y": 4.614756291404166
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,6 +47,23 @@
           ]
         }
       }
+    },
+    {
+      "name": "adjustPivotSpeed",
+      "waypointRelativePos": 0.15,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "adjustPivotSpeed"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
@@ -61,7 +78,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "6 Piece Red Paths",
+  "folder": "Red Paths",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0

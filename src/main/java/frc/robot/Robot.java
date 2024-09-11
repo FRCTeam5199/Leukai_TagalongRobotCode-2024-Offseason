@@ -6,6 +6,11 @@ package frc.robot;
 
 import java.util.Optional;
 
+import frc.robot.commands.Autos;
+import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.ShooterPivotAngles;
+import frc.robot.commands.base.PivotToCommand;
+
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -87,7 +92,14 @@ public class Robot extends TimedRobot {
 
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
+
+        Autos.aiming.initialize();
+        Autos.aiming.execute();
+        Autos.aiming.end(Autos.aiming.isFinished());
+
+
     }
+
 
     @Override
     public void autonomousExit() {

@@ -3,24 +3,24 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.38,
-        "y": 5.55
+        "x": 14.46,
+        "y": 5.56
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.280000000000001,
-        "y": 5.55
+        "x": 14.360000000000001,
+        "y": 5.56
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.5,
+        "x": 13.25,
         "y": 5.55
       },
       "prevControl": {
-        "x": 13.6,
+        "x": 13.35,
         "y": 5.55
       },
       "nextControl": null,
@@ -61,7 +61,7 @@
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "6 Piece Red Paths",
+  "folder": "Red Paths",
   "previewStartingState": {
     "rotation": 180.0,
     "velocity": 0
