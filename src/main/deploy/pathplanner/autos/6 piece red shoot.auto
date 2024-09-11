@@ -84,12 +84,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "note 3 to note 4 finish"
-          }
-        },
-        {
           "type": "named",
           "data": {
             "name": "increaseShooterSpeed"

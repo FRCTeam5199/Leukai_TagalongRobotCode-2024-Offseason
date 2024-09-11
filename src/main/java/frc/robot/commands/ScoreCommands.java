@@ -61,7 +61,7 @@ public class ScoreCommands {
 
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(0.1, 0, 0),
+                () -> driveRotationalPIDController = new PIDController(0.2, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
@@ -75,8 +75,8 @@ public class ScoreCommands {
                 interrupted -> {
                     System.out.println("Completed");
                 },
-                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + 2)).getDegrees() >= Units.radiansToDegrees(Math.atan(
-                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset - 2)).getDegrees() <= Units.radiansToDegrees(Math.atan(
+                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + 4)).getDegrees() >= Units.radiansToDegrees(Math.atan(
+                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset - 4)).getDegrees() <= Units.radiansToDegrees(Math.atan(
                         (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))),
                 commandSwerveDrivetrain
         );
