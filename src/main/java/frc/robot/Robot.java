@@ -6,11 +6,6 @@ package frc.robot;
 
 import java.util.Optional;
 
-import frc.robot.commands.Autos;
-import frc.robot.commands.ScoreCommands;
-import frc.robot.commands.ShooterPivotAngles;
-import frc.robot.commands.base.PivotToCommand;
-
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.Autos;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.ApriltagSubsystem;
@@ -28,8 +24,15 @@ import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 
 public class Robot extends TimedRobot {
     private final UserInterface userInterface = UserInterface.getInstance();
+
     private final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
+
     private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
+
+    private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
+
+    private Command m_autonomousCommand;
+    private RobotContainer m_robotContainer;
 
     @Override
     public void robotInit() {

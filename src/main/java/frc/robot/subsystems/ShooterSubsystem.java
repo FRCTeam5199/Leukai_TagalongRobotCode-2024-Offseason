@@ -1,14 +1,19 @@
 package frc.robot.subsystems;
 
+import static frc.robot.RobotContainer.commandSwerveDrivetrain;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import frc.robot.commands.ScoreCommands;
+import frc.robot.constants.Constants;
 import frc.robot.parsers.ShooterParser;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
+import frc.robot.utility.LookUpTable;
 
 public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
     private static ShooterSubsystem shooterSubsystem;

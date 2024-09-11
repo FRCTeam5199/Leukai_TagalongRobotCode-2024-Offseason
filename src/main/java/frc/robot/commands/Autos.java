@@ -4,22 +4,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.RobotContainer;
+import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.utility.LookUpTable;
 
 public class Autos extends Command {
     public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
