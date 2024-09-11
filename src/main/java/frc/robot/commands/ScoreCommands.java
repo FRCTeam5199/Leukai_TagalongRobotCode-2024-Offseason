@@ -23,6 +23,8 @@ import frc.robot.subsystems.AmpTrapSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 import frc.robot.utility.LookUpTable;
 
 public class ScoreCommands {
@@ -102,37 +104,6 @@ public class ScoreCommands {
         return Math.sqrt(Math.pow((robotCoords[1] - speakerCoords[1]), 2) + Math.pow((robotCoords[0] - speakerCoords[0]), 2));
     }
 
-    public static Command moveShooterToAutoAim(double targetSpeed) {
-//        return new FunctionalCommand(
-//                () -> {
-//                },
-//                () -> {
-//                    double distance;
-//                    double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
-//                    if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
-//                        distance = getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
-//                    else
-//                        distance = getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
-//
-//                    double armAngle = LookUpTable.findValue(distance);
-//                    System.out.println("Distance: " + distance);
-//                    System.out.println("Arm Angle: " + armAngle);
-//                    shooterSubsystem.moveShooterToSetpointAndSpeed(armAngle, targetSpeed);
-//                    shooterSubsystem.followLastPivotProfile();
-//                },
-//                interrupted -> {
-//                    shooterSubsystem.moveShooterToSetpointAndSpeed(ShooterPivotAngles.STABLE.getRotations(), 0);
-//                    shooterSubsystem.getPivot().setHoldPivotPosition(true);
-//                },
-//                () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
-//                shooterSubsystem
-//        ).unless(() -> !indexerSubsystem.isNoteInIndexer());
-
-
-        return new PivotToCommand<>(shooterSubsystem, Rotation2d.fromDegrees(armAutoAimAngle).getRotations(), true)
-                .beforeStarting(setShooterSpeeds(targetSpeed));
-    }
-
     public static Command setShooterSpeeds(double rps) {
         return new FunctionalCommand(
                 () -> {
@@ -170,6 +141,7 @@ public class ScoreCommands {
 
                             if (shooterSubsystem.reachedShootingCondtions(targetSpeed)) {
                                 indexerSubsystem.setRollerSpeeds(0, -80, 40);
+                                LEDSubsystem.getInstance().setMode(LEDMode.REACHEDSHOOTINGSPEED);
                             }
                         },
                         interrupted -> {
@@ -183,18 +155,23 @@ public class ScoreCommands {
         ).unless(() -> !indexerSubsystem.isNoteInIndexer());
     }
 
-    public static Command shoot(double targetSpeed) {
-        return new ConditionalCommand(
-                ampScore(),
-                moveShooterToAutoAim(targetSpeed),
-                indexerSubsystem::getAmpMode
-        );
-    }
+//    public static Command shoot(double targetSpeed) {
+//        return new ConditionalCommand(
+//                ampScore(),
+//                moveShooterToAutoAim(targetSpeed),
+//                indexerSubsystem::getAmpMode
+//        );
+//    }
 
     public static Command moveShooterToSetpointAndSpeed(ShooterPivotAngles shooterPivotAngle, double targetSpeed) {
         return new PivotToCommand<>(shooterSubsystem, shooterPivotAngle.getRotations(), true).beforeStarting(() -> {
-            shooterSubsystem.getFlywheel(0).setFlywheelControl(.57 * targetSpeed, true);
-            shooterSubsystem.getFlywheel(1).setFlywheelControl(targetSpeed, true);
+            if (targetSpeed == 0) {
+                shooterSubsystem.getFlywheel(0).setFlywheelPower(0);
+                shooterSubsystem.getFlywheel(1).setFlywheelPower(0);
+            } else {
+                shooterSubsystem.getFlywheel(0).setFlywheelControl(.57 * targetSpeed, true);
+                shooterSubsystem.getFlywheel(1).setFlywheelControl(targetSpeed, true);
+            }
         });
     }
 

@@ -1,5 +1,6 @@
 package frc.robot.commands.base;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.MathUtils;
@@ -99,5 +100,9 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
     @Override
     public boolean isFinished() {
         return _pivot.isPivotProfileFinished() && _pivot.inPivotTolerance(_lowerBound, _upperBound);
+    }
+
+    public void changeSetpoint(double angle) {
+        _goalPositionRot = Rotation2d.fromDegrees(angle).getRotations();
     }
 }

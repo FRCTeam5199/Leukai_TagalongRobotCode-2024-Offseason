@@ -4,16 +4,17 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.enums.FieldVersions;
-
-import javax.swing.text.Utilities;
+import frc.robot.utility.PID;
 
 public class Constants {
     public static final RobotVersions CRobot = RobotVersions.COMP_BOT;
@@ -79,5 +80,22 @@ public class Constants {
                 AprilTagFields.kDefaultField.loadAprilTagLayoutField();
         public static final double[] RED_SPEAKER_COORDINATES = new double[]{16.54, 5.547};
         public static final double[] BLUE_SPEAKER_COORDINATES = new double[]{0, 5.547};
+    }
+
+    public static class LEDs {
+        public static final int LED_PORT = 1;
+        public static final int LED_LENGTH = 15; //25
+        
+    }
+
+    public static class TestRollerConstants {
+        public static final int INDEXER_ID = 25;
+        public static final TrapezoidProfile.Constraints INDEXER_CONSTRAINTS = new TrapezoidProfile.Constraints(90, 200);
+        public static final PID INDEXER_PID = new PID(0, 0, 0);
+        public static final SimpleMotorFeedforward INDEXER_FEEDFORWARD
+                = new SimpleMotorFeedforward(0.23, .11904761904761904761904761904762, 0);
+        public static final double INDEXER_LOWER_TOLERANCE_ROLLER_ROTATIONS = 1;
+        public static final double INDEXER_UPPER_TOLERANCE_ROLLER_ROTATIONS = 1;
+        public static final double[][] INDEXER_GEAR_RATIO = new double[][]{{1, 1}};
     }
 }
