@@ -145,8 +145,8 @@ public class RobotContainer {
         if (distance > 4.48) shooterRPS = 70;
         else shooterRPS = 60;
 
-        armAutoAim.changeSetpoint(armAutoAimAngle);
-        //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+        //armAutoAim.changeSetpoint(armAutoAimAngle);
+        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .25) {
             Autos.aiming.changeSetpoint(armAutoAimAngle);

@@ -7,7 +7,9 @@ import java.util.ArrayList;
 public class LookUpTable {
     public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
         {
-
+            add(new Pair<>(1.37, 57d));
+            add(new Pair<>(1.92, 46.75));
+            add(new Pair<>(2.32, 43.125));
             add(new Pair<>(2.5, 38.85));
             add(new Pair<>(2.75, 36.95));
             add(new Pair<>(3.00, 35.55));
@@ -15,6 +17,11 @@ public class LookUpTable {
             add(new Pair<>(3.5, 32.50));
             add(new Pair<>(4.00, 30.65));
             add(new Pair<>(4.25, 29.20));
+            add(new Pair<>(4.52, 27.125));
+            add(new Pair<>(4.81, 26.25));
+            add(new Pair<>(5.01, 25.875));
+            add(new Pair<>(5.25, 24.4));
+            add(new Pair<>(5.57, 24.3));
 
 
 
@@ -38,17 +45,26 @@ public class LookUpTable {
         }
 
     };
-
-    // 2.5, 36.7, 41
-    // 2.75, 35, 38.9
+    //1.25, na, na
+    //1.5, na, na
+    //1.75, na, na
+    //2, na, na
+    //2.25, na, na
+    //2.5, 36.7, 41
+    //2.75, 35, 38.9
     //3.00, 34.3, 36.8
     //3.25, 32.2, 34.4
     //3.5,  31.7 , 33.3
     //3.75, 30, 31.3
     //4.00, 29 , 30
     //4.25, 28.5, 29.9
-    //4.5,
-
+    //4.50, na, 26
+    //4.75, na, na
+    //5.00, na, na
+    //5.25, na, na
+    //5.50, na, na
+    //5.75, na, na
+    //6.00, na, na
     /*Distances, Low Value, High Value
     ------60 RPS--------
     1.92, 45.5, 49
