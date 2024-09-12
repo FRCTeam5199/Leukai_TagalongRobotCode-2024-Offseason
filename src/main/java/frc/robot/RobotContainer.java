@@ -140,8 +140,9 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-        System.out.println("Distance: " + distance);
+//        System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
+        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.25) shooterRPS = 70;
         else shooterRPS = 60;
 

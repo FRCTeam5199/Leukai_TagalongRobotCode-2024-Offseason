@@ -84,7 +84,7 @@ public class ScoreCommands {
 
     public static Command autonAutoTurn(FieldCentric fieldCentric) {
         return new ConditionalCommand(
-                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 185),
+                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 187),
                 autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, 0),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
 
@@ -155,9 +155,9 @@ public class ScoreCommands {
                     }
                 },
                 () -> {
-
                 },
-                interrupted -> shooterSubsystem.setShooterSpeeds(60),
+                interrupted -> {
+                },
                 () -> false,
                 shooterSubsystem
         );

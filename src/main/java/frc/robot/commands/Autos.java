@@ -52,23 +52,19 @@ public class Autos extends Command {
         NamedCommands.registerCommand("autoShoot",
                 ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
-                        .andThen(new InstantCommand(() -> System.out.println("indexing")))
                         .andThen(ScoreCommands.indexerFeedCommand(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
         NamedCommands.registerCommand("autoShootFast",
                 ScoreCommands.setShooterSpeeds(70)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(70))
-                        .andThen(new InstantCommand(() -> System.out.println("indexing")))
                         .andThen(ScoreCommands.indexerFeedCommand(70))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
-        NamedCommands.registerCommand("increaseShooterSpeed", new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70)));
-
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
                 aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
-                        ShooterPivotAngles.STABLE.getRotations(), true, .052)));
+                        ShooterPivotAngles.STABLE.getRotations(), true, .053)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
     }
