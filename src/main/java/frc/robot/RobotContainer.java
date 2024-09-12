@@ -96,7 +96,7 @@ public class RobotContainer {
         )).onFalse(ScoreCommands.moveShooterToStable());
 
 //                .onFalse(ScoreCommands.moveShooterToStable());
-        commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60).alongWith(new InstantCommand(()->System.out.println(Units.rotationsToDegrees(shooterSubsystem.getPivot().getPivotPosition()) + " " + shooterRPS))));
+        commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60).alongWith(new InstantCommand(() -> System.out.println(Units.rotationsToDegrees(shooterSubsystem.getPivot().getPivotPosition()) + " " + shooterRPS))));
         commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
                 .onFalse(ScoreCommands.elevatorStable());
         commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.65)).onFalse(ClimberCommands.setClimberPowers(0));
@@ -142,11 +142,11 @@ public class RobotContainer {
 
         System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
-        if (distance > 4.48) shooterRPS = 70;
+        if (distance > 4.25) shooterRPS = 70;
         else shooterRPS = 60;
 
-        //armAutoAim.changeSetpoint(armAutoAimAngle);
-        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+        armAutoAim.changeSetpoint(armAutoAimAngle);
+//        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .25) {
             Autos.aiming.changeSetpoint(armAutoAimAngle);

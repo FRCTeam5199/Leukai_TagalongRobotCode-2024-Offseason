@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class LookUpTable {
     public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
         {
+            //Distances, Averages
             add(new Pair<>(1.37, 57d));
             add(new Pair<>(1.92, 46.75));
             add(new Pair<>(2.32, 43.125));
@@ -17,69 +18,31 @@ public class LookUpTable {
             add(new Pair<>(3.5, 32.50));
             add(new Pair<>(4.00, 30.65));
             add(new Pair<>(4.25, 29.20));
+            add(new Pair<>(4.26, 26.375));
             add(new Pair<>(4.52, 27.125));
-            add(new Pair<>(4.81, 26.25));
-            add(new Pair<>(5.01, 25.875));
+            add(new Pair<>(4.81, 26.15));
+            add(new Pair<>(5.01, 25.675));
             add(new Pair<>(5.25, 24.4));
             add(new Pair<>(5.57, 24.3));
-
-
-
-            //Distances, Averages
-//            add(new Pair<>(1.37, 57d));
-//            add(new Pair<>(1.92, 46.75));
-//            add(new Pair<>(2.32, 43.125));
-//            add(new Pair<>(2.75, 38.75));
-//            add(new Pair<>(3.15, 36.5));
-//            add(new Pair<>(3.4266, 32.875));
-//            add(new Pair<>(3.87, 32.375));
-//            add(new Pair<>(4.14, 31.75));
-//            add(new Pair<>(4.4, 32.925));
-//
-//            add(new Pair<>(4.48, 30.875));
-//            add(new Pair<>(4.52, 27.125));
-//            add(new Pair<>(4.81, 26.25));
-//            add(new Pair<>(5.01, 25.875));
-//            add(new Pair<>(5.25, 24.4));
-//            add(new Pair<>(5.57, 24.3));
         }
-
     };
-    //1.25, na, na
-    //1.5, na, na
-    //1.75, na, na
-    //2, na, na
-    //2.25, na, na
-    //2.5, 36.7, 41
-    //2.75, 35, 38.9
-    //3.00, 34.3, 36.8
-    //3.25, 32.2, 34.4
-    //3.5,  31.7 , 33.3
-    //3.75, 30, 31.3
-    //4.00, 29 , 30
-    //4.25, 28.5, 29.9
-    //4.50, na, 26
-    //4.75, na, na
-    //5.00, na, na
-    //5.25, na, na
-    //5.50, na, na
-    //5.75, na, na
-    //6.00, na, na
+
     /*Distances, Low Value, High Value
-    ------60 RPS--------
     1.92, 45.5, 49
     2.32, 42.5, 44.75
-    2.75, 38, 40.5
-    3.15, 35, 38
-    3.4266, 31, 33.5
-    3.46, 34, 35.5
-    3.87, 31.25, 33.5
-    4.14, 31.25, 32.25
-    4.48, 30.25, 31.5
-    -------70 RPS-------
+    2.5, 36.7, 41
+    2.75, 35, 38.9
+    3.00, 34.3, 36.8
+    3.25, 32.2, 34.4
+    3.5,  31.7 , 33.3
+    3.75, 30, 31.3
+    4.00, 29 , 30
+    4.25, 28.5, 29.9
+    ------70 RPS-------
+    4.26, 25.75, 27
     4.52, 26.25, 28
-    4.81, 25.75, 26.75
-    5.01, 25, 26.75
+    4.81, 25.75, 26.55
+    5.01, 25, 26.55
     5.25, 24, 25.25
     5.57, 24.5, 25
      */
