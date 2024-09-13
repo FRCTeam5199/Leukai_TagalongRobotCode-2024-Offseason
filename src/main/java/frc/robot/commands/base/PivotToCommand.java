@@ -107,4 +107,8 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
     public void changeSetpoint(double degrees) {
         _goalPositionRot = Rotation2d.fromDegrees(degrees).getRotations();
     }
+
+    public void adjustPivotSpeed(double speed){
+        _maxVelocity = speed;
+    }
 }

@@ -140,17 +140,19 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-//        System.out.println("Distance: " + distance);
+        System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance);
         System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.25) shooterRPS = 70;
         else shooterRPS = 60;
 
         armAutoAim.changeSetpoint(armAutoAimAngle);
-//        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+        //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .25) {
+            Autos.aiming.adjustPivotSpeed(10 * Math.exp(-5 * distance));
             Autos.aiming.changeSetpoint(armAutoAimAngle);
+
             prevArmAngle = armAutoAimAngle;
         }
     }

@@ -18,12 +18,15 @@ public class LookUpTable {
             add(new Pair<>(3.5, 32.50));
             add(new Pair<>(4.00, 30.65));
             add(new Pair<>(4.25, 29.20));
-            add(new Pair<>(4.26, 26.375));
-            add(new Pair<>(4.52, 27.125));
+            add(new Pair<>(4.5, 27.1));
+            add(new Pair<>(4.52, 27.095));
+            add(new Pair<>(4.75, 26.15));
             add(new Pair<>(4.81, 26.15));
             add(new Pair<>(5.01, 25.675));
             add(new Pair<>(5.25, 24.4));
+            add(new Pair<>(5.5, 24.35));
             add(new Pair<>(5.57, 24.3));
+            add(new Pair<>(5.81, 23.8));
         }
     };
 
@@ -39,8 +42,10 @@ public class LookUpTable {
     4.00, 29 , 30
     4.25, 28.5, 29.9
     ------70 RPS-------
-    4.26, 25.75, 27
+    4.5,26.8, 27.4
+
     4.52, 26.25, 28
+    4.75,    25.9   ,26.4
     4.81, 25.75, 26.55
     5.01, 25, 26.55
     5.25, 24, 25.25
