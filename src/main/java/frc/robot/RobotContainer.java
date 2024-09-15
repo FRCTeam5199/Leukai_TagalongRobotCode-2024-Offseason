@@ -103,7 +103,7 @@ public class RobotContainer {
                                         .alongWith(ScoreCommands.isElevatorUp(true)),
                                 new ConditionalCommand(
                                         ClimberCommands.setClimberPowers(0.3),
-                                        ShuttleCommands.shuttleAutoAimHigh(),
+                                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 60),
                                         () -> mode == Mode.CLIMB
                                 ),
                                 () -> mode == Mode.AMP
@@ -140,7 +140,7 @@ public class RobotContainer {
                 new ConditionalCommand(
                         ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60),
                         new ConditionalCommand(
-                                ShuttleCommands.flatShuttle(),
+                                ScoreCommands.setShooterSpeeds(70),
                                 ScoreCommands.toggleElevator(),
                                 () -> mode == Mode.SHUTTLE
                         ),
