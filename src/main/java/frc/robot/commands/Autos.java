@@ -28,6 +28,8 @@ import frc.robot.utility.LookUpTable;
 public class Autos extends Command {
     public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
+
+    public boolean firstShot = false;
     private static Autos autos;
     public boolean part1Finished;
     public boolean part2Finished = false;
@@ -55,6 +57,8 @@ public class Autos extends Command {
                         .andThen(ScoreCommands.indexerFeedCommand(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
+
+        NamedCommands.registerCommand("subWooferShot", new InstantCommand(()-> aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
         NamedCommands.registerCommand("autoShootFast",
                 ScoreCommands.setShooterSpeeds(70)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(70))
@@ -64,7 +68,7 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
                 aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
-                        ShooterPivotAngles.STABLE.getRotations(), true, .053)));
+                        ShooterPivotAngles.STABLE.getRotations(), true, .047)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
     }

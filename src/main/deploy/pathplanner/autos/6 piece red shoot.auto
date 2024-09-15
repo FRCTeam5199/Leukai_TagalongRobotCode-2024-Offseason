@@ -14,6 +14,12 @@
         {
           "type": "named",
           "data": {
+            "name": "subWooferShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autoShoot"
           }
         },

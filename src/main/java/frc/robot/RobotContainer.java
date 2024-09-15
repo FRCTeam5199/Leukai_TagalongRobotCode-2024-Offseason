@@ -55,9 +55,11 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
+    Command sixPieceRed;
 
     public RobotContainer() {
         configureBindings();
+        sixPieceRed = autos.sixPieceRed();
     }
 
     private void configureBindings() {
@@ -128,7 +130,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autos.sixPieceRed();
+        return sixPieceRed;
     }
 
     public void periodic() {
@@ -141,16 +143,15 @@ public class RobotContainer {
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
         System.out.println("Distance: " + distance);
-        armAutoAimAngle = LookUpTable.findValue(distance);
-        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
-        if (distance > 4.25) shooterRPS = 70;
+        armAutoAimAngle = LookUpTable.findValue(distance) - .25;
+//        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
+        if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
 
         armAutoAim.changeSetpoint(armAutoAimAngle);
-        //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+//        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
-        if (Math.abs(prevArmAngle - armAutoAimAngle) > .25) {
-            Autos.aiming.adjustPivotSpeed(10 * Math.exp(-5 * distance));
+        if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
             Autos.aiming.changeSetpoint(armAutoAimAngle);
 
             prevArmAngle = armAutoAimAngle;
