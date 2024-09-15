@@ -14,6 +14,12 @@
         {
           "type": "named",
           "data": {
+            "name": "subWooferShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
             "name": "autoShoot"
           }
         },
@@ -45,6 +51,12 @@
           "type": "path",
           "data": {
             "pathName": "shoot to note 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
           }
         },
         {
@@ -86,12 +98,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "note 3 to note 4 finish"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "note 4 to shoot"
           }
         },
@@ -102,15 +108,9 @@
           }
         },
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "autoShootFast"
           }
         },
         {
@@ -134,13 +134,7 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
+            "name": "autoShootFast"
           }
         }
       ]

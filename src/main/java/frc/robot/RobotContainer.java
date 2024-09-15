@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -42,8 +43,8 @@ public class RobotContainer {
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     private static Mode mode = Mode.SHOOTER;
+    public static double armAutoAimAngle;
     public double prevArmAngle = 0;
-    public double armAutoAimAngle;
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
@@ -55,9 +56,11 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
+    Command sixPieceRed;
 
     public RobotContainer() {
         configureBindings();
+        sixPieceRed = autos.sixPieceRed();
     }
 
     public static Mode getMode() {
@@ -195,7 +198,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return autos.sixPieceRed();
+        return sixPieceRed;
     }
 
     public void periodic() {
@@ -208,15 +211,17 @@ public class RobotContainer {
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
         System.out.println("Distance: " + distance);
-        armAutoAimAngle = LookUpTable.findValue(distance);
-        if (distance > 4.48) shooterRPS = 70;
+        armAutoAimAngle = LookUpTable.findValue(distance) - .25;
+//        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
+        if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
 
-        System.out.println("elevator up: " + ScoreCommands.isElevatorUp);
-
         armAutoAim.changeSetpoint(armAutoAimAngle);
-        if (armAutoAimAngle != prevArmAngle) {
+//        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+
+        if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
             Autos.aiming.changeSetpoint(armAutoAimAngle);
+
             prevArmAngle = armAutoAimAngle;
         }
     }

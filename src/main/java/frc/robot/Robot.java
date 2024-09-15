@@ -93,23 +93,12 @@ public class Robot extends TimedRobot {
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
 
-        double distance;
-        double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
-        if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)
-            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.RED_SPEAKER_COORDINATES);
-        else
-            distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
-
-        armAngle = LookUpTable.findValue(distance);
-
-
         Autos.aiming.initialize();
         Autos.aiming.execute();
         Autos.aiming.end(Autos.aiming.isFinished());
 
-        
-    }
 
+    }
 
 
     @Override

@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 13.937884672922369,
-        "y": 4.226375617638543
+        "x": 13.96,
+        "y": 4.27
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.64807716943575,
-        "y": 4.599421072496927
+        "x": 13.960416755748962,
+        "y": 4.236103865751237
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 14.463747076960349,
+        "x": 14.55,
         "y": 5.560508013068222
       },
       "prevControl": {
-        "x": 14.62539969525965,
-        "y": 5.162011934106907
+        "x": 14.516409486633806,
+        "y": 5.597779868883561
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,11 +47,28 @@
           ]
         }
       }
+    },
+    {
+      "name": "adjustPivotSpeed",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "adjustPivotSpeed"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.5,
-    "maxAcceleration": 5.5,
+    "maxVelocity": 6.5,
+    "maxAcceleration": 4.5,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
   },

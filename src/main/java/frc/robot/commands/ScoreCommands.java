@@ -34,7 +34,7 @@ public class ScoreCommands {
 
     public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 185),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 183),
                 driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
@@ -73,7 +73,7 @@ public class ScoreCommands {
 
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(0.1, 0, 0),
+                () -> driveRotationalPIDController = new PIDController(0.2, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
@@ -85,9 +85,10 @@ public class ScoreCommands {
                                                     (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
                 },
                 interrupted -> {
+                    System.out.println("Completed");
                 },
-                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + 2)).getDegrees() >= Units.radiansToDegrees(Math.atan(
-                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset - 2)).getDegrees() <= Units.radiansToDegrees(Math.atan(
+                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + .5)).getDegrees() >= Units.radiansToDegrees(Math.atan(
+                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset - 4)).getDegrees() <= Units.radiansToDegrees(Math.atan(
                         (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))),
                 commandSwerveDrivetrain
         );
@@ -160,9 +161,9 @@ public class ScoreCommands {
                     }
                 },
                 () -> {
-
                 },
-                interrupted -> shooterSubsystem.setShooterSpeeds(60),
+                interrupted -> {
+                },
                 () -> false,
                 shooterSubsystem
         );

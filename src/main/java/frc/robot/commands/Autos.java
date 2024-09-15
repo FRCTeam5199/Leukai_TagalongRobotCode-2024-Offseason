@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -19,6 +20,8 @@ import frc.robot.subsystems.ObjectDetectionSubsystem;
 public class Autos extends Command {
     public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
+
+    public boolean firstShot = false;
     private static Autos autos;
     public boolean part1Finished;
     public boolean part2Finished = false;
@@ -27,7 +30,7 @@ public class Autos extends Command {
     HolonomicPathFollowerConfig pathFollowerConfig = new HolonomicPathFollowerConfig(
             new com.pathplanner.lib.util.PIDConstants(5, 0, 0),
             new com.pathplanner.lib.util.PIDConstants(4.5, 0, 0),
-            5.76072, .375, new ReplanningConfig(true, true));
+            6.5, .375, new ReplanningConfig(true, true));
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
     private SendableChooser<Command> autoChooser = new SendableChooser<Command>();
@@ -47,7 +50,17 @@ public class Autos extends Command {
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
-        NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() -> aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true, .037)));
+        NamedCommands.registerCommand("subWooferShot", new InstantCommand(()-> aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
+        NamedCommands.registerCommand("autoShootFast",
+                ScoreCommands.setShooterSpeeds(70)
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(70))
+                        .andThen(ScoreCommands.indexerFeedCommand(70))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+
+        NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
+                aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
+                        ShooterPivotAngles.STABLE.getRotations(), true, .047)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
     }
