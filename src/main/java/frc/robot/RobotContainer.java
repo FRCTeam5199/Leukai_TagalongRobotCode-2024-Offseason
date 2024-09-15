@@ -42,12 +42,13 @@ public class RobotContainer {
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
-    private static Mode mode = Mode.SHOOTER;
     public static double armAutoAimAngle;
+    private static Mode mode = Mode.SHOOTER;
     public double prevArmAngle = 0;
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
+    Command sixPieceRed;
     private double shooterRPS = 60;
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -56,7 +57,6 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
-    Command sixPieceRed;
 
     public RobotContainer() {
         configureBindings();
@@ -106,7 +106,10 @@ public class RobotContainer {
                                         .alongWith(ScoreCommands.isElevatorUp(true)),
                                 new ConditionalCommand(
                                         ClimberCommands.setClimberPowers(0.3),
-                                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 60),
+                                        new ParallelCommandGroup(
+                                                ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
+                                                        fieldCentricSwerveDrive),
+                                                ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)),
                                         () -> mode == Mode.CLIMB
                                 ),
                                 () -> mode == Mode.AMP
