@@ -3,8 +3,6 @@ package frc.robot.commands.base;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import frc.robot.commands.ClimberHeights;
-import frc.robot.commands.ElevatorHeights;
 import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;

@@ -18,7 +18,6 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
     private final TagalongRoller indexer;
     private final IndexerParser indexerParser;
     private boolean isIndexerSubsystemDisabled = false;
-    private boolean ampMode = false;
     private AnalogInput intakeSensor;
     private AnalogInput ampTrapSensor;
     private AnalogInput indexerSensor;
@@ -53,14 +52,6 @@ public class IndexerSubsystem extends TagalongSubsystemBase implements RollerAug
             indexerSubsystem = new IndexerSubsystem("configs/indexer/indexerConf.json");
         }
         return indexerSubsystem;
-    }
-
-    public boolean getAmpMode() {
-        return ampMode;
-    }
-
-    public void setAmpMode(boolean ampMode) {
-        this.ampMode = ampMode;
     }
 
     @Override

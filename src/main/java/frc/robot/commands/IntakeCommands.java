@@ -2,11 +2,13 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.RobotContainer;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.Mode;
 
 public class IntakeCommands {
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
@@ -14,7 +16,7 @@ public class IntakeCommands {
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static final Timer timer = new Timer();
 
-    private static Command setElevatorToStable() {
+    public static Command setElevatorToStable() {
         return new ElevatorRaiseToCommand<>(elevatorSubsystem, () -> 0);
     }
 
@@ -25,7 +27,7 @@ public class IntakeCommands {
     private static Command spinRollersForIntake() {
         return new FunctionalCommand(
                 () -> {
-                    if (indexerSubsystem.getAmpMode()) {
+                    if (RobotContainer.getMode() == Mode.AMP || RobotContainer.getMode() == Mode.CLIMB) {
                         indexerSubsystem.setRollerSpeeds(120, 60, 0);
                     } else {
                         indexerSubsystem.setRollerSpeeds(120, -60, 10);
@@ -85,43 +87,4 @@ public class IntakeCommands {
         );
     }
 
-    public static Command switchAmpMode() {
-        return new SequentialCommandGroup(
-                new InstantCommand(() -> indexerSubsystem.setAmpMode(true)),
-                new SequentialCommandGroup(
-                        setElevatorToStable(),
-                        new FunctionalCommand(
-                                () -> indexerSubsystem.setRollerSpeeds(-40, 25, -20),
-                                () -> {
-                                    if (!indexerSubsystem.isNoteInIntake()) {
-                                        indexerSubsystem.setRollerSpeeds(25, 40, 0);
-                                    }
-                                },
-                                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
-                                indexerSubsystem::isNoteInAmpTrap,
-                                indexerSubsystem
-                        )
-                ).unless(() -> !indexerSubsystem.isNoteInIndexer())
-        );
-    }
-
-    public static Command switchShooterMode() {
-        return new SequentialCommandGroup(
-                new InstantCommand(() -> indexerSubsystem.setAmpMode(false)),
-                new SequentialCommandGroup(
-                        setElevatorToStable(),
-                        new FunctionalCommand(
-                                () -> indexerSubsystem.setRollerSpeeds(-10, -20, 0),
-                                () -> {
-                                    if (indexerSubsystem.isNoteInIntake()) {
-                                        indexerSubsystem.setRollerSpeeds(25, -50, 10);
-                                    }
-                                },
-                                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
-                                indexerSubsystem::isNoteInIndexer,
-                                indexerSubsystem
-                        )
-                ).unless(() -> !indexerSubsystem.isNoteInAmpTrap())
-        );
-    }
 }

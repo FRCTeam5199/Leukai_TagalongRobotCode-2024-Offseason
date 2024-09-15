@@ -9,18 +9,12 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.base.PivotToCommand;
-import frc.robot.constants.Constants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.utility.LookUpTable;
 
 public class Autos extends Command {
     public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
@@ -49,7 +43,7 @@ public class Autos extends Command {
         NamedCommands.registerCommand("autoShoot",
                 ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
-                        .andThen(ScoreCommands.indexerFeedCommand(60))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 

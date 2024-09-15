@@ -11,38 +11,18 @@ import frc.robot.tagalong.ElevatorAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
 public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugment {
-  public static final class ElevatorConstants {
-    public static final int ELEVATOR_ID = 0;
-
-    public static final double ELEVATOR_ZEROING_SPEED_MPS = -0.06;
-    public static final double ELEVATOR_PREP_SPEED_MPS = -0.01;
-    public static final double ELEVATOR_ZEROING_STALL_TOLERANCE = 50;
-    public static final int ELEVATOR_ZEROING_STALL_LOOPS = 6;
-
-    public static final double ELEVATOR_AMP_MPS = 1.0;
-    public static final double ELEVATOR_TRAP_MPS = 1.0;
-  }
-
-  public static final class RollerConstants { public static final double ROLLER_AMP_SHOT = 50.0; }
-
-  private final TagalongDualMotorElevator _elevator;
-  public final NotevatorParser _elevatorParser;
-  public final NotevatorConfJson _notevatorConf;
-
-  /* -------- Logging: utilities and configs -------- */
-  // private final ClimberIOTalonFX _io;
-  // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
-
-  @Override
-  public TagalongDualMotorElevator getElevator() {
-    return _elevator;
-  }
-
     private static NoteElevator elevatorSubsystem;
+    public final NotevatorParser _elevatorParser;
+    public final NotevatorConfJson _notevatorConf;
+    private final TagalongDualMotorElevator _elevator;
 
     public NoteElevator(String filePath) {
         this(filePath == null ? null : new NotevatorParser(Filesystem.getDeployDirectory(), filePath));
     }
+
+    /* -------- Logging: utilities and configs -------- */
+    // private final ClimberIOTalonFX _io;
+    // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
 
     public NoteElevator(NotevatorParser parser) {
         super(parser);
@@ -78,15 +58,19 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
         return elevatorSubsystem;
     }
 
-    /* -------- Logging: utilities and configs -------- */
-    // private final ClimberIOTalonFX _io;
-    // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
-
+    @Override
+    public TagalongDualMotorElevator getElevator() {
+        return _elevator;
+    }
 
     @Override
     public TagalongElevator getElevator(int i) {
         return _elevator;
     }
+
+    /* -------- Logging: utilities and configs -------- */
+    // private final ClimberIOTalonFX _io;
+    // private final ClimberIOInputsAutoLogged _inputs = new ClimberIOInputsAutoLogged();
 
     public boolean isReadyToElevate() {
         return _isSubsystemDisabled ? true : false;
@@ -167,5 +151,21 @@ public class NoteElevator extends TagalongSubsystemBase implements ElevatorAugme
 
     public double getElevatorSetpoint() {
         return _elevator.getElevatorHeightM();
+    }
+
+    public static final class ElevatorConstants {
+        public static final int ELEVATOR_ID = 0;
+
+        public static final double ELEVATOR_ZEROING_SPEED_MPS = -0.06;
+        public static final double ELEVATOR_PREP_SPEED_MPS = -0.01;
+        public static final double ELEVATOR_ZEROING_STALL_TOLERANCE = 50;
+        public static final int ELEVATOR_ZEROING_STALL_LOOPS = 6;
+
+        public static final double ELEVATOR_AMP_MPS = 1.0;
+        public static final double ELEVATOR_TRAP_MPS = 1.0;
+    }
+
+    public static final class RollerConstants {
+        public static final double ROLLER_AMP_SHOT = 50.0;
     }
 }

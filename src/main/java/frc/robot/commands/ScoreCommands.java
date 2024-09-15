@@ -5,7 +5,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.units.Unit;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
@@ -13,8 +12,8 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.UserInterface;
+import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
@@ -31,12 +30,25 @@ public class ScoreCommands {
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static PIDController driveRotationalPIDController;
+    public static boolean isElevatorUp = false;
 
     public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
                 driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 185),
                 driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
+
+    public static Command toggleElevator() {
+        return new ConditionalCommand(
+                elevatorStable(),
+                new InstantCommand(() -> isElevatorUp = true).andThen(moveElevatorToSetpoint(ElevatorHeights.TRAP)),
+                () -> isElevatorUp
+        );
+    }
+
+    public static Command isElevatorUp(boolean up) {
+        return new InstantCommand(() -> isElevatorUp = up);
     }
 
     private static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
@@ -92,6 +104,7 @@ public class ScoreCommands {
 
     public static Command elevatorStable() {
         return new ParallelCommandGroup(
+                new InstantCommand(() -> isElevatorUp = false),
                 new ElevatorRaiseToCommand<>(elevatorSubsystem, ElevatorHeights.STABLE),
                 new InstantCommand(() -> indexerSubsystem.setRollerSpeeds(0, 0, 0))
         );
@@ -106,7 +119,7 @@ public class ScoreCommands {
     }
 
     public static Command subWooferShot() {
-        return moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 45).andThen(indexerFeedCommand(45));
+        return moveShooterToSetpointAndSpeed(ShooterPivotAngles.MAX, 45).andThen(indexerFeedCommandAutoStop(45));
     }
 
     public static Command moveElevatorToSetpoint(ElevatorHeights elevatorHeight) {
@@ -120,13 +133,6 @@ public class ScoreCommands {
             indexerSubsystem.getRoller(1).setRollerPower(0);
             indexerSubsystem.getRoller(2).setRollerPower(0);
         });
-    }
-
-    public static Command ampScore() {
-        return new SequentialCommandGroup(
-                moveElevatorToSetpoint(ElevatorHeights.AMP),
-                spinRollersForAmpOrTrapScore()
-        ).unless(() -> !indexerSubsystem.isNoteInAmpTrap());
     }
 
     public static Command spinRollersForAmpOrTrapScore() {
@@ -222,13 +228,23 @@ public class ScoreCommands {
         });
     }
 
-    public static Command indexerFeedCommand(double targetSpeed) {
+    public static Command indexerFeedCommandAutoStop(double targetSpeed) {
         return new FunctionalCommand(
                 () -> indexerSubsystem.setRollerSpeeds(50, -75, 50),
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
                 () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
+                indexerSubsystem);
+    }
+
+    public static Command indexerFeedCommand(double targetSpeed) {
+        return new FunctionalCommand(
+                () -> indexerSubsystem.setRollerSpeeds(50, -75, 50),
+                () -> {
+                },
+                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                () -> false,
                 indexerSubsystem);
     }
 }

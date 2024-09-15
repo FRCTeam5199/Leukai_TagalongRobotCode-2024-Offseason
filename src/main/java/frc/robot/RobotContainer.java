@@ -10,12 +10,11 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
 import frc.robot.commands.base.ClimberCommands;
+import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
@@ -26,6 +25,7 @@ import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
+import frc.robot.utility.Mode;
 
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
@@ -41,6 +41,7 @@ public class RobotContainer {
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+    private static Mode mode = Mode.SHOOTER;
     public double prevArmAngle = 0;
     public double armAutoAimAngle;
     public PivotToCommand armAutoAim = new PivotToCommand(
@@ -59,6 +60,14 @@ public class RobotContainer {
         configureBindings();
     }
 
+    public static Mode getMode() {
+        return mode;
+    }
+
+    public static void setMode(Mode mode) {
+        RobotContainer.mode = mode;
+    }
+
     private void configureBindings() {
         commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 commandSwerveDrivetrain.applyRequest(
@@ -74,32 +83,91 @@ public class RobotContainer {
                 )
         );
 
+        //Mode Switches
+        commandXboxController.a().onTrue(ModeCommands.switchAmpOrClimbMode(true));
+        commandXboxController.b().onTrue(ModeCommands.switchShooterOrShuttleMode(true));
+        commandXboxController.x().onTrue(ModeCommands.switchShooterOrShuttleMode(false));
+        commandXboxController.y().onTrue(ModeCommands.switchAmpOrClimbMode(false)
+                .andThen(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0)));
 
-        commandXboxController.rightTrigger().onTrue(IntakeCommands.intake()).onFalse(IntakeCommands.stopRollers());
-        commandXboxController.a().onTrue(IntakeCommands.switchAmpMode());
-        commandXboxController.b().onTrue(IntakeCommands.switchShooterMode());
+        commandXboxController.leftTrigger().onTrue(
+                new ConditionalCommand(
+                        new ParallelCommandGroup(
+                                ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
+                                        fieldCentricSwerveDrive),
+                                new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
+                                armAutoAim
+                        ),
+                        new ConditionalCommand(
+                                ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
+                                        .alongWith(ScoreCommands.isElevatorUp(true)),
+                                new ConditionalCommand(
+                                        ClimberCommands.setClimberPowers(0.3),
+                                        ShuttleCommands.shuttleAutoAimHigh(),
+                                        () -> mode == Mode.CLIMB
+                                ),
+                                () -> mode == Mode.AMP
+                        ),
+                        () -> mode == Mode.SHOOTER
+                )
+        ).onFalse(
+                new ConditionalCommand(
+                        new ParallelCommandGroup(
+                                ScoreCommands.elevatorStable(),
+                                ClimberCommands.setClimberPowers(0)
+                        ),
+                        new ParallelCommandGroup(
+                                ScoreCommands.elevatorStable(),
+                                ScoreCommands.moveShooterToStable(),
+                                ClimberCommands.setClimberPowers(0)
+                        ),
+                        () -> mode == Mode.CLIMB
+                )
+        );
+        commandXboxController.rightTrigger().onTrue(
+                new ConditionalCommand(
+                        ClimberCommands.setClimberPowers(-0.3),
+                        IntakeCommands.intake(),
+                        () -> mode == Mode.CLIMB
+                )
+        ).onFalse(
+                new ParallelCommandGroup(
+                        IntakeCommands.stopRollers(),
+                        ClimberCommands.setClimberPowers(0)
+                )
+        );
+        commandXboxController.leftBumper().onTrue(
+                new ConditionalCommand(
+                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60),
+                        new ConditionalCommand(
+                                ShuttleCommands.flatShuttle(),
+                                ScoreCommands.toggleElevator(),
+                                () -> mode == Mode.SHUTTLE
+                        ),
+                        () -> mode == Mode.SHOOTER
+                )
+        ).onFalse(
+                new ConditionalCommand(
+                        ScoreCommands.moveShooterToStable(),
+                        new ParallelCommandGroup(
+                                ScoreCommands.moveShooterToStable(),
+                                ScoreCommands.elevatorStable()
+                        ),
+                        () -> mode == Mode.CLIMB
+                )
+        );
+        commandXboxController.rightBumper().onTrue(
+                new ConditionalCommand(
+                        ScoreCommands.indexerFeedCommand(shooterRPS),
+                        ScoreCommands.spinRollersForAmpOrTrapScore(),
+                        () -> mode == Mode.SHOOTER || mode == Mode.SHUTTLE
+                )
+        ).onFalse(
+                IntakeCommands.stopRollers()
+        );
+
+
 //        commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
-
-        commandXboxController.y().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0));
-        commandXboxController.x().onTrue(ScoreCommands.spinRollersForAmpOrTrapScore()).onFalse(IntakeCommands.stopRollers());
-        commandXboxController.povUp().onTrue(ClimberCommands.moveElevatorToTrap());
-        commandXboxController.povDown().onTrue(ScoreCommands.elevatorStable());
-
-//        commandXboxController.leftTrigger().onTrue(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60))
-//                .onFalse(ScoreCommands.moveShooterToStable());
-
-        commandXboxController.leftTrigger().whileTrue(new ParallelCommandGroup(
-                ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
-                        fieldCentricSwerveDrive),
-                armAutoAim.beforeStarting(() -> shooterSubsystem.setShooterSpeeds(shooterRPS))
-        )).onFalse(ScoreCommands.moveShooterToStable());
-
-//                .onFalse(ScoreCommands.moveShooterToStable());
-        commandXboxController.rightBumper().onTrue(ScoreCommands.indexerFeedCommand(60));
-        commandXboxController.leftBumper().onTrue(ScoreCommands.ampScore())
-                .onFalse(ScoreCommands.elevatorStable());
-        commandXboxController.povLeft().onTrue(ClimberCommands.setClimberPowers(-0.3)).onFalse(ClimberCommands.setClimberPowers(0));
-        commandXboxController.povRight().onTrue(ClimberCommands.setClimberPowers(0.3)).onFalse(ClimberCommands.setClimberPowers(0));
 
 
         //Testing shooter pivot and speeds
@@ -143,6 +211,8 @@ public class RobotContainer {
         armAutoAimAngle = LookUpTable.findValue(distance);
         if (distance > 4.48) shooterRPS = 70;
         else shooterRPS = 60;
+
+        System.out.println("elevator up: " + ScoreCommands.isElevatorUp);
 
         armAutoAim.changeSetpoint(armAutoAimAngle);
         if (armAutoAimAngle != prevArmAngle) {
