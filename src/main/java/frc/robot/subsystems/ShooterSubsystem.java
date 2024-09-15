@@ -105,11 +105,11 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.periodic();
 
         updateShuffleboard();
-        System.out.println("Shooter LEFT: " + shooterLeft.getFlywheelVelocity());
+        // System.out.println("Shooter LEFT: " + shooterLeft.getFlywheelVelocity());
 //        System.out.println("Shooter RIGHT: " + shooterRight.getFlywheelVelocity());
         // System.out.println(UserInterface.getInstance().getShooterPositionComponentData());
 //        System.out.println("Arm Pivot Position: " + Rotation2d.fromRotations(arm.getPivotPosition()).getDegrees());
-//        System.out.println("Reached Shooting Conditions: " + reachedShootingCondtions(60));
+    //    System.out.println("Reached Shooting Conditions: " + reachedShootingCondtions(60));
     }
 
     @Override

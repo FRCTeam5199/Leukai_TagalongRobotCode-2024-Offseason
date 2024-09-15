@@ -48,7 +48,8 @@ public class RobotContainer {
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
-    Command sixPieceRed;
+    private Command sixPieceRed;
+    private Command fourPieceBlue;
     private double shooterRPS = 60;
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -61,6 +62,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureBindings();
         sixPieceRed = autos.sixPieceRed();
+        fourPieceBlue = autos.fourPieceBlue();
     }
 
     public static Mode getMode() {
@@ -93,7 +95,7 @@ public class RobotContainer {
         commandXboxController.y().onTrue(ModeCommands.switchAmpOrClimbMode(false)
                 .andThen(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0)));
 
-        commandXboxController.leftTrigger().onTrue(
+        commandXboxController.leftTrigger().onTrue(     
                 new ConditionalCommand(
                         new ParallelCommandGroup(
                                 ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
@@ -201,7 +203,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return sixPieceRed;
+        return fourPieceBlue;
     }
 
     public void periodic() {
@@ -213,7 +215,7 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-        System.out.println("Distance: " + distance);
+        // System.out.println("Distance: " + distance);
         armAutoAimAngle = LookUpTable.findValue(distance) - .25;
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
