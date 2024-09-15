@@ -95,28 +95,28 @@ public class RobotContainer {
         commandXboxController.y().onTrue(ModeCommands.switchAmpOrClimbMode(false)
                 .andThen(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0)));
 
-        commandXboxController.leftTrigger().onTrue(     
+        commandXboxController.leftTrigger().onTrue(
                 new ConditionalCommand(
-                        new ParallelCommandGroup(
-                                ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
-                                        fieldCentricSwerveDrive),
-                                new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
-                                armAutoAim
-                        ),
+//                        ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
+//                                                        fieldCentricSwerveDrive),
+                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65),
                         new ConditionalCommand(
                                 ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
                                         .alongWith(ScoreCommands.isElevatorUp(true)),
                                 new ConditionalCommand(
-                                        ClimberCommands.setClimberPowers(0.3),
                                         new ParallelCommandGroup(
                                                 ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
                                                         fieldCentricSwerveDrive),
-                                                ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)),
-                                        () -> mode == Mode.CLIMB
+                                                new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
+                                                armAutoAim
+                                        ),
+                                        ClimberCommands.setClimberPowers(0.3),
+                                        () -> mode == Mode.SHOOTER
                                 ),
+
                                 () -> mode == Mode.AMP
                         ),
-                        () -> mode == Mode.SHOOTER
+                        () -> mode == Mode.SHUTTLE
                 )
         ).onFalse(
                 new ConditionalCommand(
