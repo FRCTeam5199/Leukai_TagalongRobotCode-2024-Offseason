@@ -60,7 +60,7 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
                 aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
-                        ShooterPivotAngles.STABLE.getRotations(), true, .047)));
+                        ShooterPivotAngles.STABLE.getRotations(), true, .015)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
     }

@@ -86,7 +86,7 @@ public class ScoreCommands {
                 },
                 interrupted -> {
                 },
-                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + .5)).getDegrees() >= Units.radiansToDegrees(Math.atan(
+                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset + 1)).getDegrees() >= Units.radiansToDegrees(Math.atan(
                         (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset - 4)).getDegrees() <= Units.radiansToDegrees(Math.atan(
                         (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))),
                 commandSwerveDrivetrain
