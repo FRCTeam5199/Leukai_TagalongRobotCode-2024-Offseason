@@ -194,7 +194,7 @@ public class RobotContainer {
                     new Pose2d(
                             current.getX(),
                             current.getY(),
-                            Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0F : 0)));
+                            Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)));
 
         }));
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
@@ -214,7 +214,7 @@ public class RobotContainer {
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
         System.out.println("Distance: " + distance);
-        armAutoAimAngle = LookUpTable.findValue(distance) - .25;
+        armAutoAimAngle = LookUpTable.findValue(distance);
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;

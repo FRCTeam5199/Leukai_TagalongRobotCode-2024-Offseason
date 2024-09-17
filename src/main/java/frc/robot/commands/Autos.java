@@ -50,7 +50,14 @@ public class Autos extends Command {
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
-        NamedCommands.registerCommand("subWooferShot", new InstantCommand(()-> aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
+        NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
+        NamedCommands.registerCommand("autoShootSub",
+                ScoreCommands.setShooterSpeeds(60)
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(50))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(50))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+
         NamedCommands.registerCommand("autoShootFast",
                 ScoreCommands.setShooterSpeeds(70)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(70))

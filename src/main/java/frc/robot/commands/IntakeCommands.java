@@ -28,9 +28,9 @@ public class IntakeCommands {
         return new FunctionalCommand(
                 () -> {
                     if (RobotContainer.getMode() == Mode.AMP || RobotContainer.getMode() == Mode.CLIMB) {
-                        indexerSubsystem.setRollerSpeeds(120, 60, 0);
+                        indexerSubsystem.setRollerSpeeds(100, 60, 0);
                     } else {
-                        indexerSubsystem.setRollerSpeeds(120, -60, 10);
+                        indexerSubsystem.setRollerSpeeds(100, -60, 10);
                     }
                 },
                 () -> {
