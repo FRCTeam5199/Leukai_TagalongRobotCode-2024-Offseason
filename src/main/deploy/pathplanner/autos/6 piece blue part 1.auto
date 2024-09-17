@@ -40,28 +40,10 @@
           "data": {
             "pathName": "note 4 to note 5 blue"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "note 5 to note 5 shoot blue"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "note 5 shoot to note 6 blue"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "note 6 to note 6 shoot blue"
-          }
         }
       ]
     }
   },
-  "folder": null,
+  "folder": "6 Piece Blue",
   "choreoAuto": false
 }
