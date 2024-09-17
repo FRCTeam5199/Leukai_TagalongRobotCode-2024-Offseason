@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.168,
-      "y": 5.484
+      "x": 1.3950925173499227,
+      "y": 5.502078857064002
     },
-    "rotation": 180.0
+    "rotation": 0
   },
   "command": {
     "type": "sequential",
@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": " 6 Piece start to note 1 Red"
+            "pathName": "5 Piece note 1 to note 2 blue"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "6 Piece note 1 to shoot Red"
+            "pathName": "5 Piece note 2 to shoot blue"
           }
         },
         {
@@ -50,7 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "6 Piece shoot to note 2 Red"
+            "pathName": "5 Piece note 2 shoot to note 3 shoot blue"
           }
         },
         {
@@ -68,7 +68,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "6 Piece note 2 to note 3 Red"
+            "pathName": "5 Piece note 3 shoot to note 4 blue"
           }
         },
         {
@@ -86,13 +86,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "6 Piece note 3 to note 4 Red"
+            "pathName": "5 Piece note 4 to note 5 blue"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "6 Piece note 4 to shoot Red"
+            "pathName": "5 Piece note 5 to note 5 shoot blue"
           }
         },
         {
@@ -104,36 +104,12 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShootFast"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "6 Piece shoot to note 5 Red"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "6 Piece note 5 to shoot Red"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootFast"
+            "name": "autoShoot"
           }
         }
       ]
     }
   },
-  "folder": "6 Piece Red Autos",
+  "folder": "5 Piece Blue ",
   "choreoAuto": false
 }

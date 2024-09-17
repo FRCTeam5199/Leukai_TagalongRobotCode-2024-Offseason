@@ -26,13 +26,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": null
+            "pathName": "4 Piece start to note 1 Red"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "note 1 to shoot"
+            "pathName": "4 Piece note 1 to shoot Red"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "shoot to note 2"
+            "pathName": "4 Piece shoot to note 2 Red"
           }
         },
         {
@@ -62,7 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "note 2 to note 3"
+            "pathName": "4 Piece note 2 to note 3 Red"
           }
         },
         {
