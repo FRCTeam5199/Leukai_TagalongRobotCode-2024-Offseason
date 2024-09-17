@@ -35,10 +35,4 @@ public class AutonCommands {
         return AutoBuilder.buildAuto("6 Piece Red shoot");
         }
 
- 
-
-
-
-    
-
 }

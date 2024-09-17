@@ -48,7 +48,8 @@ public class RobotContainer {
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
-    Command sixPieceRed;
+    private Command sixPieceRed;
+    private Command fourPieceBlue;
     private double shooterRPS = 60;
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -61,6 +62,7 @@ public class RobotContainer {
     public RobotContainer() {
         configureBindings();
         sixPieceRed = autos.sixPieceRed();
+        fourPieceBlue = autos.fourPieceBlue();
     }
 
     public static Mode getMode() {
@@ -95,26 +97,26 @@ public class RobotContainer {
 
         commandXboxController.leftTrigger().onTrue(
                 new ConditionalCommand(
-                        new ParallelCommandGroup(
-                                ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
-                                        fieldCentricSwerveDrive),
-                                new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
-                                armAutoAim
-                        ),
+//                        ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
+//                                                        fieldCentricSwerveDrive),
+                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65),
                         new ConditionalCommand(
                                 ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
                                         .alongWith(ScoreCommands.isElevatorUp(true)),
                                 new ConditionalCommand(
-                                        ClimberCommands.setClimberPowers(0.3),
                                         new ParallelCommandGroup(
                                                 ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
                                                         fieldCentricSwerveDrive),
-                                                ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)),
-                                        () -> mode == Mode.CLIMB
+                                                new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
+                                                armAutoAim
+                                        ),
+                                        ClimberCommands.setClimberPowers(0.3),
+                                        () -> mode == Mode.SHOOTER
                                 ),
+
                                 () -> mode == Mode.AMP
                         ),
-                        () -> mode == Mode.SHOOTER
+                        () -> mode == Mode.SHUTTLE
                 )
         ).onFalse(
                 new ConditionalCommand(
@@ -213,8 +215,8 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-        System.out.println("Distance: " + distance);
-        armAutoAimAngle = LookUpTable.findValue(distance);
+        // System.out.println("Distance: " + distance);
+        armAutoAimAngle = LookUpTable.findValue(distance) - .25;
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;

@@ -1,0 +1,85 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.174657335273269,
+      "y": 5.4978210699643
+    },
+    "rotation": 179.9999999997442
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "subWooferShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece start to note 1 Red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece note 1 to shoot Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece shoot to note 2 Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece note 2 to note 3 Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "4 Piece Red Autos",
+  "choreoAuto": false
+}

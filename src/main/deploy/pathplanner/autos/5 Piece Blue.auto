@@ -1,0 +1,115 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.3950925173499227,
+      "y": 5.502078857064002
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "subWooferShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 1 to note 2 blue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 2 to shoot blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 2 shoot to note 3 shoot blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 3 shoot to note 4 blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 4 to note 5 blue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 5 to note 5 shoot blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "5 Piece Blue ",
+  "choreoAuto": false
+}

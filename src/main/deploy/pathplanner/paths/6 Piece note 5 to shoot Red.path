@@ -1,0 +1,76 @@
+{
+  "version": 1.0,
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 8.188305195768113,
+        "y": 5.764162940382032
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 10.525471435936893,
+        "y": 6.6211238951105855
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 11.88,
+        "y": 6.52
+      },
+      "prevControl": {
+        "x": 10.938521331372437,
+        "y": 6.5245890871378425
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.2,
+      "rotationDegrees": 172.39,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [],
+  "eventMarkers": [
+    {
+      "name": "intake",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 6.5,
+    "maxAcceleration": 6.0,
+    "maxAngularVelocity": 200.0,
+    "maxAngularAcceleration": 120.0
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 175.13637058344878,
+    "rotateFast": false
+  },
+  "reversed": false,
+  "folder": "6 Piece Red Paths",
+  "previewStartingState": {
+    "rotation": -160.0,
+    "velocity": 0
+  },
+  "useDefaultConstraints": false
+}

@@ -89,6 +89,10 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("6 piece red shoot");
     }
 
+    public Command fourPieceBlue() {
+        return AutoBuilder.buildAuto("4 piece blue");
+    }
+
     public Command sixPieceRedPart1() {
         return AutoBuilder.buildAuto("6 piece red part 1");
     }

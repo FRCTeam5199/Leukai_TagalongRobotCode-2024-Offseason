@@ -1,0 +1,121 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.168,
+      "y": 5.484
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "subWooferShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": " 5 Piece start to note 1 Red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 1 to shoot Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece shoot to note 2 Red"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 2 to note 3 Red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 3 to note 4 Red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece note 4 to shoot Red "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootFast"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "5 Piece Red",
+  "choreoAuto": false
+}

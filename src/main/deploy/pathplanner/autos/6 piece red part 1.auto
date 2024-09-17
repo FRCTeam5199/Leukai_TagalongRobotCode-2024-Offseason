@@ -14,7 +14,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Start To Note 1"
+            "pathName": " 6 Piece start to note 1 Red"
           }
         },
         {
@@ -32,7 +32,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "note 2 to note 3"
+            "pathName": "6 Piece note 2 to note 3 Red"
           }
         },
         {
@@ -44,6 +44,6 @@
       ]
     }
   },
-  "folder": "6 Piece Red",
+  "folder": "6 Piece Red Alt",
   "choreoAuto": false
 }
