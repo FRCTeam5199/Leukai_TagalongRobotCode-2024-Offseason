@@ -8,17 +8,20 @@ public class LookUpTable {
     public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
         {
             //Distances, Averages
-            add(new Pair<>(1.37, 57 - .25));
-            add(new Pair<>(1.92, 46.75 - .25));
-            add(new Pair<>(2.32, 43.125 - .25));
-            add(new Pair<>(2.5, 38.85 - .25));
-            add(new Pair<>(2.75, 36.95 - .25));
-            add(new Pair<>(3.00, 35.55 - .25));
-            add(new Pair<>(3.25, 33.30 - .25));
-            add(new Pair<>(3.5, 32.50 - .25));
-            add(new Pair<>(4.00, 30.65 - .25));
-            add(new Pair<>(4.25, 29.20 - .25));
-            add(new Pair<>(4.5, 27.1 - .25));
+            add(new Pair<>(1.37, 57d));
+            add(new Pair<>(1.50, 52.25));
+            add(new Pair<>(1.75, 49d));
+            add(new Pair<>(1.92, 46.25));
+            add(new Pair<>(2.32, 42.125));
+            add(new Pair<>(2.5, 40.25));
+            add(new Pair<>(2.75, 37.75));
+            add(new Pair<>(3.00, 35.50));
+            add(new Pair<>(3.25, 34d));
+            add(new Pair<>(3.5, 32.60));
+            add(new Pair<>(3.75, 31.25));
+            add(new Pair<>(4.00, 30.1));
+            add(new Pair<>(4.23, 29d));
+            add(new Pair<>(4.5, 27.1));
             add(new Pair<>(4.52, 27.095));
             add(new Pair<>(4.75, 24.5));
             add(new Pair<>(4.82, 24.5d));
@@ -31,14 +34,16 @@ public class LookUpTable {
     };
 
     /*Distances, Low Value, High Value
-    1.92, 45.5, 49
-    2.32, 42.5, 44.75
-    2.5, 36.7, 41
-    2.75, 35, 38.9
-    3.00, 34.3, 36.8
-    3.25, 32.2, 34.4
-    3.5,  31.7 , 33.3
-    3.75, 30, 31.3
+    1.50, 49.5, 57
+    1.75, 46, 52
+    1.92, 43.5, 49
+    2.32, 39.5, 44.75
+    2.5, 38.5, 42
+    2.75, 35.5, 40
+    3.00, 34, 37
+    3.25, 33, 35
+    3.5,  32 , 33.2
+    3.75, 31, 31.5
     4.00, 29 , 30
     4.25, 28.5, 29.9
     4.5,26.8, 27.426.

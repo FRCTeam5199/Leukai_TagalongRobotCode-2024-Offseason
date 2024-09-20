@@ -48,10 +48,10 @@
     },
     "motorCurrentLimits": {
       "statorEnableLimit": true,
-      "statorPeakLimit": 80,
+      "statorPeakLimit": 100,
       "supplyEnableLimit": true,
       "supplyPeakLimit": 140,
-      "supplyContinuousLimit": 80,
+      "supplyContinuousLimit": 100,
       "peakDuration": 1.0
     }
   }

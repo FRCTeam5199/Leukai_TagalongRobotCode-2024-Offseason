@@ -67,7 +67,7 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
                 aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
-                        ShooterPivotAngles.STABLE.getRotations(), true, .015)));
+                        ShooterPivotAngles.STABLE.getRotations(), true, .01)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
     }
@@ -132,6 +132,11 @@ public class Autos extends Command {
 
     public Command fourPieceRedMiddle() {
         return AutoBuilder.buildAuto("4 piece source middle");
+    }
+
+
+    public Command threePieceRedExtended(){
+        return AutoBuilder.buildAuto("3 Piece Extended Red");
     }
 
     private void initalizeAutoChooser() {
