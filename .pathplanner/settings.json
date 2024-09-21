@@ -4,6 +4,7 @@
   "holonomicMode": true,
   "pathFolders": [
     " 4 Piece Blue Paths",
+    "3 Piece Red Paths",
     "4 Piece Red Paths",
     "5 Piece Blue Paths",
     "5 Piece Red Paths",
@@ -12,10 +13,11 @@
     "6 Piece Red alt paths",
     "Blue Paths",
     "California Auto",
-    "3 Piece Red Paths",
+    "3 Piece Blue Paths",
     "Red Paths"
   ],
   "autoFolders": [
+    "3 Piece Red",
     "4 Piece Blue Autos",
     "4 Piece Red Autos",
     "5 Piece Blue ",
@@ -25,7 +27,7 @@
     "6 Piece Red Alt",
     "6 Piece Red Autos",
     "New Folder",
-    "3 Piece Red",
+    "3 Piece Blue",
     "Test Blue Autos",
     "Test Red Autos"
   ],
