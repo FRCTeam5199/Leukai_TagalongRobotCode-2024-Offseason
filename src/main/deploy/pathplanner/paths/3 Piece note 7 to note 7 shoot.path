@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7426336086361384,
-        "y": 4.430877663653311
+        "x": 8.143660035837273,
+        "y": 2.34690443283615
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.7000103347774913,
-        "y": 2.113187808819271
+        "x": 6.0499486123527415,
+        "y": 0.7693172207222235
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 8.036539916496203,
-        "y": 0.7401026427201137
+        "x": 2.65,
+        "y": 3.33
       },
       "prevControl": {
-        "x": 5.397489703638957,
-        "y": 0.9932956520717322
+        "x": 3.6446150235123724,
+        "y": 1.0809393860780607
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,8 +32,8 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.55,
+      "name": "New Event Marker",
+      "waypointRelativePos": 0.15,
       "command": {
         "type": "parallel",
         "data": {
@@ -42,23 +42,6 @@
               "type": "named",
               "data": {
                 "name": "intake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "pivotSpeed",
-      "waypointRelativePos": 0.2,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeed"
               }
             }
           ]
@@ -74,13 +57,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -1.4320961841645354,
+    "rotation": -42.69536310346248,
     "rotateFast": true
   },
   "reversed": false,
   "folder": "3 Piece Blue Paths",
   "previewStartingState": {
-    "rotation": -58.67130713219579,
+    "rotation": 66.03751102542182,
     "velocity": 0
   },
   "useDefaultConstraints": false

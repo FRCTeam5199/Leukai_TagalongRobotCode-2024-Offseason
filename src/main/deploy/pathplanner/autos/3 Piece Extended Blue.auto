@@ -1,0 +1,79 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 0.7426336086361384,
+      "y": 4.430877663653311
+    },
+    "rotation": -57.68038349181979
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "subWooferShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece start to note 8"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece note 8 to note 8 shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece note 8 shoot to note 7"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece note 7 to note 7 shoot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "3 Piece Blue",
+  "choreoAuto": false
+}
