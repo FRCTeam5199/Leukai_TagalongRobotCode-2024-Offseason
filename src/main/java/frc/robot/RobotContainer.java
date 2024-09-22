@@ -49,11 +49,11 @@ public class RobotContainer {
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
-    private final Command sixPieceRed;
-
     private final Command threePieceRedExtended;
     private final Command threePieceBlueExtended;
+    private final Command fourPieceRed;
     private final Command fourPieceBlue;
+    private final Command sixPieceRed;
     private final Command leftTriggerOnTrue;
     private final Command leftTriggerOnFalse;
     private double shooterRPS = 60;
@@ -66,10 +66,11 @@ public class RobotContainer {
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
 
     public RobotContainer() {
-        sixPieceRed = autos.sixPieceRed();
         threePieceRedExtended = autos.threePieceRedExtended();
-        threePieceRedExtended = autos.threePieceBlueExtended();
+        threePieceBlueExtended = autos.threePieceBlueExtended();
+        fourPieceRed = autos.fourPieceRed();
         fourPieceBlue = autos.fourPieceBlue();
+        sixPieceRed = autos.sixPieceRed();
 
         leftTriggerOnTrue = new SelectCommand<>(
                 Map.ofEntries(
@@ -81,17 +82,49 @@ public class RobotContainer {
                                 )
                         ),
                         Map.entry(Mode.AMP, ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
-                                .alongWith(ScoreCommands.isElevatorUp(true))),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65)),
-                        Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(0.3))
+                                .alongWith(ScoreCommands.isElevatorUp(true)).alongWith(
+                                        commandSwerveDrivetrain.applyRequest(
+                                                () -> {
+                                                    return
+                                                            // Drive forward with negative Y (forward)
+                                                            fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
+                                                                    // Drive left with negative X (left)
+                                                                    .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
+                                                                    // Drive counterclockwise with negative X (left)
+                                                                    .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
+                                                }
+                                        )
+                                )),
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65)
+                                .alongWith(commandSwerveDrivetrain.applyRequest(
+                                        () -> {
+                                            return
+                                                    // Drive forward with negative Y (forward)
+                                                    fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
+                                                            // Drive left with negative X (left)
+                                                            .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
+                                                            // Drive counterclockwise with negative X (left)
+                                                            .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
+                                        }
+                                ))),
+                        Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.3).alongWith(
+                                commandSwerveDrivetrain.applyRequest(
+                                        () -> {
+                                            return
+                                                    // Drive forward with negative Y (forward)
+                                                    fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
+                                                            // Drive left with negative X (left)
+                                                            .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
+                                                            // Drive counterclockwise with negative X (left)
+                                                            .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
+                                        }
+                                )
+                        ))
                 ),
                 () -> mode
         );
         leftTriggerOnFalse = new ConditionalCommand(
-                new ParallelCommandGroup(
-                        ScoreCommands.elevatorStable(),
-                        ClimberCommands.setClimberPowers(0)
-                ),
+                ClimberCommands.setClimberPowers(0),
                 new ParallelCommandGroup(
                         ScoreCommands.elevatorStable(),
                         ScoreCommands.moveShooterToStable(),
@@ -136,7 +169,7 @@ public class RobotContainer {
         commandXboxController.leftTrigger().onTrue(leftTriggerOnTrue).onFalse(leftTriggerOnFalse);
         commandXboxController.rightTrigger().onTrue(
                 new ConditionalCommand(
-                        ClimberCommands.setClimberPowers(-0.3),
+                        ClimberCommands.setClimberPowers(0.3),
                         IntakeCommands.intake(),
                         () -> mode == Mode.CLIMB
                 )
@@ -158,7 +191,7 @@ public class RobotContainer {
                 )
         ).onFalse(
                 new ConditionalCommand(
-                        ScoreCommands.moveShooterToStable(),
+                        new WaitCommand(0),
                         new ParallelCommandGroup(
                                 ScoreCommands.moveShooterToStable(),
                                 ScoreCommands.elevatorStable()
@@ -205,7 +238,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return threePieceRedExtended;
+        return threePieceBlueExtended;
     }
 
     public void periodic() {

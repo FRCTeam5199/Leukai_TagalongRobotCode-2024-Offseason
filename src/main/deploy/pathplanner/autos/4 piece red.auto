@@ -42,6 +42,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "4 Piece shoot to note 2 Red"
@@ -80,6 +86,6 @@
       ]
     }
   },
-  "folder": "4 Piece Red Autos",
+  "folder": "4 Piece Red",
   "choreoAuto": false
 }

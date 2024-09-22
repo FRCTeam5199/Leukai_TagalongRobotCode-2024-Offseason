@@ -150,7 +150,7 @@ public class ScoreCommands {
 
     public static Command spinRollersForAmpOrTrapScore() {
         return new FunctionalCommand(
-                () -> indexerSubsystem.setRollerSpeeds(0, 30, 0),
+                () -> indexerSubsystem.setRollerSpeeds(0, 50, 0),
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),

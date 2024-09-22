@@ -93,6 +93,10 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("4 piece blue");
     }
 
+    public Command fourPieceRed() {
+        return AutoBuilder.buildAuto("4 piece red");
+    }
+
     public Command sixPieceRedPart1() {
         return AutoBuilder.buildAuto("6 piece red part 1");
     }
@@ -141,17 +145,5 @@ public class Autos extends Command {
 
     public Command threePieceBlueExtended() {
         return AutoBuilder.buildAuto("3 piece extended blue");
-    }
-
-    private void initalizeAutoChooser() {
-        autoChooser = AutoBuilder.buildAutoChooser();
-    }
-
-    public SendableChooser<Command> getAutoChooser() {
-        return autoChooser;
-    }
-
-    public Command getSelectedAuton() {
-        return autoChooser.getSelected();
     }
 }

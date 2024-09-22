@@ -49,7 +49,7 @@ public class UserInterface {
     }
 
     private void initalizeWidgets() {
-        SmartDashboard.putData("Auto Selector", Autos.getInstance(commandSwerveDrivetrain).getAutoChooser());
+//        SmartDashboard.putData("Auto Selector", Autos.getInstance(commandSwerveDrivetrain).getAutoChooser());
         SmartDashboard.putData("Field 2D", field2d);
 
         shuffleboardShooterPositionComponent = shuffleboardTestTab.add("Shooter Position", 0)
