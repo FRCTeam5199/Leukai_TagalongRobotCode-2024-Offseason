@@ -9,7 +9,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -27,6 +26,8 @@ import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 import frc.robot.utility.Mode;
+
+import java.util.Map;
 
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
@@ -48,10 +49,13 @@ public class RobotContainer {
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
-    private Command sixPieceRed;
+    private final Command sixPieceRed;
 
-    private Command threePieceRedExtended;
-    private Command fourPieceBlue;
+    private final Command threePieceRedExtended;
+    private final Command threePieceBlueExtended;
+    private final Command fourPieceBlue;
+    private final Command leftTriggerOnTrue;
+    private final Command leftTriggerOnFalse;
     private double shooterRPS = 60;
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -62,10 +66,41 @@ public class RobotContainer {
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
 
     public RobotContainer() {
-        configureBindings();
         sixPieceRed = autos.sixPieceRed();
         threePieceRedExtended = autos.threePieceRedExtended();
+        threePieceRedExtended = autos.threePieceBlueExtended();
         fourPieceBlue = autos.fourPieceBlue();
+
+        leftTriggerOnTrue = new SelectCommand<>(
+                Map.ofEntries(
+                        Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
+                                        ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
+                                                fieldCentricSwerveDrive),
+                                        new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
+                                        armAutoAim
+                                )
+                        ),
+                        Map.entry(Mode.AMP, ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
+                                .alongWith(ScoreCommands.isElevatorUp(true))),
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65)),
+                        Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(0.3))
+                ),
+                () -> mode
+        );
+        leftTriggerOnFalse = new ConditionalCommand(
+                new ParallelCommandGroup(
+                        ScoreCommands.elevatorStable(),
+                        ClimberCommands.setClimberPowers(0)
+                ),
+                new ParallelCommandGroup(
+                        ScoreCommands.elevatorStable(),
+                        ScoreCommands.moveShooterToStable(),
+                        ClimberCommands.setClimberPowers(0)
+                ),
+                () -> mode == Mode.CLIMB
+        );
+
+        configureBindings();
     }
 
     public static Mode getMode() {
@@ -98,43 +133,7 @@ public class RobotContainer {
         commandXboxController.y().onTrue(ModeCommands.switchAmpOrClimbMode(false)
                 .andThen(ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 0)));
 
-        commandXboxController.leftTrigger().onTrue(
-                new ConditionalCommand(
-//                        ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
-//                                                        fieldCentricSwerveDrive),
-                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65),
-                        new ConditionalCommand(
-                                ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
-                                        .alongWith(ScoreCommands.isElevatorUp(true)),
-                                new ConditionalCommand(
-                                        new ParallelCommandGroup(
-                                                ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
-                                                        fieldCentricSwerveDrive),
-                                                new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
-                                                armAutoAim
-                                        ),
-                                        ClimberCommands.setClimberPowers(0.3),
-                                        () -> mode == Mode.SHOOTER
-                                ),
-
-                                () -> mode == Mode.AMP
-                        ),
-                        () -> mode == Mode.SHUTTLE
-                )
-        ).onFalse(
-                new ConditionalCommand(
-                        new ParallelCommandGroup(
-                                ScoreCommands.elevatorStable(),
-                                ClimberCommands.setClimberPowers(0)
-                        ),
-                        new ParallelCommandGroup(
-                                ScoreCommands.elevatorStable(),
-                                ScoreCommands.moveShooterToStable(),
-                                ClimberCommands.setClimberPowers(0)
-                        ),
-                        () -> mode == Mode.CLIMB
-                )
-        );
+        commandXboxController.leftTrigger().onTrue(leftTriggerOnTrue).onFalse(leftTriggerOnFalse);
         commandXboxController.rightTrigger().onTrue(
                 new ConditionalCommand(
                         ClimberCommands.setClimberPowers(-0.3),

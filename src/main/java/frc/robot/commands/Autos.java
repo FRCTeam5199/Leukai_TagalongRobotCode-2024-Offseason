@@ -135,8 +135,12 @@ public class Autos extends Command {
     }
 
 
-    public Command threePieceRedExtended(){
-        return AutoBuilder.buildAuto("3 Piece Extended Red");
+    public Command threePieceRedExtended() {
+        return AutoBuilder.buildAuto("3 piece extended red");
+    }
+
+    public Command threePieceBlueExtended() {
+        return AutoBuilder.buildAuto("3 piece extended blue");
     }
 
     private void initalizeAutoChooser() {

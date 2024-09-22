@@ -24,6 +24,8 @@ import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 
+import java.sql.Driver;
+
 public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
@@ -34,9 +36,19 @@ public class ScoreCommands {
 
     public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 183),
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, getAutoAimOffset()),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, getAutoAimOffset()),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
+
+    private static double getAutoAimOffset() {
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 183;
+            else return 178;
+        } else {
+            if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 3;
+            else return -2;
+        }
     }
 
     public static Command toggleElevator() {
@@ -73,7 +85,7 @@ public class ScoreCommands {
 
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(1, 0, 0),
+                () -> driveRotationalPIDController = new PIDController(.3, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
@@ -96,8 +108,8 @@ public class ScoreCommands {
 
     public static Command autonAutoTurn(FieldCentric fieldCentric) {
         return new ConditionalCommand(
-                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 180),
-                autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, 0),
+                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, getAutoAimOffset()),
+                autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, getAutoAimOffset()),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
 
     }
