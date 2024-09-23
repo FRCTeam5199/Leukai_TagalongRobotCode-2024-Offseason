@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -18,6 +17,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Autos extends Command {
+    public static PivotToCommand aimingWhileMoving = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
 
@@ -50,7 +50,7 @@ public class Autos extends Command {
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
-        NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
+        NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
         NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(50))
@@ -66,10 +66,13 @@ public class Autos extends Command {
         );
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
-                aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
+                aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem,
                         ShooterPivotAngles.STABLE.getRotations(), true, .01)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
+
+        NamedCommands.registerCommand("driveAndArmAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
+                .alongWith(aiming));
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {

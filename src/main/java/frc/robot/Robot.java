@@ -88,9 +88,9 @@ public class Robot extends TimedRobot {
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
 
-        Autos.aiming.initialize();
-        Autos.aiming.execute();
-        Autos.aiming.end(Autos.aiming.isFinished());
+        Autos.aimingWhileMoving.initialize();
+        Autos.aimingWhileMoving.execute();
+        Autos.aimingWhileMoving.end(Autos.aimingWhileMoving.isFinished());
 
 
     }

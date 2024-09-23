@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.RobotContainer;
 import frc.robot.UserInterface;
 import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
@@ -24,20 +25,26 @@ import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 
-import java.sql.Driver;
-
 public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    public static PIDController driveRotationalPIDController;
+    public static PIDController driveRotationalPIDController = new PIDController(0.2, 0, 0);
+    public static PIDController autoDriveRotationalPIDController;
     public static boolean isElevatorUp = false;
 
-    public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
+    public static Command driveAutoTurn(FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, getAutoAimOffset()),
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, getAutoAimOffset()),
+                driveAutoAim(fieldCentricSwerveDrive, 16.58, 5.59, getAutoAimOffset()),
+                driveAutoAim(fieldCentricSwerveDrive, -0.0381, 5.48, getAutoAimOffset()),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
+
+    public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
+        return new ConditionalCommand(
+                driveAutoAim(fieldCentricSwerveDrive, 16.58, 7d, getAutoAimOffset()),
+                driveAutoAim(fieldCentricSwerveDrive, -0.0381, 7d, getAutoAimOffset()),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
@@ -63,39 +70,25 @@ public class ScoreCommands {
         return new InstantCommand(() -> isElevatorUp = up);
     }
 
-    private static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
-        return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(0.2, 0, 0),
-                () -> {
-                    commandSwerveDrivetrain.setControl(
-                            fieldCentricSwerveDrive
-                                    .withVelocityX(-driveY * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withVelocityY(-driveX * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withRotationalRate(driveRotationalPIDController.calculate(
-                                            commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
-                                            Units.radiansToDegrees(Math.atan(
-                                                    (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
-                },
-                interrupted -> {
-                },
-                () -> false,
-                commandSwerveDrivetrain
-        );
+    public static Command driveAutoAim(FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
+        return commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive
+                .withVelocityX(-RobotContainer.commandXboxController.getLeftY())
+                .withVelocityY(-RobotContainer.commandXboxController.getLeftX())
+                .withRotationalRate(driveRotationalPIDController.calculate(
+                        commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
+                        Units.radiansToDegrees(Math.atan(
+                                (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
     }
 
-    private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
+    private static Command autonAutoTurn(FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(.3, 0, 0),
+                () -> autoDriveRotationalPIDController = new PIDController(.3, 0, 0),
                 () -> {
-                    commandSwerveDrivetrain.setControl(
-                            fieldCentricSwerveDrive
-                                    .withVelocityX(-driveY * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withVelocityY(-driveX * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withRotationalRate(driveRotationalPIDController.calculate(
-                                            commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
-                                            Units.radiansToDegrees(Math.atan(
-                                                    (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
-                    System.out.println("drive auto aiming");
+                    commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive
+                            .withRotationalRate(driveRotationalPIDController.calculate(
+                                    commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
+                                    Units.radiansToDegrees(Math.atan(
+                                            (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
                 },
                 interrupted -> {
                 },
@@ -108,8 +101,8 @@ public class ScoreCommands {
 
     public static Command autonAutoTurn(FieldCentric fieldCentric) {
         return new ConditionalCommand(
-                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, getAutoAimOffset()),
-                autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, getAutoAimOffset()),
+                autonAutoTurn(fieldCentric, 16.58, 5.59, getAutoAimOffset()),
+                autonAutoTurn(fieldCentric, -0.0381, 5.48, getAutoAimOffset()),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
 
     }
