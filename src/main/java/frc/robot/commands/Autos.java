@@ -72,7 +72,7 @@ public class Autos extends Command {
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
 
         NamedCommands.registerCommand("driveAndArmAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
-                .alongWith(aiming));
+                .alongWith(new InstantCommand()));
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {

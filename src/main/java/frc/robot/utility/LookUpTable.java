@@ -16,17 +16,17 @@ public class LookUpTable {
             add(new Pair<>(2.5, 40.25));
             add(new Pair<>(2.75, 37.75));
             add(new Pair<>(3.00, 35.50));
-            add(new Pair<>(3.25, 34d));
+            add(new Pair<>(3.25, 33d));
             add(new Pair<>(3.5, 32.60));
             add(new Pair<>(3.75, 31.25));
             add(new Pair<>(4.00, 30.1));
             add(new Pair<>(4.23, 29d));
             add(new Pair<>(4.5, 27.1));
-            add(new Pair<>(4.52, 27.095));
-            add(new Pair<>(4.75, 24.5));
+            add(new Pair<>(4.52, 26.5)); //X
+            add(new Pair<>(4.75, 23d)); //X
             add(new Pair<>(4.82, 24.5d));
-            add(new Pair<>(5.01, 24d));
-            add(new Pair<>(5.25, 23.875));
+            add(new Pair<>(5.01, 22.5d)); //X
+            add(new Pair<>(5.25, 22d)); //X
             add(new Pair<>(5.5, 23.875));
             add(new Pair<>(5.57, 24.07));
             add(new Pair<>(5.81, 24.00));
