@@ -6,6 +6,7 @@ package frc.robot;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
+import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -26,6 +27,7 @@ import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
 import frc.robot.utility.Mode;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 import java.util.Map;
 
@@ -49,6 +51,8 @@ public class RobotContainer {
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
+    private final SendableChooser<Command> autoChooser;
+
     private final Command threePieceRedExtended;
     private final Command threePieceBlueExtended;
     private final Command fourPieceRed;
@@ -71,6 +75,8 @@ public class RobotContainer {
         fourPieceRed = autos.fourPieceRed();
         fourPieceBlue = autos.fourPieceBlue();
         sixPieceRed = autos.sixPieceRed();
+
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         leftTriggerOnTrue = new SelectCommand<>(
                 Map.ofEntries(
@@ -227,8 +233,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return fourPieceRed;
-    }
+    return autoChooser.getSelected();
+  } 
 
     public void periodic() {
         double distance;
