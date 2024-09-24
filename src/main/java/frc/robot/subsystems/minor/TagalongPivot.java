@@ -426,6 +426,11 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
                 && getPivotAbsolutePositionRot() + _defaultPivotUpperToleranceRot > RobotContainer.armAutoAimAngle / 360d;
     }
 
+    public boolean isPivotAtGoalRotation(double rotations) {
+        return getPivotAbsolutePositionRot() - _defaultPivotLowerToleranceRot < rotations / 360d
+                && getPivotAbsolutePositionRot() + _defaultPivotUpperToleranceRot > rotations / 360d;
+    }
+
     public boolean motorResetConfig() {
         if (_pivotMotor.hasResetOccurred()) {
             configPivotMotor();

@@ -8,7 +8,9 @@ import java.util.Optional;
 
 import frc.robot.commands.Autos;
 
+import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.generated.TunerConstants;
+import frc.robot.subsystems.ShooterSubsystem;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -132,6 +134,8 @@ public class Robot extends TimedRobot {
 
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
+
+        RobotContainer.teleopPeriodic();
     }
 
     @Override

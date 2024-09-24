@@ -20,8 +20,8 @@
         "y": 0.886175532730662
       },
       "prevControl": {
-        "x": 12.009722524778281,
-        "y": 1.3341323954296787
+        "x": 15.72966530548446,
+        "y": 2.0325902190265928
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,23 +42,6 @@
               "type": "named",
               "data": {
                 "name": "intake"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "name": "adjustPivotSpeeds",
-      "waypointRelativePos": 0.35,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeed"
               }
             }
           ]
