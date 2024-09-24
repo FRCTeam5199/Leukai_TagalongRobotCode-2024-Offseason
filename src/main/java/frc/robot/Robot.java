@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
     public double armAngle;
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
+    public static boolean wantToAutoAimWhileMoving = false;
 
     @Override
     public void robotInit() {
@@ -88,10 +89,11 @@ public class Robot extends TimedRobot {
             commandSwerveDrivetrain.addVisionMeasurement(modify, aprilTagSubsystem.getTimestamp());
         }
 
-        Autos.aimingWhileMoving.initialize();
-        Autos.aimingWhileMoving.execute();
-        Autos.aimingWhileMoving.end(Autos.aimingWhileMoving.isFinished());
-
+        if (wantToAutoAimWhileMoving) {
+            Autos.aimingWhileMoving.initialize();
+            Autos.aimingWhileMoving.execute();
+            Autos.aimingWhileMoving.end(Autos.aimingWhileMoving.isFinished());
+        }
 
     }
 

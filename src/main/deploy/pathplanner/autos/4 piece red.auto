@@ -12,18 +12,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "subWooferShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShoot"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "4 Piece start to note 1 Red"
@@ -38,7 +26,7 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAndArmAim"
           }
         },
         {
@@ -56,7 +44,7 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAndArmAim"
           }
         },
         {
@@ -74,7 +62,7 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAndArmAim"
           }
         },
         {

@@ -1,7 +1,10 @@
 package frc.robot.subsystems;
 
+import java.io.IOException;
 import java.util.Optional;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.generated.TunerConstants;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
@@ -24,13 +27,19 @@ public class ApriltagSubsystem extends SubsystemBase {
     private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private double lastEstTimestamp = 0;
     private PhotonPipelineResult lastResult;
-
+    private final AprilTagFieldLayout customTagLayout;
 
     public ApriltagSubsystem() {
+        try {
+            customTagLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/configs/2024-crescendo.json");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
         camera = new PhotonCamera(Constants.Vision.kCameraName);
 
         photonEstimator =
-                new PhotonPoseEstimator(Constants.Vision.kTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
+                new PhotonPoseEstimator(customTagLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
