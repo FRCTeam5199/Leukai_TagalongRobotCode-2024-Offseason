@@ -94,7 +94,7 @@ public class RobotContainer {
                                                 }
                                         )
                                 )),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65)
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
                                 .alongWith(ScoreCommands.highShuttleAutoTurn(fieldCentricSwerveDrive))),
                         Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.3).alongWith(
                                 commandSwerveDrivetrain.applyRequest(
@@ -172,7 +172,7 @@ public class RobotContainer {
                 new ConditionalCommand(
                         ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60),
                         new ConditionalCommand(
-                                ScoreCommands.setShooterSpeeds(70),
+                                ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW_SHUTTLE, 70),
                                 ScoreCommands.toggleElevator(),
                                 () -> mode == Mode.SHUTTLE
                         ),
@@ -198,6 +198,7 @@ public class RobotContainer {
                 IntakeCommands.stopRollers()
         );
 
+        commandXboxController.povDown().onTrue(IntakeCommands.spinRollersForOuttake()).onFalse(IntakeCommands.stopRollers());
 
 //        commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
 
@@ -239,10 +240,12 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-//        System.out.println("Distance: " + distance);
-//        System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
         armAutoAimAngle = LookUpTable.findValue(distance);
-//        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
+
+        System.out.println("Distance: " + distance);
+        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
+        System.out.println("Arm Angle: " + shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
+
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
 
