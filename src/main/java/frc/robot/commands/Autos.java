@@ -33,7 +33,7 @@ public class Autos extends Command {
             6.5, .375, new ReplanningConfig(true, true));
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
-    public SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+    private SendableChooser<Command> autoChooser = new SendableChooser<Command>();
 
     public Autos(CommandSwerveDrivetrain swerveDrive) {
         this.swerveDrive = swerveDrive;
