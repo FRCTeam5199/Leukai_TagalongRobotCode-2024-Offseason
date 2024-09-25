@@ -58,9 +58,9 @@ public class RobotContainer {
     private final Command leftTriggerOnFalse;
     private double shooterRPS = 60;
     // The robot's subsystems and commands are defined here...
-    public static double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
+    private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    public double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -75,7 +75,8 @@ public class RobotContainer {
         leftTriggerOnTrue = new SelectCommand<>(
                 Map.ofEntries(
                         Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
-                                        ScoreCommands.driveAutoTurn(fieldCentricSwerveDrive),
+                                        ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
+                                                fieldCentricSwerveDrive),
                                         new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
                                         armAutoAim
                                 )
@@ -95,7 +96,17 @@ public class RobotContainer {
                                         )
                                 )),
                         Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65)
-                                .alongWith(ScoreCommands.highShuttleAutoTurn(fieldCentricSwerveDrive))),
+                                .alongWith(commandSwerveDrivetrain.applyRequest(
+                                        () -> {
+                                            return
+                                                    // Drive forward with negative Y (forward)
+                                                    fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
+                                                            // Drive left with negative X (left)
+                                                            .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
+                                                            // Drive counterclockwise with negative X (left)
+                                                            .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
+                                        }
+                                ))),
                         Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.3).alongWith(
                                 commandSwerveDrivetrain.applyRequest(
                                         () -> {
@@ -227,7 +238,7 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return fourPieceRed;
+        return threePieceBlueExtended;
     }
 
     public void periodic() {
@@ -239,8 +250,8 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-//        System.out.println("Distance: " + distance);
-//        System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
+        System.out.println("Distance: " + distance);
+        System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
         armAutoAimAngle = LookUpTable.findValue(distance);
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
@@ -250,12 +261,10 @@ public class RobotContainer {
         //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
-            Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle);
+            Autos.aiming.changeSetpoint(armAutoAimAngle);
 
             prevArmAngle = armAutoAimAngle;
         }
-
-        Autos.aiming.changeSetpoint(armAutoAimAngle);
     }
 
     public void onEnable() {
