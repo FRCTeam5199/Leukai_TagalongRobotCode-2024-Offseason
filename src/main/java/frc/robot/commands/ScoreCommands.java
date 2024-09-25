@@ -24,7 +24,6 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
-import pabeles.concurrency.IntOperatorTask;
 
 public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
@@ -44,18 +43,18 @@ public class ScoreCommands {
 
     public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                autoShuttleAim(fieldCentricSwerveDrive, 16.58, 8d, getAutoAimOffset()),
-                autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 8d, getAutoAimOffset()),
+                driveAutoAim(fieldCentricSwerveDrive, 16.58, 7d, getAutoAimOffset()),
+                driveAutoAim(fieldCentricSwerveDrive, -0.0381, 7d, getAutoAimOffset()),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
     private static double getAutoAimOffset() {
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-            if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 182;
-            else return 179;
+            if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 183;
+            else return 178;
         } else {
             if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 3;
-            else return -1;
+            else return -2;
         }
     }
 
@@ -73,18 +72,8 @@ public class ScoreCommands {
 
     public static Command driveAutoAim(FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive
-                .withVelocityX(0)
-                .withVelocityY(0)
-                .withRotationalRate(driveRotationalPIDController.calculate(
-                        commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
-                        Units.radiansToDegrees(Math.atan(
-                                (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
-    }
-
-    public static Command autoShuttleAim(FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
-        return commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive
-                .withVelocityX(-RobotContainer.commandXboxController.getLeftY() * RobotContainer.MaxSpeed)
-                .withVelocityY(-RobotContainer.commandXboxController.getLeftX() * RobotContainer.MaxSpeed)
+                .withVelocityX(-RobotContainer.commandXboxController.getLeftY())
+                .withVelocityY(-RobotContainer.commandXboxController.getLeftX())
                 .withRotationalRate(driveRotationalPIDController.calculate(
                         commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
                         Units.radiansToDegrees(Math.atan(

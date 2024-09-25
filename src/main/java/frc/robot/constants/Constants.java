@@ -14,7 +14,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.constants.enums.FieldVersions;
 
 import javax.swing.text.Utilities;
-import java.io.IOException;
 
 public class Constants {
     public static final RobotVersions CRobot = RobotVersions.COMP_BOT;
@@ -84,16 +83,6 @@ public class Constants {
         // The layout of the AprilTags on the field
         public static final AprilTagFieldLayout kTagLayout =
                 AprilTagFields.kDefaultField.loadAprilTagLayoutField();
-//        public static final AprilTagFieldLayout customTagLayout;
-//
-//        static {
-//            try {
-//                customTagLayout = new AprilTagFieldLayout("deploy/configs/2024-crescendo.json");
-//            } catch (IOException e) {
-//                throw new RuntimeException(e);
-//            }
-//        }
-
 
         public static final double[] RED_SPEAKER_COORDINATES = new double[]{16.54, 5.547};
         public static final double[] BLUE_SPEAKER_COORDINATES = new double[]{0, 5.547};
