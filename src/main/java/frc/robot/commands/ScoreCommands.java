@@ -44,15 +44,15 @@ public class ScoreCommands {
 
     public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                autoShuttleAim(fieldCentricSwerveDrive, 16.58, 13d, getAutoAimOffset()),
-                autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 13d, getAutoAimOffset()),
+                autoShuttleAim(fieldCentricSwerveDrive, 16.58, 8d, getAutoAimOffset()),
+                autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 8d, getAutoAimOffset()),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
     private static double getAutoAimOffset() {
         if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
             if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 182;
-            else return 175;
+            else return 179;
         } else {
             if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 3;
             else return -1;

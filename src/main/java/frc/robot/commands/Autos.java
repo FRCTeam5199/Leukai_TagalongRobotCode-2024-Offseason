@@ -11,7 +11,6 @@ import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
-import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -45,7 +44,7 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("intake", IntakeCommands.intake());
         NamedCommands.registerCommand("autoShoot",
-                ScoreCommands.setShooterSpeeds(60).alongWith(new InstantCommand(() -> System.out.println("Shooting")))
+                ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
@@ -68,13 +67,12 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
                 aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem,
-                        ShooterPivotAngles.STABLE.getRotations(), true, .01))
-                .alongWith(new InstantCommand(() -> Robot.wantToAutoAimWhileMoving = true)));
+                        ShooterPivotAngles.STABLE.getRotations(), true, .01)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
 
         NamedCommands.registerCommand("driveAndArmAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
-                .alongWith(aiming).until(() -> RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle()));
+                .alongWith(new InstantCommand()));
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {

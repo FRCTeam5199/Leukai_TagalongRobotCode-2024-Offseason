@@ -51,7 +51,8 @@ public class RobotContainer {
     public PivotToCommand armAutoAim = new PivotToCommand(
             shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true
     );
-    //    private final SendableChooser<Command> autoChooser;
+    private final SendableChooser<Command> autoChooser;
+
     private final Command threePieceRedExtended;
     private final Command threePieceBlueExtended;
     private final Command fourPieceRed;
@@ -67,8 +68,6 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
-    private boolean isShooting = false;
-
 
     public RobotContainer() {
         threePieceRedExtended = autos.threePieceRedExtended();
@@ -77,7 +76,7 @@ public class RobotContainer {
         fourPieceBlue = autos.fourPieceBlue();
         sixPieceRed = autos.sixPieceRed();
 
-//        autoChooser = AutoBuilder.buildAutoChooser();
+        autoChooser = AutoBuilder.buildAutoChooser();
 
         leftTriggerOnTrue = new SelectCommand<>(
                 Map.ofEntries(
@@ -101,7 +100,7 @@ public class RobotContainer {
                                                 }
                                         )
                                 )),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 55)
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
                                 .alongWith(ScoreCommands.highShuttleAutoTurn(fieldCentricSwerveDrive))),
                         Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.3).alongWith(
                                 commandSwerveDrivetrain.applyRequest(
@@ -118,7 +117,7 @@ public class RobotContainer {
                         ))
                 ),
                 () -> mode
-        ).alongWith(new InstantCommand(() -> isShooting = true));
+        );
         leftTriggerOnFalse = new ConditionalCommand(
                 ClimberCommands.setClimberPowers(0),
                 new ParallelCommandGroup(
@@ -127,7 +126,7 @@ public class RobotContainer {
                         ClimberCommands.setClimberPowers(0)
                 ),
                 () -> mode == Mode.CLIMB
-        ).alongWith(new InstantCommand(() -> isShooting = false));
+        );
 
         configureBindings();
     }
@@ -235,9 +234,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-//        return autoChooser.getSelected();
-        return fourPieceRed;
-    }
+    return autoChooser.getSelected();
+  } 
 
     public void periodic() {
         double distance;
@@ -250,9 +248,9 @@ public class RobotContainer {
 
         armAutoAimAngle = LookUpTable.findValue(distance);
 
-//        System.out.println("Distance: " + distance);
-//        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
-//        System.out.println("Arm Angle: " + shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
+        System.out.println("Distance: " + distance);
+        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
+        System.out.println("Arm Angle: " + shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
 
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
@@ -267,14 +265,6 @@ public class RobotContainer {
         }
 
         Autos.aiming.changeSetpoint(armAutoAimAngle);
-
-//        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-//                && commandSwerveDrivetrain.getPose().getX() > 8d) {
-//            shooterSubsystem.setShooterSpeeds(40);
-//        } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue
-//                && commandSwerveDrivetrain.getPose().getX() < 8.5d) {
-//            shooterSubsystem.setShooterSpeeds(40);
-//        }
     }
 
     public void onEnable() {

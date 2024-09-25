@@ -11,7 +11,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.constants.enums.FieldVersions;
 
 import javax.swing.text.Utilities;
@@ -85,6 +84,15 @@ public class Constants {
         // The layout of the AprilTags on the field
         public static final AprilTagFieldLayout kTagLayout =
                 AprilTagFields.kDefaultField.loadAprilTagLayoutField();
+//        public static final AprilTagFieldLayout customTagLayout;
+//
+//        static {
+//            try {
+//                customTagLayout = new AprilTagFieldLayout("deploy/configs/2024-crescendo.json");
+//            } catch (IOException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }
 
 
         public static final double[] RED_SPEAKER_COORDINATES = new double[]{16.54, 5.547};

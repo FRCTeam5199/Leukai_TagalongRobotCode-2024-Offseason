@@ -19,7 +19,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Robot;
-import frc.robot.RobotContainer;
 import frc.robot.constants.Constants;
 import frc.robot.constants.RobotAltModes;
 import frc.robot.parsers.PivotParser;
@@ -419,11 +418,6 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
         double position = MathUtils.cppMod(getPivotAbsolutePositionRot(), 1.0);
         return _isMinorSystemDisabled || inTolerance(position, lowerBound, upperBound)
                 || inTolerance(position + 1.0, lowerBound, upperBound);
-    }
-
-    public boolean isPivotAtAutoAngle() {
-        return getPivotAbsolutePositionRot() - _defaultPivotLowerToleranceRot < RobotContainer.armAutoAimAngle / 360d
-                && getPivotAbsolutePositionRot() + _defaultPivotUpperToleranceRot > RobotContainer.armAutoAimAngle / 360d;
     }
 
     public boolean motorResetConfig() {
