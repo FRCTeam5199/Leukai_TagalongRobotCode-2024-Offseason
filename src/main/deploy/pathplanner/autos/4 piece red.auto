@@ -12,18 +12,6 @@
     "data": {
       "commands": [
         {
-          "type": "named",
-          "data": {
-            "name": "subWooferShotNoMove"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootSub"
-          }
-        },
-        {
           "type": "path",
           "data": {
             "pathName": "4 Piece start to note 1 Red"

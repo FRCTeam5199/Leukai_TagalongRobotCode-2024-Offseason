@@ -16,12 +16,10 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
-import frc.robot.subsystems.ShooterSubsystem;
 
 public class Autos extends Command {
     public static PivotToCommand aimingWhileMoving = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
-    public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true);
-    public static PivotToCommand subShot = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true);
+    public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
 
     public boolean firstShot = false;
@@ -47,14 +45,13 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("intake", IntakeCommands.intake());
         NamedCommands.registerCommand("autoShoot",
-                ScoreCommands.setShooterSpeeds(60)
+                ScoreCommands.setShooterSpeeds(60).alongWith(new InstantCommand(() -> System.out.println("Shooting")))
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
         NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
-        NamedCommands.registerCommand("subWooferShotNoMove", subShot.until(() -> RobotContainer.shooterSubsystem.getPivot().isPivotAtGoalRotation(ShooterPivotAngles.MAX.getRotations())));
         NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(50))

@@ -67,8 +67,8 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
-    private static boolean isIdling = false;
-    private static boolean isShooting = false;
+    private boolean isShooting = false;
+
 
     public RobotContainer() {
         threePieceRedExtended = autos.threePieceRedExtended();
@@ -118,7 +118,7 @@ public class RobotContainer {
                         ))
                 ),
                 () -> mode
-        ).alongWith(new InstantCommand(() -> isIdling = false)).alongWith(new InstantCommand(() -> isShooting = true));
+        ).alongWith(new InstantCommand(() -> isShooting = true));
         leftTriggerOnFalse = new ConditionalCommand(
                 ClimberCommands.setClimberPowers(0),
                 new ParallelCommandGroup(
@@ -250,9 +250,9 @@ public class RobotContainer {
 
         armAutoAimAngle = LookUpTable.findValue(distance);
 
-        System.out.println("Distance: " + distance);
+//        System.out.println("Distance: " + distance);
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
-        System.out.println("Arm Angle: " + shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
+//        System.out.println("Arm Angle: " + shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
 
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
@@ -268,28 +268,12 @@ public class RobotContainer {
 
         Autos.aiming.changeSetpoint(armAutoAimAngle);
 
-//        System.out.println("Is idling: " + isIdling);
-//        System.out.println("Is shooting: " + isShooting);
-    }
-
-    public static void teleopPeriodic() {
-        //Idle half works
-//        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-//            if (commandSwerveDrivetrain.getPose().getX() > 8.25 && !isIdling && !isShooting && mode == Mode.SHOOTER) {
-//                shooterSubsystem.setShooterSpeeds(40);
-//                isIdling = true;
-//            } else if (commandSwerveDrivetrain.getPose().getX() <= 8.25 && isIdling || mode != Mode.SHOOTER) {
-//                shooterSubsystem.setShooterSpeeds(0);
-//                isIdling = false;
-//            }
-//        } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
-//            if (commandSwerveDrivetrain.getPose().getX() < 8.5 && !isIdling && !isShooting && mode == Mode.SHOOTER) {
-//                shooterSubsystem.setShooterSpeeds(40);
-//                isIdling = true;
-//            } else if (commandSwerveDrivetrain.getPose().getX() >= 8.5 && isIdling || mode != Mode.SHOOTER) {
-//                shooterSubsystem.setShooterSpeeds(0);
-//                isIdling = false;
-//            }
+//        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+//                && commandSwerveDrivetrain.getPose().getX() > 8d) {
+//            shooterSubsystem.setShooterSpeeds(40);
+//        } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue
+//                && commandSwerveDrivetrain.getPose().getX() < 8.5d) {
+//            shooterSubsystem.setShooterSpeeds(40);
 //        }
     }
 

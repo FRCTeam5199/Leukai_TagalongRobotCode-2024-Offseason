@@ -12,6 +12,18 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "subWooferShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "3 Piece start to Note 8 Red"
@@ -26,7 +38,13 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAndArmAim"
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
           }
         },
         {
@@ -50,7 +68,13 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAndArmAim"
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.3
           }
         },
         {
