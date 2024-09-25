@@ -65,6 +65,12 @@ public class Constants {
         public static final boolean IS_OPEN_LOOP = false; // swerve
     }
 
+    public static class LEDs {
+        public static final int LED_PORT = 1;
+        public static final int LED_LENGTH = 25;
+
+    }
+
     public static class Vision {
         public static final Matrix<N3, N1> kSingleTagStdDevs = VecBuilder.fill(4, 4, 8);
         public static final Matrix<N3, N1> kMultiTagStdDevsAuton = VecBuilder.fill(0.07, 0.07, 999);
