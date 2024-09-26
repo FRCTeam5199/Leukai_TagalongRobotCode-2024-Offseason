@@ -10,6 +10,8 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotContainer;
@@ -18,6 +20,10 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Autos extends Command {
+
+    public static SendableChooser<Command> autonChooserRed = new SendableChooser<>();
+    public static SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
+
     public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
 
@@ -70,6 +76,20 @@ public class Autos extends Command {
                         ShooterPivotAngles.STABLE.getRotations(), true, .01)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
+
+        Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
+
+        Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
+
+        autonChooserRed.addOption("3 Piece Extended", threePieceRedExtended());
+        autonChooserRed.addOption("4 Piece", fourPieceRed());
+        autonChooserRed.addOption("5 Piece", fivePieceRed());
+        
+        autonChooserBlue.addOption("3 Piece Extended", threePieceBlueExtended());
+        autonChooserBlue.addOption("4 Piece", fourPieceBlue());
+        autonChooserBlue.addOption("5 Piece", fivePieceBlue());
+
+
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
@@ -95,6 +115,14 @@ public class Autos extends Command {
 
     public Command fourPieceRed() {
         return AutoBuilder.buildAuto("4 piece red");
+    }
+
+    public Command fivePieceRed() {
+        return AutoBuilder.buildAuto("5 piece red shoot");
+    }
+
+    public Command fivePieceBlue() {
+        return AutoBuilder.buildAuto("5 piece blue");
     }
 
     public Command sixPieceRedPart1() {

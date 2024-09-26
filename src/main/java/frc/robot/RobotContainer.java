@@ -10,6 +10,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
@@ -18,6 +19,7 @@ import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
+import frc.robot.limelight.LimelightHelpers;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -65,12 +67,25 @@ public class RobotContainer {
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
 
+    double distance;
+
     public RobotContainer() {
         threePieceRedExtended = autos.threePieceRedExtended();
         threePieceBlueExtended = autos.threePieceBlueExtended();
         fourPieceRed = autos.fourPieceRed();
         fourPieceBlue = autos.fourPieceBlue();
         sixPieceRed = autos.sixPieceRed();
+
+        Shuffleboard.getTab("Shooter Tuning").addNumber("Distance", () -> distance);
+        Shuffleboard.getTab("Shooter Tuning").addNumber("Target Angle", () -> armAutoAimAngle);
+        Shuffleboard.getTab("Shooter Tuning").addNumber("Current Angle", () -> shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
+        Shuffleboard.getTab("Shooter Tuning").addNumber("Shooter 1 Speed", () -> shooterSubsystem.getFlywheel(0).getFlywheelVelocity());
+        Shuffleboard.getTab("Shooter Tuning").addNumber("Shooter 2 Speed", () -> shooterSubsystem.getFlywheel(1).getFlywheelVelocity());
+
+        Shuffleboard.getTab("Drive Info").addBoolean("Climb Mode", () -> mode == Mode.CLIMB);
+        Shuffleboard.getTab("Drive Info").addBoolean("Shoot Mode", () -> mode == Mode.SHOOTER);
+        Shuffleboard.getTab("Drive Info").addBoolean("Shuttle Mode", () -> mode == Mode.SHUTTLE);
+
 
         leftTriggerOnTrue = new SelectCommand<>(
                 Map.ofEntries(
@@ -95,7 +110,7 @@ public class RobotContainer {
                                                 }
                                         )
                                 )),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 65)
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
                                 .alongWith(commandSwerveDrivetrain.applyRequest(
                                         () -> {
                                             return
@@ -183,7 +198,7 @@ public class RobotContainer {
                 new ConditionalCommand(
                         ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60),
                         new ConditionalCommand(
-                                ScoreCommands.setShooterSpeeds(70),
+                                ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW_SHUTTlE, 70),
                                 ScoreCommands.toggleElevator(),
                                 () -> mode == Mode.SHUTTLE
                         ),
@@ -208,6 +223,8 @@ public class RobotContainer {
         ).onFalse(
                 IntakeCommands.stopRollers()
         );
+
+        commandXboxController.povDown().onTrue(IntakeCommands.spinRollersForOuttake()).onFalse(IntakeCommands.stopRollers());
 
 
 //        commandXboxController.povUp().whileTrue(DriveCommands.goToNote());
@@ -242,7 +259,6 @@ public class RobotContainer {
     }
 
     public void periodic() {
-        double distance;
         double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
 
         if (DriverStation.getAlliance().isEmpty() || DriverStation.getAlliance().get() == DriverStation.Alliance.Red)

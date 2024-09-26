@@ -77,6 +77,24 @@ public class IntakeCommands {
                 indexerSubsystem
         );
     }
+    
+    public static Command spinRollersForOuttake() {
+        return new FunctionalCommand(
+                () -> {
+                    if (RobotContainer.getMode() == Mode.AMP || RobotContainer.getMode() == Mode.CLIMB) {
+                        indexerSubsystem.setRollerSpeeds(-100, -60, 0);
+                    } else {
+                        indexerSubsystem.setRollerSpeeds(-100, 60, -10);
+                    }
+                },
+                () -> {
+                },
+                interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
+                () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap()),
+                indexerSubsystem
+        );
+    }
+
 
     public static Command intake() {
         return new SequentialCommandGroup(

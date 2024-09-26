@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardLayout;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import frc.robot.Robot;
+import frc.robot.RobotContainer;
 import frc.robot.constants.Constants;
 import frc.robot.constants.RobotAltModes;
 import frc.robot.parsers.PivotParser;
@@ -481,5 +482,11 @@ public class TagalongPivot extends TagalongMinorSystemBase implements TagalongMi
             default:
                 return _minPositionRot;
         }
+    }
+
+
+    public boolean isPivotAtAutoAngle() {
+        return getPivotAbsolutePositionRot() - _defaultPivotLowerToleranceRot < RobotContainer.armAutoAimAngle / 360d
+                && getPivotAbsolutePositionRot() + _defaultPivotUpperToleranceRot > RobotContainer.armAutoAimAngle / 360d;
     }
 }

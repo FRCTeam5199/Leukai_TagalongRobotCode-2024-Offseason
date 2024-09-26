@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.RobotContainer;
 import frc.robot.UserInterface;
 import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
@@ -83,6 +84,16 @@ public class ScoreCommands {
         );
     }
 
+    public static Command autoShuttleAim(FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
+        return commandSwerveDrivetrain.applyRequest(() -> fieldCentricSwerveDrive
+                .withVelocityX(-RobotContainer.commandXboxController.getLeftY() * TunerConstants.kSpeedAt12VoltsMps)
+                .withVelocityY(-RobotContainer.commandXboxController.getLeftX() * TunerConstants.kSpeedAt12VoltsMps)
+                .withRotationalRate(driveRotationalPIDController.calculate(
+                        commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
+                        Units.radiansToDegrees(Math.atan(
+                                (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
+    }
+
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY, double rotationalOffset) {
         return new FunctionalCommand(
                 () -> driveRotationalPIDController = new PIDController(.3, 0, 0),
@@ -112,6 +123,13 @@ public class ScoreCommands {
                 autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, getAutoAimOffset()),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
 
+    }
+
+    public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
+        return new ConditionalCommand(
+                autoShuttleAim(fieldCentricSwerveDrive, 16.58, 13d, getAutoAimOffset()),
+                autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 13d, getAutoAimOffset()),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
 

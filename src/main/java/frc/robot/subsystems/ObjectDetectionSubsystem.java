@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.cscore.VideoSource;
 import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
@@ -26,7 +27,7 @@ public class ObjectDetectionSubsystem extends SubsystemBase {
 
 
     @Override
-    public void periodic(){
+    public void periodic() {
         x = tx.getDouble(0.0);
         y = ty.getDouble(0.0);
         area = ta.getDouble(0.00);
@@ -35,20 +36,22 @@ public class ObjectDetectionSubsystem extends SubsystemBase {
 
     String cwass = tclass.getString("no note");
 
-    public static ObjectDetectionSubsystem getInstance(){
+    public static ObjectDetectionSubsystem getInstance() {
         if (objectDetectionSubsystem == null) objectDetectionSubsystem = new ObjectDetectionSubsystem();
         return objectDetectionSubsystem;
     }
-    
-    public LimelightResults getLimelightResults(){
+
+
+    public LimelightResults getLimelightResults() {
         return LimelightHelpers.getLatestResults(Constants.Vision.LIMELIGHT);
     }
 
-    public LimelightTarget_Classifier[] getTargets(){
+
+    public LimelightTarget_Classifier[] getTargets() {
         return getLimelightResults().targetingResults.targets_Classifier;
     }
 
-    public LimelightTarget_Detector[] getObjects(){
+    public LimelightTarget_Detector[] getObjects() {
         return getLimelightResults().targetingResults.targets_Detector;
 
     }
@@ -56,7 +59,7 @@ public class ObjectDetectionSubsystem extends SubsystemBase {
     public LimelightTarget_Detector getNearestNote() {
         LimelightTarget_Detector nearestNote = null;
         double minDistance = Double.MAX_VALUE;
-    
+
         for (LimelightTarget_Detector object : getObjects()) {
             if (object.className.equals("note")) {
                 double distance = calculateDistance(object); // Implement this method
@@ -66,43 +69,41 @@ public class ObjectDetectionSubsystem extends SubsystemBase {
                 }
             }
         }
-    
+
         return nearestNote;
     }
-    
+
     private double calculateDistance(LimelightTarget_Detector object) {
         // Calculate the distance to the object based on its coordinates (tx, ty)
         // Replace this with the actual distance calculation based on your needs
         return Math.sqrt(object.tx * object.tx + object.ty * object.ty);
     }
 
-    public double getNotePoseX(){
+    public double getNotePoseX() {
         return x;
     }
 
-    public double getNotePoseY(){
+    public double getNotePoseY() {
         return y;
     }
-    
-    public double getNoteDistance(){
+
+    public double getNoteDistance() {
         return area;
     }
 
-    public double getObjectIdentity(){
+    public double getObjectIdentity() {
         return x;
     }
 
-    public boolean notePresent(){
-        if(x == 0 && y == 0 && area == 0){
+    public boolean notePresent() {
+        if (x == 0 && y == 0 && area == 0) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
 
 
-
- 
 }
 
     

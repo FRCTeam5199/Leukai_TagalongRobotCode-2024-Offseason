@@ -4,6 +4,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.tagalong.TagalongAngle;
 
 public enum ShooterPivotAngles implements TagalongAngle {
+
+    LOW_SHUTTlE(8),
     STABLE(12),
     LOW(25),
     MID(40),
