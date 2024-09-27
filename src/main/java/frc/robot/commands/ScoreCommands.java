@@ -22,8 +22,10 @@ import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
+import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 import frc.robot.utility.LookUpTable;
 
 import java.sql.Driver;
@@ -31,7 +33,7 @@ import java.sql.Driver;
 public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static final AmpTrap elevatorSubsystem = AmpTrap.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static PIDController driveRotationalPIDController;
     public static boolean isElevatorUp = false;
@@ -215,8 +217,7 @@ public class ScoreCommands {
     public static Command moveShooterToAutoAimAndAutoShoot(double targetSpeed) {
         return new SequentialCommandGroup(
                 new FunctionalCommand(
-                        () -> {
-                        },
+                        () -> {},
                         () -> {
                             double distance;
                             double[] robotCoords = new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()};
@@ -231,6 +232,7 @@ public class ScoreCommands {
 
                             if (shooterSubsystem.reachedShootingCondtions(targetSpeed)) {
                                 indexerSubsystem.setRollerSpeeds(0, -80, 40);
+                                LEDSubsystem.getInstance().setMode(LEDMode.REACHEDSHOOTINGSPEED);
                             }
                         },
                         interrupted -> {

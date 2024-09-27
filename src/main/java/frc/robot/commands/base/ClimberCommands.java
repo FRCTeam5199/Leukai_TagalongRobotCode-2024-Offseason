@@ -6,13 +6,13 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
+import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ClimberCommands {
     private static Climber climberSubsystem = Climber.getInstance();
     private static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    private static NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static AmpTrap elevatorSubsystem = AmpTrap.getInstance();
     private static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
 
     public static Command moveClimbersToSetpoint(ClimberHeights leftClimberHeight, ClimberHeights rightClimberHeight) {
