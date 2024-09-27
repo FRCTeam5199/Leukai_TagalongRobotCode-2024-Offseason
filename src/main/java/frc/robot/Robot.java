@@ -27,6 +27,7 @@ public class Robot extends TimedRobot {
     private final UserInterface userInterface = UserInterface.getInstance();
     private final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private final ApriltagSubsystem aprilTagSubsystem = new ApriltagSubsystem();
+    private final LEDSubsystem ledSubsystem = LEDSubsystem.getInstance();
     public double armAngle;
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
@@ -36,7 +37,7 @@ public class Robot extends TimedRobot {
         m_robotContainer = new RobotContainer();
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
         userInterface.init();
-        
+
         ledSubsystem.init();
         ledSubsystem.start();
         ledSubsystem.setMode(LEDMode.SHOOTING);

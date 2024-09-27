@@ -4,7 +4,9 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 import frc.robot.constants.Constants;
+import frc.robot.subsystems.IndexerSubsystem;
 
 public class LEDSubsystem extends SubsystemBase {
     private static LEDSubsystem ledSubsystem;
@@ -15,6 +17,9 @@ public class LEDSubsystem extends SubsystemBase {
         SHOOTING,
         REACHEDSHOOTINGSPEED,
     }
+
+    public boolean isIntaking = false;
+    public boolean hasNote = false;
 
     public LEDMode selectedLEDMode;
     AddressableLED LEDLights = new AddressableLED(Constants.LEDs.LED_PORT);
@@ -49,21 +54,12 @@ public class LEDSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (selectedLEDMode == LEDMode.SHUTTLING) {
-            // setFade(Color.kBlue, Color.kLightBlue);
-            setColor(Color.kBlue);
-        } else if (selectedLEDMode == LEDMode.AMPTRAP) {
-            // setFade(Color.kBlue, Color.kDarkSeaGreen);
-            setColor(Color.kGreen);
-        } else if (selectedLEDMode == LEDMode.SHOOTING) {
-            // setFade(Color.kBlue, Color.kBlueViolet);
-            setColor(Color.kRed);
-        } else if (selectedLEDMode == LEDMode.REACHEDSHOOTINGSPEED) {
-            // setFade(Color.kBlue, Color.kBlueViolet);
-            setColor(Color.kPurple);
-        } else {
-            rainbow();
-        }
+        if (isIntaking) setColor(Color.kRed);
+        else if (hasNote) setColor(Color.kGreen);
+        else setColor(Color.kBlue);
+
+        if (!IndexerSubsystem.getInstance().isNoteInIndexer() && !IndexerSubsystem.getInstance().isNoteInAmpTrap())
+            hasNote = false;
 
         LEDLights.setData(LEDBuffer);
     }

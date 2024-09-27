@@ -88,11 +88,6 @@ public class Constants {
         public static final double[] BLUE_SPEAKER_COORDINATES = new double[]{0, 5.547};
     }
 
-    public static class LEDs {
-        public static final int LED_PORT = 1;
-        public static final int LED_LENGTH = 25;
-        
-    }
 
     public static class TestRollerConstants {
         public static final int INDEXER_ID = 25;

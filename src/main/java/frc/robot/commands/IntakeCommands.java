@@ -8,6 +8,7 @@ import frc.robot.commands.base.PivotToCommand;
 import frc.robot.commands.base.RollerRotateXCommand;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.AmpTrap;
+import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.Mode;
 
@@ -30,15 +31,19 @@ public class IntakeCommands {
                 () -> {
                     if (RobotContainer.getMode() == Mode.AMP || RobotContainer.getMode() == Mode.CLIMB) {
                         indexerSubsystem.setRollerSpeeds(100, 60, 0);
-                        LEDSubsystem.getInstance().setMode(LEDMode.AMPTRAP);
+                        LEDSubsystem.getInstance().setMode(LEDSubsystem.LEDMode.AMPTRAP);
                     } else {
                         indexerSubsystem.setRollerSpeeds(100, -60, 10);
-                        LEDSubsystem.getInstance().setMode(LEDMode.SHOOTING);
+                        LEDSubsystem.getInstance().setMode(LEDSubsystem.LEDMode.SHOOTING);
                     }
                 },
                 () -> {
                 },
-                interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
+                interrupted -> {
+                    indexerSubsystem.setRollerPowers(0, 0, 0);
+                    LEDSubsystem.getInstance().isIntaking = false;
+                    LEDSubsystem.getInstance().hasNote = true;
+                },
                 () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap()),
                 indexerSubsystem
         ).andThen(moveAmpNoteBackwards().unless(() -> RobotContainer.getMode() != Mode.AMP)
@@ -102,7 +107,7 @@ public class IntakeCommands {
                 spinRollersForIntake()
         ).unless(
                 () -> (indexerSubsystem.isNoteInAmpTrap())
-        );
+        ).alongWith(new InstantCommand(() -> LEDSubsystem.getInstance().isIntaking = true));
     }
 
 }
