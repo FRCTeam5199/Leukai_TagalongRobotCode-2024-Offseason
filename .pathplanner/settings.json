@@ -4,17 +4,17 @@
   "holonomicMode": true,
   "pathFolders": [
     " 4 Piece Blue Paths",
+    "3 Piece Blue Paths",
     "3 Piece Red Paths",
     "4 Piece Red Paths",
     "5 Piece Blue Paths",
+    "5 Piece Middle Red Paths",
     "5 Piece Red Paths",
     "6 Piece Blue Paths",
     "6 Piece Red Paths",
     "6 Piece Red alt paths",
     "Blue Paths",
-    "California Auto",
-    "3 Piece Blue Paths",
-    "Red Paths"
+    "California Auto"
   ],
   "autoFolders": [
     "3 Piece Blue",
@@ -27,8 +27,9 @@
     "6 Piece Blue Alt",
     "6 Piece Red",
     "6 Piece Red Alt",
+    "New Folder",
     "Test Blue Autos",
-    "Test Red Autos"
+    "5 Piece Middle Red"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

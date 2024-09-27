@@ -19,7 +19,6 @@ import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
-import frc.robot.limelight.LimelightHelpers;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
@@ -66,6 +65,8 @@ public class RobotContainer {
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
+    private static boolean isIdling = false;
+    private static boolean isShooting = false;
 
     double distance;
 
@@ -137,7 +138,7 @@ public class RobotContainer {
                         ))
                 ),
                 () -> mode
-        );
+        ).alongWith(new InstantCommand(() -> isIdling = false)).alongWith(new InstantCommand(() -> isShooting = true));
         leftTriggerOnFalse = new ConditionalCommand(
                 ClimberCommands.setClimberPowers(0),
                 new ParallelCommandGroup(
@@ -146,7 +147,7 @@ public class RobotContainer {
                         ClimberCommands.setClimberPowers(0)
                 ),
                 () -> mode == Mode.CLIMB
-        );
+        ).alongWith(new InstantCommand(() -> isShooting = false));
 
         configureBindings();
     }
@@ -196,7 +197,8 @@ public class RobotContainer {
         );
         commandXboxController.leftBumper().onTrue(
                 new ConditionalCommand(
-                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60),
+                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60)
+                                .alongWith(new InstantCommand(() -> isIdling = false)).alongWith(new InstantCommand(() -> isShooting = true)),
                         new ConditionalCommand(
                                 ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW_SHUTTlE, 70),
                                 ScoreCommands.toggleElevator(),
@@ -212,12 +214,16 @@ public class RobotContainer {
                                 ScoreCommands.elevatorStable()
                         ),
                         () -> mode == Mode.CLIMB
-                )
+                ).alongWith(new InstantCommand(() -> isShooting = false))
         );
         commandXboxController.rightBumper().onTrue(
                 new ConditionalCommand(
                         ScoreCommands.indexerFeedCommand(shooterRPS),
-                        ScoreCommands.spinRollersForAmpOrTrapScore(),
+                        new ConditionalCommand(
+                                ScoreCommands.spinRollersForAmpScore(),
+                                ScoreCommands.spinRollersForTrapScore(),
+                                () -> mode == Mode.AMP
+                        ),
                         () -> mode == Mode.SHOOTER || mode == Mode.SHUTTLE
                 )
         ).onFalse(
@@ -255,7 +261,11 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return threePieceBlueExtended;
+        return new ConditionalCommand(
+                Autos.autonChooserRed.getSelected(),
+                Autos.autonChooserBlue.getSelected(),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
+        );
     }
 
     public void periodic() {
@@ -266,8 +276,9 @@ public class RobotContainer {
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-        System.out.println("Distance: " + distance);
-        System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
+        //System.out.println("Distance: " + distance);
+        //System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
+//        System.out.println("Shooter sensor: " + indexerSubsystem.isNoteInIndexer());
         armAutoAimAngle = LookUpTable.findValue(distance);
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
@@ -277,10 +288,32 @@ public class RobotContainer {
         //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
-            Autos.aiming.changeSetpoint(armAutoAimAngle);
+            Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle);
 
             prevArmAngle = armAutoAimAngle;
         }
+
+        Autos.aiming.changeSetpoint(armAutoAimAngle);
+    }
+
+    public static void teleopPeriodic() {
+//        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+//            if (commandSwerveDrivetrain.getPose().getX() > 10d && !isIdling && !isShooting && mode == Mode.SHOOTER) {
+//                shooterSubsystem.setShooterSpeeds(30);
+//                isIdling = true;
+//            } else if (commandSwerveDrivetrain.getPose().getX() <= 10d && isIdling || mode != Mode.SHOOTER) {
+//                shooterSubsystem.setShooterSpeeds(0);
+//                isIdling = false;
+//            }
+//        } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) {
+//            if (commandSwerveDrivetrain.getPose().getX() < 7d && !isIdling && !isShooting && mode == Mode.SHOOTER) {
+//                shooterSubsystem.setShooterSpeeds(30);
+//                isIdling = true;
+//            } else if (commandSwerveDrivetrain.getPose().getX() >= 7d && isIdling || mode != Mode.SHOOTER) {
+//                shooterSubsystem.setShooterSpeeds(0);
+//                isIdling = false;
+//            }
+//        }
     }
 
     public void onEnable() {

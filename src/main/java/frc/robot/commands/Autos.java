@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
-import com.fasterxml.jackson.databind.util.Named;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
@@ -24,6 +23,7 @@ public class Autos extends Command {
     public static SendableChooser<Command> autonChooserRed = new SendableChooser<>();
     public static SendableChooser<Command> autonChooserBlue = new SendableChooser<>();
 
+    public static PivotToCommand aimingWhileMoving = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static PivotToCommand aiming = new PivotToCommand<>(RobotContainer.shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     public static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
 
@@ -56,11 +56,12 @@ public class Autos extends Command {
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
-        NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aiming = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
+
+        NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
         NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(50))
-                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(50))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(40))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
@@ -72,21 +73,23 @@ public class Autos extends Command {
         );
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
-                aiming = new PivotToCommand(RobotContainer.shooterSubsystem,
+                aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem,
                         ShooterPivotAngles.STABLE.getRotations(), true, .01)));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
+        NamedCommands.registerCommand("aiming", aiming.until(() -> RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle()));
 
         Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         autonChooserRed.addOption("3 Piece Extended", threePieceRedExtended());
-        autonChooserRed.addOption("4 Piece", fourPieceRed());
+        autonChooserRed.setDefaultOption("4 Piece", fourPieceRed());
         autonChooserRed.addOption("5 Piece", fivePieceRed());
-        
+        autonChooserRed.addOption("5 Piece Middle", fivePieceMiddleRed());
+
         autonChooserBlue.addOption("3 Piece Extended", threePieceBlueExtended());
-        autonChooserBlue.addOption("4 Piece", fourPieceBlue());
+        autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue());
         autonChooserBlue.addOption("5 Piece", fivePieceBlue());
 
 
@@ -119,6 +122,10 @@ public class Autos extends Command {
 
     public Command fivePieceRed() {
         return AutoBuilder.buildAuto("5 piece red shoot");
+    }
+
+    public Command fivePieceMiddleRed() {
+        return AutoBuilder.buildAuto("5 piece middle red");
     }
 
     public Command fivePieceBlue() {

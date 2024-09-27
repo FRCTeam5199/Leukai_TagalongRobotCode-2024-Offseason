@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.827094050387263,
-      "y": 4.382186700316462
+      "x": 15.16,
+      "y": 5.46
     },
-    "rotation": -121.87536275141521
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -26,25 +26,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece start to Note 8 Red"
+            "pathName": "5 Piece middle start to note 1 red"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Note 8 to shoot Red"
+            "pathName": "5 Piece middle note 1 to shoot red"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
           }
         },
         {
@@ -56,13 +50,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Note 8 shoot to note 7 Red"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 Piece Note 7 to note 7 shoot Red"
+            "pathName": "5 Piece middle shoot to note 2 shoot red"
           }
         },
         {
@@ -74,7 +62,49 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
+            "waitTime": 0.1
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece middle note 2 to note 3 red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShoot"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece middle note 3 to note 6 red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 Piece middle note 6 to shoot red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
           }
         },
         {
@@ -86,6 +116,6 @@
       ]
     }
   },
-  "folder": "3 Piece Red",
+  "folder": "5 Piece Middle Red",
   "choreoAuto": false
 }

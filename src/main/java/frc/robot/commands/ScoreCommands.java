@@ -17,6 +17,7 @@ import frc.robot.UserInterface;
 import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
+import frc.robot.commands.base.RollerRotateXCommand;
 import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
@@ -166,7 +167,18 @@ public class ScoreCommands {
         });
     }
 
-    public static Command spinRollersForAmpOrTrapScore() {
+    public static Command spinRollersForTrapScore() {
+        return new FunctionalCommand(
+                () -> indexerSubsystem.setRollerSpeeds(0, 100, 0),
+                () -> {
+                },
+                interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
+                () -> false,
+                indexerSubsystem
+        );
+    }
+
+    public static Command spinRollersForAmpScore() {
         return new FunctionalCommand(
                 () -> indexerSubsystem.setRollerSpeeds(0, 50, 0),
                 () -> {

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotContainer;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
+import frc.robot.commands.base.RollerRotateXCommand;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -38,31 +39,28 @@ public class IntakeCommands {
                 interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
                 () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap()),
                 indexerSubsystem
-        );
+        ).andThen(moveAmpNoteBackwards().unless(() -> RobotContainer.getMode() != Mode.AMP)
+                .andThen(moveShooterNoteForwards())
+                .unless(() -> (RobotContainer.getMode() != Mode.SHOOTER && RobotContainer.getMode() != Mode.SHUTTLE)));
     }
 
-    private static Command resettleNoteBackwards() {
+
+    private static Command moveAmpNoteBackwards() {
         return new FunctionalCommand(
-                () -> {
-                    timer.restart();
-                    indexerSubsystem.setRollerPowers(-5, 10, -5);
-                },
-                () -> {
-                    System.out.println("Timer: " + timer.get());
-                },
-                interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
-                () -> timer.get() > .2,
+                timer::restart,
+                () -> indexerSubsystem.setRollerSpeeds(0, -20, 0),
+                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                () -> (timer.get() > .1),
                 indexerSubsystem
         );
     }
 
-    private static Command resettleNoteForwards() {
+    private static Command moveShooterNoteForwards() {
         return new FunctionalCommand(
-                () -> indexerSubsystem.setRollerSpeeds(5, -10, 5),
-                () -> {
-                },
-                interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
-                indexerSubsystem::isNoteInIndexer,
+                timer::restart,
+                () -> indexerSubsystem.setRollerSpeeds(0, 0, 5),
+                interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
+                () -> (timer.get() > .1),
                 indexerSubsystem
         );
     }
@@ -77,7 +75,7 @@ public class IntakeCommands {
                 indexerSubsystem
         );
     }
-    
+
     public static Command spinRollersForOuttake() {
         return new FunctionalCommand(
                 () -> {
