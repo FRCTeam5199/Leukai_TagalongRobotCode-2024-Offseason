@@ -13,7 +13,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.*;
+import frc.robot.commands.Autos;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ScoreCommands;
+import frc.robot.commands.ShooterPivotAngles;
 import frc.robot.commands.base.ClimberCommands;
 import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.PivotToCommand;
@@ -23,7 +26,6 @@ import frc.robot.limelight.LimelightHelpers;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.LookUpTable;
@@ -35,12 +37,10 @@ public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
             Ports.DRIVER_XBOX_USB_PORT);
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
-    // NoteElevator noteElevator = new
-    // NoteElevator("configs/notevator/notevatorConf.json");
     public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
-    public static final NoteElevator noteElevator = NoteElevator.getInstance();
+    public static final AmpTrap ampTrap = AmpTrap.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
@@ -287,14 +287,14 @@ public class RobotContainer {
         indexerSubsystem.onEnable();
         shooterSubsystem.onEnable();
         climberSubsystem.onEnable();
-        noteElevator.onEnable();
+        ampTrap.onEnable();
     }
 
     public void onDisable() {
         indexerSubsystem.onDisable();
         shooterSubsystem.onDisable();
         climberSubsystem.onDisable();
-        noteElevator.onEnable();
+        ampTrap.onEnable();
 
     }
 
@@ -302,20 +302,20 @@ public class RobotContainer {
         indexerSubsystem.disabledPeriodic();
         shooterSubsystem.disabledPeriodic();
         climberSubsystem.disabledPeriodic();
-        noteElevator.disabledPeriodic();
+        ampTrap.disabledPeriodic();
     }
 
     public void simulationInit() {
         indexerSubsystem.simulationInit();
         shooterSubsystem.simulationInit();
         climberSubsystem.simulationInit();
-        noteElevator.simulationInit();
+        ampTrap.simulationInit();
     }
 
     public void simulationPeriodic() {
         indexerSubsystem.simulationPeriodic();
         shooterSubsystem.simulationPeriodic();
         climberSubsystem.simulationPeriodic();
-        noteElevator.simulationPeriodic();
+        ampTrap.simulationPeriodic();
     }
 }

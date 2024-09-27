@@ -7,6 +7,8 @@ import frc.robot.UserInterface;
 import frc.robot.commands.ScoreCommands;
 import frc.robot.constants.Constants;
 import frc.robot.parsers.ShooterParser;
+import frc.robot.subsystems.LED.LEDSubsystem;
+import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;

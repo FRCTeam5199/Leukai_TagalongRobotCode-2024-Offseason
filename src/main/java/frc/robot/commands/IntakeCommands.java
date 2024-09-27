@@ -6,13 +6,13 @@ import frc.robot.RobotContainer;
 import frc.robot.commands.base.ElevatorRaiseToCommand;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.IndexerSubsystem;
-import frc.robot.subsystems.NoteElevator;
+import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.Mode;
 
 public class IntakeCommands {
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-    private static final NoteElevator elevatorSubsystem = NoteElevator.getInstance();
+    private static final AmpTrap elevatorSubsystem = AmpTrap.getInstance();
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static final Timer timer = new Timer();
 
@@ -29,8 +29,10 @@ public class IntakeCommands {
                 () -> {
                     if (RobotContainer.getMode() == Mode.AMP || RobotContainer.getMode() == Mode.CLIMB) {
                         indexerSubsystem.setRollerSpeeds(100, 60, 0);
+                        LEDSubsystem.getInstance().setMode(LEDMode.AMPTRAP);
                     } else {
                         indexerSubsystem.setRollerSpeeds(100, -60, 10);
+                        LEDSubsystem.getInstance().setMode(LEDMode.SHOOTING);
                     }
                 },
                 () -> {
