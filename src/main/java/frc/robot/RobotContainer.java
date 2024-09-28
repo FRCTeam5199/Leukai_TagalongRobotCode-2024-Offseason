@@ -104,7 +104,7 @@ public class RobotContainer {
                                                 }
                                         )
                                 )),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 55)
                                 .alongWith(commandSwerveDrivetrain.applyRequest(
                                         () -> {
                                             return
@@ -116,7 +116,7 @@ public class RobotContainer {
                                                             .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
                                         }
                                 ))),
-                        Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.3).alongWith(
+                        Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.6).alongWith(
                                 commandSwerveDrivetrain.applyRequest(
                                         () -> {
                                             return
@@ -178,7 +178,7 @@ public class RobotContainer {
         commandXboxController.leftTrigger().onTrue(leftTriggerOnTrue).onFalse(leftTriggerOnFalse);
         commandXboxController.rightTrigger().onTrue(
                 new ConditionalCommand(
-                        ClimberCommands.setClimberPowers(0.3),
+                        ClimberCommands.setClimberPowers(0.6),
                         IntakeCommands.intake(),
                         () -> mode == Mode.CLIMB
                 )

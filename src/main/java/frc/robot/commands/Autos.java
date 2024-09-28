@@ -60,7 +60,7 @@ public class Autos extends Command {
         NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
         NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
-                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(50))
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(40))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(40))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
@@ -74,7 +74,13 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
                 aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem,
-                        ShooterPivotAngles.STABLE.getRotations(), true, .01)));
+                        ShooterPivotAngles.STABLE.getRotations(), true, .01
+                )));
+
+        NamedCommands.registerCommand("adjustPivotSpeedExtended", new InstantCommand(() ->
+                aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem,
+                        ShooterPivotAngles.STABLE.getRotations(), true, .015
+                )));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
         NamedCommands.registerCommand("aiming", aiming.until(() -> RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle()));
