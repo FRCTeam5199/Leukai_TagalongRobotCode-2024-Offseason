@@ -20,7 +20,7 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "autoShootSub"
           }
         },
         {
@@ -39,12 +39,6 @@
           "type": "named",
           "data": {
             "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.2
           }
         },
         {
@@ -69,12 +63,6 @@
           "type": "named",
           "data": {
             "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.2
           }
         },
         {

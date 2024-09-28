@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 8.5,
-        "y": 0.85
+        "x": 8.01,
+        "y": 0.79
       },
       "prevControl": {
-        "x": 4.978951062167527,
-        "y": 1.6184057074275287
+        "x": 4.488951062167526,
+        "y": 1.5584057074275286
       },
       "nextControl": null,
       "isLocked": false,
@@ -58,7 +58,7 @@
             {
               "type": "named",
               "data": {
-                "name": "adjustPivotSpeed"
+                "name": "adjustPivotSpeedExtended"
               }
             }
           ]

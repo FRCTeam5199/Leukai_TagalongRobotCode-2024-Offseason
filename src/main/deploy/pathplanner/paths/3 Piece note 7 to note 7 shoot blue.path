@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 8.42,
-        "y": 2.51
+        "x": 8.01,
+        "y": 2.54
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.375803520837812,
-        "y": 1.5984447353510094
+        "x": 7.773608714477215,
+        "y": 1.09067757874543
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.2183818213790287,
-        "y": 3.11
+        "x": 3.4888039408344538,
+        "y": 3.0091015342173035
       },
       "prevControl": {
-        "x": 4.4813505011625425,
-        "y": 1.4307067075672617
+        "x": 4.565877873060611,
+        "y": 0.9897791129627336
       },
       "nextControl": null,
       "isLocked": false,
@@ -63,7 +63,7 @@
   "reversed": false,
   "folder": "3 Piece Blue Paths",
   "previewStartingState": {
-    "rotation": 66.03751102542182,
+    "rotation": 30.552502101286063,
     "velocity": 0
   },
   "useDefaultConstraints": false
