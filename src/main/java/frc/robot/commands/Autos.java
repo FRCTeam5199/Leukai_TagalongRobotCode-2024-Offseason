@@ -58,7 +58,7 @@ public class Autos extends Command {
 
 
         NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
-        NamedCommands.registerCommand("autoShootSub", 
+        NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(40))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(40))
@@ -74,7 +74,7 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("adjustPivotSpeed", new InstantCommand(() ->
                 aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem,
-                        ShooterPivotAngles.STABLE.getRotations(), true, .012
+                        ShooterPivotAngles.STABLE.getRotations(), true, .01
                 )));
 
         NamedCommands.registerCommand("adjustPivotSpeedExtended", new InstantCommand(() ->

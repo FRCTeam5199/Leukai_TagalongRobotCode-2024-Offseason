@@ -10,7 +10,6 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -278,7 +277,6 @@ public class RobotContainer {
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
 
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) armAutoAimAngle += 2;
         armAutoAim.changeSetpoint(armAutoAimAngle);
         //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 

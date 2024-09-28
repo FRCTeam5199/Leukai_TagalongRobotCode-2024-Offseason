@@ -5,10 +5,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest.FieldCentric;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.util.Units;
-import edu.wpi.first.util.sendable.Sendable;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ConditionalCommand;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
@@ -41,33 +38,22 @@ public class ScoreCommands {
     public static PIDController driveRotationalPIDController;
     public static boolean isElevatorUp = false;
 
-
     public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                new ConditionalCommand(
-                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 183),
-                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 178),
-                    ()-> commandSwerveDrivetrain.getPose().getY() < 4.102),
-            
-                new ConditionalCommand(
-                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -.0381, 5.48, 0),
-                ()-> commandSwerveDrivetrain.getPose().getY() < 4.102),
-            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, getAutoAimOffset()),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, getAutoAimOffset()),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 
-    // private static double getAutoAimOffset() {
-    //     // offset.addOption("normal", true);
-    //     // offset.addOption("weird", false);
-    //     if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-    //         if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 183;
-    //         else return 178;
-    //     } else {
-    //         if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 0;
-    //         else return 0;  
-    //     }
-    // }
+    private static double getAutoAimOffset() {
+        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 183;
+            else return 178;
+        } else {
+            if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 3;
+            else return -2;
+        }
+    }
 
     public static Command toggleElevator() {
         return new ConditionalCommand(
@@ -93,9 +79,6 @@ public class ScoreCommands {
                                             commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
                                             Units.radiansToDegrees(Math.atan(
                                                     (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
-                    System.out.println("Current angle: " + commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees());
-                    System.out.println("Goal angle: " + Units.radiansToDegrees(Math.atan(
-                                                    (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))));
                 },
                 interrupted -> {
                 },
@@ -139,25 +122,18 @@ public class ScoreCommands {
 
     public static Command autonAutoTurn(FieldCentric fieldCentric) {
         return new ConditionalCommand(
-                new ConditionalCommand(
-                    driveAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 183),
-                    driveAutoTurn(0, 0, fieldCentric, 16.58, 5.59, 178),
-                    ()-> commandSwerveDrivetrain.getPose().getY() < 4.102),
-            
-                new ConditionalCommand(
-                    driveAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, 0),
-                driveAutoTurn(0, 0, fieldCentric, -.0381, 5.48, 0),
-                ()-> commandSwerveDrivetrain.getPose().getY() < 4.102),
-            () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
+                autonAutoTurn(0, 0, fieldCentric, 16.58, 5.59, getAutoAimOffset()),
+                autonAutoTurn(0, 0, fieldCentric, -0.0381, 5.48, getAutoAimOffset()),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+
     }
 
-    // public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
-    //     return new ConditionalCommand(
-    //             autoShuttleAim(fieldCentricSwerveDrive, 16.58, 13d, getAutoAimOffset()),
-    //             autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 13d, getAutoAimOffset()),
-    //             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
-    // }
+    public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
+        return new ConditionalCommand(
+                autoShuttleAim(fieldCentricSwerveDrive, 16.58, 13d, getAutoAimOffset()),
+                autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 13d, getAutoAimOffset()),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
 
 
     public static Command elevatorStable() {
