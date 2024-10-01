@@ -38,13 +38,19 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "instantDriveAim"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.15
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "index"
           }
         },
         {
@@ -62,13 +68,19 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "instantDriveAim"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.15
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShoot"
+            "name": "index"
           }
         }
       ]

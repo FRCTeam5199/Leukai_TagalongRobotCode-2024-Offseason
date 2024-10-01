@@ -1,6 +1,8 @@
 package frc.robot.subsystems;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
@@ -11,8 +13,10 @@ import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
 import org.photonvision.targeting.PhotonPipelineResult;
+import org.photonvision.targeting.PhotonTrackedTarget;
 
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.numbers.N1;
@@ -53,10 +57,23 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     public void getLatestResult() {
         lastResult = camera.getLatestResult();
-
     }
 
-    public Optional<EstimatedRobotPose> getEstimatedGlobalPose() {
+    // public int[] getTargets() {
+    //     List<PhotonTrackedTarget> targets = camera.getLatestResult().targets;
+    //     ArrayList targetids = new ArrayList<>() {
+    //         {
+    //             add(0);
+    //             add(0);
+    //             add(0);
+    //         }
+    //     }
+    //     for (PhotonTrackedTarget target : targets) {
+    //         taretids
+    //     }
+    // }
+
+    public Pair<Optional<EstimatedRobotPose>, Double> getEstimatedGlobalPose() {
         photonEstimator.setReferencePose(drivetrain.getPose());
 
         getLatestResult();
@@ -65,12 +82,12 @@ public class ApriltagSubsystem extends SubsystemBase {
         // filtering stages
         // Ensure the result is
         if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
-            return Optional.empty();
+            return new Pair<Optional<EstimatedRobotPose>, Double>(Optional.empty(), 0d);
         } else if (lastResult.getTargets().size() < 2) {
-            return Optional.empty();
+            return new Pair<Optional<EstimatedRobotPose>, Double>(Optional.empty(), 0d);
         } else {
             lastEstTimestamp = lastResult.getTimestampSeconds();
-            return photonEstimator.update(lastResult);
+            return new Pair<Optional<EstimatedRobotPose>, Double>(photonEstimator.update(lastResult), lastResult.getTimestampSeconds());
         }
     }
 

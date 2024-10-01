@@ -51,7 +51,7 @@ public class RobotContainer {
     private final Command sixPieceRed;
     private final Command leftTriggerOnTrue;
     private final Command leftTriggerOnFalse;
-    private double shooterRPS = 60;
+    public static double shooterRPS = 60;
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
@@ -105,7 +105,7 @@ public class RobotContainer {
                                                 }
                                         )
                                 )),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 55)
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
                                 .alongWith(commandSwerveDrivetrain.applyRequest(
                                         () -> {
                                             return
@@ -191,7 +191,7 @@ public class RobotContainer {
         );
         commandXboxController.leftBumper().onTrue(
                 new ConditionalCommand(
-                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.MID, 60)
+                        ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.SUB, 60)
                                 .alongWith(new InstantCommand(() -> isIdling = false)).alongWith(new InstantCommand(() -> isShooting = true)),
                         new ConditionalCommand(
                                 ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.LOW_SHUTTlE, 70),
@@ -278,17 +278,19 @@ public class RobotContainer {
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
 
-        if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue) armAutoAimAngle += 2;
         armAutoAim.changeSetpoint(armAutoAimAngle);
         //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
-            Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle);
+            Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle - .25);
 
-            prevArmAngle = armAutoAimAngle;
+            prevArmAngle = armAutoAimAngle - .25;
         }
 
-        Autos.aiming.changeSetpoint(armAutoAimAngle);
+        Autos.aiming.changeSetpoint(armAutoAimAngle - .25);
+
+        // System.out.println("Reached shooting conditions: " + shooterSubsystem.reachedShootingCondtions(60));
+        // System.out.println("Has note in indexer: " + indexerSubsystem.isNoteInIndexer());
     }
 
     public static void teleopPeriodic() {

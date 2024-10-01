@@ -40,19 +40,19 @@ public class ScoreCommands {
     private static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static PIDController driveRotationalPIDController;
     public static boolean isElevatorUp = false;
-
+    public static double driveBaseTarget = 0;
 
     public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
                 new ConditionalCommand(
-                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 183),
+                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 180),
                     driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59, 178),
                     ()-> commandSwerveDrivetrain.getPose().getY() < 4.102),
             
                 new ConditionalCommand(
-                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, 0),
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -.0381, 5.48, 0),
-                ()-> commandSwerveDrivetrain.getPose().getY() < 4.102),
+                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -0.0381, 5.48, -1),
+                    driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -.0381, 5.48, 2),
+                    ()-> commandSwerveDrivetrain.getPose().getY() < 4.102),
             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
         );
     }
@@ -61,7 +61,7 @@ public class ScoreCommands {
     //     // offset.addOption("normal", true);
     //     // offset.addOption("weird", false);
     //     if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
-    //         if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 183;
+    //         if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 183;x
     //         else return 178;
     //     } else {
     //         if (commandSwerveDrivetrain.getPose().getY() < 4.102) return 0;
