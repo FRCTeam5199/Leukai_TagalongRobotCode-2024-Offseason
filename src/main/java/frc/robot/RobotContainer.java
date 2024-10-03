@@ -9,6 +9,7 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -249,6 +250,10 @@ public class RobotContainer {
                             current.getX(),
                             current.getY(),
                             Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)));
+            commandSwerveDrivetrain.getPigeon2().setYaw(new Pose2d(
+                    current.getX(),
+                    current.getY(),
+                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)).getRotation().getDegrees());
 
         }));
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
@@ -273,7 +278,8 @@ public class RobotContainer {
         //System.out.println("Distance: " + distance);
         //System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
 //        System.out.println("Shooter sensor: " + indexerSubsystem.isNoteInIndexer());
-        armAutoAimAngle = LookUpTable.findValue(distance);
+        System.out.println("Pigeon angle: " + commandSwerveDrivetrain.getPigeon2().getYaw());
+        armAutoAimAngle = LookUpTable.findValue(distance) - angleOffset;
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;

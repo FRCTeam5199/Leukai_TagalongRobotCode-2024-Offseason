@@ -19,7 +19,11 @@ public class UserInterface {
 
     // Shuffleboard
     private static ShuffleboardTab shuffleboardTestTab = Shuffleboard.getTab("Test");
+
+    private static ShuffleboardTab shootertab = Shuffleboard.getTab("Shooter Tuning");
     private static GenericEntry shuffleboardShooterPositionComponent;
+
+    private static GenericEntry offset;
 
     // private static List<Translation2d> robotTranslation2ds;
 
@@ -34,6 +38,13 @@ public class UserInterface {
     public float getShooterPositionComponentData() {
         if (shuffleboardShooterPositionComponent != null) {
             return shuffleboardShooterPositionComponent.getFloat(0);
+        }
+        return 0;
+    }
+
+    public float getShooterOffset() {
+        if (offset != null) {
+            return offset.getFloat(0);
         }
         return 0;
     }
@@ -56,6 +67,8 @@ public class UserInterface {
                 .withWidget(BuiltInWidgets.kTextView)
                 .withPosition(0, 0)
                 .withSize(1, 1).getEntry();
+
+        offset = shootertab.add("Shooter offset", 0).getEntry();
     }
 
     public void update() {

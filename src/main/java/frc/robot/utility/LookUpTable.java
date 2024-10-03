@@ -20,9 +20,9 @@ public class LookUpTable {
             add(new Pair<>(3.5, 32.60));
             add(new Pair<>(3.75, 31.25));
             add(new Pair<>(4.00, 30.1));
-            add(new Pair<>(4.23, 29d));
-            add(new Pair<>(4.5, 27.1));
-            add(new Pair<>(4.52, 27.095));
+            add(new Pair<>(4.23, 29.05));
+            add(new Pair<>(4.5, 27d));
+            add(new Pair<>(4.52, 26.87));
             add(new Pair<>(4.75, 24.5));
             add(new Pair<>(4.82, 24.5d));
             add(new Pair<>(5.01, 24d));
