@@ -18,8 +18,8 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
     private boolean _startedMovement;
     private double _goalVelocityRPS = 0.0;
 
-    // private boolean midShotUpdate = false;
-    // private double midShotUpdateGoal = 0d;
+    private boolean midShotUpdate = false;
+    private double midShotUpdateGoal = 0d;
 
     public PivotToCommand(
             T pivot, double goalPosition, boolean holdPositionAfter, double maxVelocityRPS
@@ -88,11 +88,11 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
             _pivot.setPivotProfile(_goalPositionRot, _goalVelocityRPS, _maxVelocity);
         }
 
-        // if(_startedMovement && midShotUpdate) {
-        //     midShotUpdate = false;
-        //     _goalPositionRot = midShotUpdateGoal;
-
-        // }
+        if (_startedMovement && midShotUpdate) {
+            midShotUpdate = false;
+            _goalPositionRot = midShotUpdateGoal;
+            _pivot.setPivotProfile(_goalPositionRot, _goalVelocityRPS, _maxVelocity);
+        }
 
         if (_startedMovement) {
             _pivot.followLastProfile();
@@ -117,11 +117,12 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
         _goalPositionRot = Rotation2d.fromDegrees(degrees).getRotations();
     }
 
-    // public void updateSetpointMidShot(double degrees) {
-    //     midShotUpdateGoal = 
-    // }
+    public void updateSetpointMidShot(double degrees) {
+        midShotUpdateGoal = degrees / 360d;
+        midShotUpdate = true;
+    }
 
-    public void adjustPivotSpeed(double speed){
+    public void adjustPivotSpeed(double speed) {
         _maxVelocity = speed;
     }
 }

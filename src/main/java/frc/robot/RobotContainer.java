@@ -212,7 +212,8 @@ public class RobotContainer {
         );
         commandXboxController.rightBumper().onTrue(
                 new ConditionalCommand(
-                        ScoreCommands.indexerFeedCommand(shooterRPS),
+                        ScoreCommands.indexerFeedCommand(shooterRPS)
+                                .beforeStarting(() -> armAutoAim.updateSetpointMidShot(armAutoAimAngle)),
                         new ConditionalCommand(
                                 ScoreCommands.spinRollersForAmpScore(),
                                 ScoreCommands.spinRollersForTrapScore(),
@@ -249,7 +250,6 @@ public class RobotContainer {
                             current.getX(),
                             current.getY(),
                             Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)));
-
         }));
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
     }
