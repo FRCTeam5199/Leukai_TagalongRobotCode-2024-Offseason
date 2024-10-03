@@ -65,6 +65,12 @@ public class RobotContainer {
 
     double distance;
 
+
+    GenericEntry goao;
+
+    double angleOffset;
+
+
     public RobotContainer() {
         threePieceRedExtended = autos.threePieceRedExtended();
         threePieceBlueExtended = autos.threePieceBlueExtended();
@@ -81,6 +87,8 @@ public class RobotContainer {
         Shuffleboard.getTab("Drive Info").addBoolean("Climb Mode", () -> mode == Mode.CLIMB);
         Shuffleboard.getTab("Drive Info").addBoolean("Shoot Mode", () -> mode == Mode.SHOOTER);
         Shuffleboard.getTab("Drive Info").addBoolean("Shuttle Mode", () -> mode == Mode.SHUTTLE);
+
+        angleOffset = UserInterface.getInstance().getShooterOffset();
 
 
         leftTriggerOnTrue = new SelectCommand<>(
