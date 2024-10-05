@@ -14,7 +14,13 @@
         {
           "type": "named",
           "data": {
-            "name": "subWooferShot"
+            "name": "subWooferShotNoMove"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
           }
         },
         {
@@ -38,13 +44,19 @@
         {
           "type": "named",
           "data": {
-            "name": "instantDriveAim"
+            "name": "driveAutoAim"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "index"
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
           }
         },
         {
@@ -56,13 +68,19 @@
         {
           "type": "named",
           "data": {
-            "name": "instantDriveAim"
+            "name": "driveAutoAim"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "index"
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
           }
         },
         {
@@ -74,13 +92,19 @@
         {
           "type": "named",
           "data": {
-            "name": "instantDriveAim"
+            "name": "driveAutoAim"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "index"
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autShootWithCheck"
           }
         }
       ]

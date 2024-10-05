@@ -47,23 +47,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "adjustPivotSpeedExtended",
-      "waypointRelativePos": 0.3,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "adjustPivotSpeedExtended"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {

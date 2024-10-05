@@ -137,11 +137,11 @@ public class Robot extends LoggedRobot {
             commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose1.getSecond());
         }
 
-        Autos.aimingWhileMoving.initialize();
-        Autos.aimingWhileMoving.execute();
-        Autos.aimingWhileMoving.end(Autos.aimingWhileMoving.isFinished());
+//        Autos.aimingWhileMoving.initialize();
+//        Autos.aimingWhileMoving.execute();
+//        Autos.aimingWhileMoving.end(Autos.aimingWhileMoving.isFinished());
 
-
+        Autos.aiming.execute();
     }
 
 

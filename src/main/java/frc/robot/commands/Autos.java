@@ -40,6 +40,7 @@ public class Autos extends Command {
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
     private SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+    private Command fourPieceRed;
 
     public Autos(CommandSwerveDrivetrain swerveDrive) {
         this.swerveDrive = swerveDrive;
@@ -57,7 +58,7 @@ public class Autos extends Command {
         );
 
         NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
-        NamedCommands.registerCommand("autoShootSub", 
+        NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(50))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(50))
@@ -82,19 +83,32 @@ public class Autos extends Command {
                 )));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
-        NamedCommands.registerCommand("aiming", aiming.until(() -> RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle()));
 
         NamedCommands.registerCommand("instantDriveAim", new InstantCommand(() -> ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()))
-            .andThen(new WaitCommand(0.3)));
+                .andThen(new WaitCommand(0.3)));
         NamedCommands.registerCommand("index", new InstantCommand(() -> ScoreCommands.setShooterSpeeds(60))
-            .andThen(ScoreCommands.indexerFeedCommand(60).until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())));
+                .andThen(ScoreCommands.indexerFeedCommand(60).until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())));
+
+        NamedCommands.registerCommand("subWooferShotNoMove", new InstantCommand(() -> aiming.initialize()));
+        NamedCommands.registerCommand("updateShot", new WaitCommand(0.2).andThen(
+                new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle))));
+        NamedCommands.registerCommand("autoShootWithCheck",
+                ScoreCommands.setShooterSpeeds(60)
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
+                                && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
+                        .andThen(new WaitCommand(0.1))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+
+        fourPieceRed = fourPieceRed();
 
         Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         autonChooserRed.addOption("3 Piece Extended", threePieceRedExtended());
-        autonChooserRed.setDefaultOption("4 Piece", fourPieceRed());
+        autonChooserRed.setDefaultOption("4 Piece", fourPieceRed);
         autonChooserRed.addOption("5 Piece", fivePieceRed());
         autonChooserRed.addOption("5 Piece Middle", fivePieceMiddleRed());
         autonChooserRed.addOption("Shoot Do Nothing", shootNoMove());
@@ -196,11 +210,11 @@ public class Autos extends Command {
 
     public Command shootNoMove() {
         return new SequentialCommandGroup(
-            new InstantCommand(() -> aimingWhileMoving
-                = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)),
-            ScoreCommands.setShooterSpeeds(50)
+                new InstantCommand(() -> aimingWhileMoving
+                        = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)),
+                ScoreCommands.setShooterSpeeds(50)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(40)),
-            ScoreCommands.indexerFeedCommandAutoStop(50)
+                ScoreCommands.indexerFeedCommandAutoStop(50)
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
     }

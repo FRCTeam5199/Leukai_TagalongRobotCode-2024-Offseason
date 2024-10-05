@@ -3,20 +3,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
-import frc.robot.UserInterface;
 import frc.robot.commands.ScoreCommands;
 import frc.robot.constants.Constants;
 import frc.robot.parsers.ShooterParser;
-import frc.robot.subsystems.LED.LEDSubsystem;
-import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 import frc.robot.subsystems.minor.TagalongFlywheel;
 import frc.robot.subsystems.minor.TagalongPivot;
 import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 import frc.robot.utility.LookUpTable;
-
-import java.sql.SQLOutput;
 
 import static frc.robot.RobotContainer.commandSwerveDrivetrain;
 
@@ -111,7 +106,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
 //        System.out.println("Shooter RIGHT: " + shooterRight.getFlywheelVelocity());
         // System.out.println(UserInterface.getInstance().getShooterPositionComponentData());
 //        System.out.println("Arm Pivot Position: " + Rotation2d.fromRotations(arm.getPivotPosition()).getDegrees());
-    //    System.out.println("Reached Shooting Conditions: " + reachedShootingCondtions(60));
+        //    System.out.println("Reached Shooting Conditions: " + reachedShootingCondtions(60));
     }
 
     @Override
@@ -190,7 +185,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         else
             distance = ScoreCommands.getDistance(robotCoords, Constants.Vision.BLUE_SPEAKER_COORDINATES);
 
-        double armAngle = LookUpTable.findValue(distance);
+        double armAngle = LookUpTable.findArmAngle(distance);
         return armAngle;
     }
 

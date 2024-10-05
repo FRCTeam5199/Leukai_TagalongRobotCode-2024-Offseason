@@ -5,7 +5,7 @@ import edu.wpi.first.math.Pair;
 import java.util.ArrayList;
 
 public class LookUpTable {
-    public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
+    public static ArrayList<Pair<Double, Double>> lookUpTableArmAngle = new ArrayList<>() {
         {
             //Distances, Averages
             add(new Pair<>(1.35, 57d));
@@ -18,9 +18,20 @@ public class LookUpTable {
             add(new Pair<>(4.064, 29d));
             add(new Pair<>(4.5, 26.75));
             add(new Pair<>(4.5, 25d));
-            add(new Pair<>(4.5, 23d));
+            add(new Pair<>(5d, 23d));
         }
     };
+
+    public static ArrayList<Pair<Double, Double>> lookUpTableDriveOffsetAngle = new ArrayList<>() {
+        {
+            //Distances, Angle
+            add(new Pair<>(1.35, 0d));
+            add(new Pair<>(2.5, 0d));
+            add(new Pair<>(3d, 2.5));
+            add(new Pair<>(5d, 4d));
+        }
+    };
+
 
     /*
      * 4.5, 26, 27.5
@@ -29,19 +40,44 @@ public class LookUpTable {
      * 5, 23
      */
 
-    public static double findValue(double distance) {
-        if (distance < lookUpTable.get(0).getFirst()) {
-            return lookUpTable.get(0).getSecond();
+    public static double findArmAngle(double distance) {
+        if (distance < lookUpTableArmAngle.get(0).getFirst()) {
+            return lookUpTableArmAngle.get(0).getSecond();
         }
-        if (distance > lookUpTable.get(lookUpTable.size() - 1).getFirst()) {
-            return lookUpTable.get(lookUpTable.size() - 1).getSecond();
+        if (distance > lookUpTableArmAngle.get(lookUpTableArmAngle.size() - 1).getFirst()) {
+            return lookUpTableArmAngle.get(lookUpTableArmAngle.size() - 1).getSecond();
         }
-        Pair<Double, Double> lowAutoAimValue = lookUpTable.get(0);
-        Pair<Double, Double> highAutoAimValue = lookUpTable.get(lookUpTable.size() - 1);
-        for (int i = 0; i < lookUpTable.size() - 1; i++) {
-            if (distance > lookUpTable.get(i).getFirst() && distance < lookUpTable.get(i + 1).getFirst()) {
-                lowAutoAimValue = lookUpTable.get(i);
-                highAutoAimValue = lookUpTable.get(i + 1);
+        Pair<Double, Double> lowAutoAimValue = lookUpTableArmAngle.get(0);
+        Pair<Double, Double> highAutoAimValue = lookUpTableArmAngle.get(lookUpTableArmAngle.size() - 1);
+        for (int i = 0; i < lookUpTableArmAngle.size() - 1; i++) {
+            if (distance > lookUpTableArmAngle.get(i).getFirst() && distance < lookUpTableArmAngle.get(i + 1).getFirst()) {
+                lowAutoAimValue = lookUpTableArmAngle.get(i);
+                highAutoAimValue = lookUpTableArmAngle.get(i + 1);
+                break;
+            }
+        }
+
+        double percentInBetween = (distance - lowAutoAimValue.getFirst()) / (highAutoAimValue.getFirst() - lowAutoAimValue.getFirst());
+
+        return lowAutoAimValue.getSecond()
+                - (percentInBetween * (lowAutoAimValue.getSecond() - highAutoAimValue.getSecond()));
+
+//        return 1.689 * Math.pow(distance, 2) - 19.09 * distance + 78.07;
+    }
+
+    public static double findDriveOffsetAngle(double distance) {
+        if (distance < lookUpTableDriveOffsetAngle.get(0).getFirst()) {
+            return lookUpTableDriveOffsetAngle.get(0).getSecond();
+        }
+        if (distance > lookUpTableDriveOffsetAngle.get(lookUpTableDriveOffsetAngle.size() - 1).getFirst()) {
+            return lookUpTableDriveOffsetAngle.get(lookUpTableDriveOffsetAngle.size() - 1).getSecond();
+        }
+        Pair<Double, Double> lowAutoAimValue = lookUpTableDriveOffsetAngle.get(0);
+        Pair<Double, Double> highAutoAimValue = lookUpTableDriveOffsetAngle.get(lookUpTableDriveOffsetAngle.size() - 1);
+        for (int i = 0; i < lookUpTableDriveOffsetAngle.size() - 1; i++) {
+            if (distance > lookUpTableDriveOffsetAngle.get(i).getFirst() && distance < lookUpTableDriveOffsetAngle.get(i + 1).getFirst()) {
+                lowAutoAimValue = lookUpTableDriveOffsetAngle.get(i);
+                highAutoAimValue = lookUpTableDriveOffsetAngle.get(i + 1);
                 break;
             }
         }

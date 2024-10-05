@@ -9,10 +9,8 @@ import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -65,13 +63,9 @@ public class RobotContainer {
     private static boolean isShooting = false;
     private static boolean hasUpdatedAutoAimShot = false;
     private static Timer timer;
-
-    double distance;
-
-
-    GenericEntry goao;
-
-    double angleOffset;
+    private double distance;
+    private double angleOffset;
+    public static double driveAngleOffset;
 
 
     public RobotContainer() {
@@ -103,7 +97,8 @@ public class RobotContainer {
                                         new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
                                         armAutoAim,
                                         new InstantCommand(() -> timer.restart()),
-                                        new InstantCommand(() -> hasUpdatedAutoAimShot = false)
+                                        new InstantCommand(() -> hasUpdatedAutoAimShot = false),
+                                        new InstantCommand(() -> isShooting = true)
                                 )
                         ),
                         Map.entry(Mode.AMP, ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
@@ -147,7 +142,7 @@ public class RobotContainer {
                         ))
                 ),
                 () -> mode
-        ).alongWith(new InstantCommand(() -> isIdling = false)).alongWith(new InstantCommand(() -> isShooting = true));
+        ).alongWith(new InstantCommand(() -> isIdling = false));
         leftTriggerOnFalse = new ConditionalCommand(
                 ClimberCommands.setClimberPowers(0),
                 new ParallelCommandGroup(
@@ -265,10 +260,10 @@ public class RobotContainer {
                             current.getX(),
                             current.getY(),
                             Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)));
-            commandSwerveDrivetrain.getPigeon2().setYaw(new Pose2d(
-                    current.getX(),
-                    current.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)).getRotation().getDegrees());
+//            commandSwerveDrivetrain.getPigeon2().setYaw(new Pose2d(
+//                    current.getX(),
+//                    current.getY(),
+//                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)).getRotation().getDegrees());
 
         }));
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
@@ -294,7 +289,7 @@ public class RobotContainer {
         //System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
 //        System.out.println("Shooter sensor: " + indexerSubsystem.isNoteInIndexer());
         // System.out.println("Pigeon angle: " + commandSwerveDrivetrain.getPigeon2().getYaw());
-        armAutoAimAngle = LookUpTable.findValue(distance) - angleOffset;
+        armAutoAimAngle = LookUpTable.findArmAngle(distance) - angleOffset;
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
@@ -303,26 +298,36 @@ public class RobotContainer {
         // armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
-            Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle - .25);
+            Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle);
 
-            prevArmAngle = armAutoAimAngle - .25;
+            prevArmAngle = armAutoAimAngle;
         }
 
-        Autos.aiming.changeSetpoint(armAutoAimAngle - .25);
-
-        // if (isShooting && !hasUpdatedAutoAimShot
-        //         && Math.abs(shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d - armAutoAimAngle) > .5 && timer.get() > .75) {
-        //         armAutoAim.updateSetpointMidShot(armAutoAimAngle);
-        //         timer.restart();
-        //         hasUpdatedAutoAimShot = true;
-        //         if (distance > 4.5) shooterRPS = 70;
-        //         else shooterRPS = 60;
-        //         shooterSubsystem.setShooterSpeeds(shooterRPS);
-        //         System.out.println("updating angle");
-        // }
+        if (isShooting && !hasUpdatedAutoAimShot
+                && Math.abs(shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d - armAutoAimAngle) > .5 && timer.get() > .75) {
+            armAutoAim.updateSetpointMidShot(armAutoAimAngle);
+            timer.restart();
+            hasUpdatedAutoAimShot = true;
+            if (distance > 4.5) shooterRPS = 70;
+            else shooterRPS = 60;
+            shooterSubsystem.setShooterSpeeds(shooterRPS);
+        }
 
         // System.out.println("Reached shooting conditions: " + shooterSubsystem.reachedShootingCondtions(60));
         // System.out.println("Has note in indexer: " + indexerSubsystem.isNoteInIndexer());
+
+        if (DriverStation.getAlliance().isPresent()) {
+            if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) driveAngleOffset = 180;
+            else driveAngleOffset = 0;
+        }
+
+        driveAngleOffset += LookUpTable.findDriveOffsetAngle(distance);
+        if (commandSwerveDrivetrain.getPose().getY() < 4.102) {
+            driveAngleOffset -= 2;
+        } else if (commandSwerveDrivetrain.getPose().getY() > 7.5) {
+            driveAngleOffset += 1;
+        }
+//        System.out.println(driveAngleOffset);
     }
 
     public static void teleopPeriodic() {
