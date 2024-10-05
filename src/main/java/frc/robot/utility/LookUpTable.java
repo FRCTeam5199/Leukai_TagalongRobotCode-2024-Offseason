@@ -8,28 +8,16 @@ public class LookUpTable {
     public static ArrayList<Pair<Double, Double>> lookUpTable = new ArrayList<>() {
         {
             //Distances, Averages
-            add(new Pair<>(1.37, 57d));
-            add(new Pair<>(1.50, 52.25));
-            add(new Pair<>(1.75, 49d));
-            add(new Pair<>(1.92, 46.25));
-            add(new Pair<>(2.32, 42.125));
-            add(new Pair<>(2.5, 40.25));
-            add(new Pair<>(2.75, 37.75));
-            add(new Pair<>(3.00, 35.50));
-            add(new Pair<>(3.25, 34d));
-            add(new Pair<>(3.5, 32.60));
-            add(new Pair<>(3.75, 31.25));
-            add(new Pair<>(4.00, 30.1));
-            add(new Pair<>(4.23, 29.05));
-            add(new Pair<>(4.5, 27d));
-            add(new Pair<>(4.52, 26.87));
-            add(new Pair<>(4.75, 24.5));
-            add(new Pair<>(4.82, 24.5d));
-            add(new Pair<>(5.01, 24d));
-            add(new Pair<>(5.25, 23.875));
-            add(new Pair<>(5.5, 23.875));
-            add(new Pair<>(5.57, 24.07));
-            add(new Pair<>(5.81, 24.00));
+            add(new Pair<>(1.35, 57d));
+            add(new Pair<>(1.6, 53d));
+            add(new Pair<>(1.83, 47.5));
+            add(new Pair<>(2.34, 41d));
+            add(new Pair<>(2.75, 36.5));
+            add(new Pair<>(3.1, 34d));
+            add(new Pair<>(3.53, 31d));
+            add(new Pair<>(4.064, 29d));
+            add(new Pair<>(4.597, 25.5
+            ));
         }
     };
 
@@ -78,4 +66,28 @@ public class LookUpTable {
 
 //        return 1.689 * Math.pow(distance, 2) - 19.09 * distance + 78.07;
     }
+
+//    add(new Pair<>(1.37, 57d));
+//    add(new Pair<>(1.50, 52.25));
+//    add(new Pair<>(1.75, 49d));
+//    add(new Pair<>(1.92, 46.25));
+//    add(new Pair<>(2.32, 42.125));
+//    add(new Pair<>(2.5, 40.25));
+//    add(new Pair<>(2.75, 37.75));
+//    add(new Pair<>(3.00, 35.50));
+//    add(new Pair<>(3.25, 34d));
+//    add(new Pair<>(3.5, 32.60));
+//    add(new Pair<>(3.75, 31.25));
+//    add(new Pair<>(4.00, 30.1));
+//    add(new Pair<>(4.23, 29.05));
+//    add(new Pair<>(4.5, 27d));
+//    add(new Pair<>(4.52, 26.87));
+//    add(new Pair<>(4.75, 24.5));
+//    add(new Pair<>(4.82, 24.5d));
+//    add(new Pair<>(5.01, 24d));
+//    add(new Pair<>(5.25, 23.875));
+//    add(new Pair<>(5.5, 23.875));
+//    add(new Pair<>(5.57, 24.07));
+//    add(new Pair<>(5.81, 24.00));
+//
 }
