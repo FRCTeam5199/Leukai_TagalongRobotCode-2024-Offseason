@@ -64,24 +64,24 @@ public class Robot extends LoggedRobot {
 
         Logger.recordOutput("Drive/Pose", commandSwerveDrivetrain.getPose());
         Logger.recordOutput("Distance from Red Speaker", ScoreCommands.getDistance(
-            new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
-             Constants.Vision.RED_SPEAKER_COORDINATES));
+                new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
+                Constants.Vision.RED_SPEAKER_COORDINATES));
         Logger.recordOutput("Distance from Blue Speaker", ScoreCommands.getDistance(
-            new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
-             Constants.Vision.BLUE_SPEAKER_COORDINATES));
-        
+                new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
+                Constants.Vision.BLUE_SPEAKER_COORDINATES));
+
         Logger.recordOutput("Auto Aim Arm Target Angle (degrees)", RobotContainer.armAutoAimAngle);
         Logger.recordOutput("Arm Angle (degrees)", RobotContainer.shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
-        
+
         Logger.recordOutput("Shooter Left Speed (rps)", RobotContainer.shooterSubsystem.getFlywheel().getFlywheelVelocity());
         Logger.recordOutput("Shooter Right Speed (rps)", RobotContainer.shooterSubsystem.getFlywheel(1).getFlywheelVelocity());
-        
+
         Logger.recordOutput("Indexer Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInIndexer());
         Logger.recordOutput("Amp-Trap Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInAmpTrap());
         Logger.recordOutput("Intake Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInIntake());
-        
+
         Logger.recordOutput("Reached Shooting Conditions", RobotContainer.shooterSubsystem.reachedShootingCondtions(RobotContainer.shooterRPS));
-        
+
         Logger.recordOutput("Bottom Intake Voltage", RobotContainer.indexerSubsystem.getRoller().getRollerMotor().getSupplyVoltage().getValueAsDouble());
         Logger.recordOutput("Bottom Intake Current", RobotContainer.indexerSubsystem.getRoller().getRollerMotor().getSupplyCurrent().getValueAsDouble());
         Logger.recordOutput("Indexer Voltage", RobotContainer.indexerSubsystem.getRoller(2).getRollerMotor().getSupplyVoltage().getValueAsDouble());
@@ -108,17 +108,17 @@ public class Robot extends LoggedRobot {
     @Override
     public void autonomousInit() {
         // This corresponds to the field truth, which is always the blue perspective
-        commandSwerveDrivetrain.setOperatorPerspectiveForward(Rotation2d.fromDegrees(0));
 
         m_autonomousCommand = m_robotContainer.getAutonomousCommand();
         m_robotContainer.onEnable();
 
         commandSwerveDrivetrain.setVisionMeasurementStdDevs(Constants.Vision.kMultiTagStdDevsAuton);
 
-
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
+
+
     }
 
     @Override
@@ -178,6 +178,7 @@ public class Robot extends LoggedRobot {
         }
 
         RobotContainer.teleopPeriodic();
+        commandSwerveDrivetrain.getPigeon2().getAngle();
     }
 
     @Override
