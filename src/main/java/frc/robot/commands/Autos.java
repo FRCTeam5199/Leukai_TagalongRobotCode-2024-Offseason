@@ -94,9 +94,10 @@ public class Autos extends Command {
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle))));
         NamedCommands.registerCommand("autoShootWithCheck",
                 ScoreCommands.setShooterSpeeds(60)
+                        .andThen(() -> System.out.println("waiting until shoot"))
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
                                 && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .andThen(new WaitCommand(0.1))
+                        .andThen(new WaitCommand(0.2))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
