@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.networktables.GenericEntry;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
@@ -62,6 +63,8 @@ public class RobotContainer {
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
     private static boolean isIdling = false;
     private static boolean isShooting = false;
+    private static boolean hasUpdatedAutoAimShot = false;
+    private static Timer timer;
 
     double distance;
 
@@ -89,7 +92,8 @@ public class RobotContainer {
         Shuffleboard.getTab("Drive Info").addBoolean("Shuttle Mode", () -> mode == Mode.SHUTTLE);
 
         angleOffset = UserInterface.getInstance().getShooterOffset();
-
+        timer = new Timer();
+        timer.restart();
 
         leftTriggerOnTrue = new SelectCommand<>(
                 Map.ofEntries(
@@ -97,7 +101,9 @@ public class RobotContainer {
                                         ScoreCommands.driveAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
                                                 fieldCentricSwerveDrive),
                                         new InstantCommand(() -> shooterSubsystem.setShooterSpeeds(shooterRPS)),
-                                        armAutoAim
+                                        armAutoAim,
+                                        new InstantCommand(() -> timer.restart()),
+                                        new InstantCommand(() -> hasUpdatedAutoAimShot = false)
                                 )
                         ),
                         Map.entry(Mode.AMP, ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
@@ -221,8 +227,7 @@ public class RobotContainer {
         );
         commandXboxController.rightBumper().onTrue(
                 new ConditionalCommand(
-                        ScoreCommands.indexerFeedCommand(shooterRPS)
-                                .beforeStarting(() -> armAutoAim.updateSetpointMidShot(armAutoAimAngle)),
+                        ScoreCommands.indexerFeedCommand(shooterRPS),
                         new ConditionalCommand(
                                 ScoreCommands.spinRollersForAmpScore(),
                                 ScoreCommands.spinRollersForTrapScore(),
@@ -231,7 +236,8 @@ public class RobotContainer {
                         () -> mode == Mode.SHOOTER || mode == Mode.SHUTTLE
                 )
         ).onFalse(
-                IntakeCommands.stopRollers()
+                IntakeCommands.stopRollers().alongWith(new InstantCommand(() -> hasUpdatedAutoAimShot = false))
+                        .alongWith(new InstantCommand(() -> timer.restart()))
         );
 
         commandXboxController.povDown().onTrue(IntakeCommands.spinRollersForOuttake()).onFalse(IntakeCommands.stopRollers());
@@ -294,7 +300,7 @@ public class RobotContainer {
         else shooterRPS = 60;
 
         armAutoAim.changeSetpoint(armAutoAimAngle);
-        //armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+        // armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
             Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle - .25);
@@ -303,6 +309,17 @@ public class RobotContainer {
         }
 
         Autos.aiming.changeSetpoint(armAutoAimAngle - .25);
+
+        // if (isShooting && !hasUpdatedAutoAimShot
+        //         && Math.abs(shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d - armAutoAimAngle) > .5 && timer.get() > .75) {
+        //         armAutoAim.updateSetpointMidShot(armAutoAimAngle);
+        //         timer.restart();
+        //         hasUpdatedAutoAimShot = true;
+        //         if (distance > 4.5) shooterRPS = 70;
+        //         else shooterRPS = 60;
+        //         shooterSubsystem.setShooterSpeeds(shooterRPS);
+        //         System.out.println("updating angle");
+        // }
 
         // System.out.println("Reached shooting conditions: " + shooterSubsystem.reachedShootingCondtions(60));
         // System.out.println("Has note in indexer: " + indexerSubsystem.isNoteInIndexer());

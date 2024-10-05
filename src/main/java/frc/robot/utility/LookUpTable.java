@@ -16,32 +16,19 @@ public class LookUpTable {
             add(new Pair<>(3.1, 34d));
             add(new Pair<>(3.53, 31d));
             add(new Pair<>(4.064, 29d));
-            add(new Pair<>(4.597, 25.5
-            ));
+            add(new Pair<>(4.5, 26.75));
+            add(new Pair<>(4.5, 25d));
+            add(new Pair<>(4.5, 23d));
         }
     };
 
-    /*Distances, Low Value, High Value
-    1.50, 49.5, 57
-    1.75, 46, 52
-    1.92, 43.5, 49
-    2.32, 39.5, 44.75
-    2.5, 38.5, 42
-    2.75, 35.5, 40
-    3.00, 34, 37
-    3.25, 33, 35
-    3.5,  32 , 33.2
-    3.75, 31, 31.5
-    4.00, 29 , 30
-    4.25, 28.5, 29.9
-    4.5,26.8, 27.426.
-    ------70 RPS-------
-    4.52, 26.25, 28
-    4.75, 25.9, 26.4
-    4.82, 23.75, 25.25
-    5.01, 25, 26.55
-    5.25, 24, 25.25
-    5.57, 24.5, 25   */
+    /*
+     * 4.5, 26, 27.5
+     * 70 RPS
+     * 4.5, 24.5, 25.5
+     * 5, 23
+     */
+
     public static double findValue(double distance) {
         if (distance < lookUpTable.get(0).getFirst()) {
             return lookUpTable.get(0).getSecond();

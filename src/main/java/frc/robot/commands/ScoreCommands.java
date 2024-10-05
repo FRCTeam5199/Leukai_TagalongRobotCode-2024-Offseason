@@ -93,9 +93,9 @@ public class ScoreCommands {
                                             commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees(),
                                             Units.radiansToDegrees(Math.atan(
                                                     (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
-                    System.out.println("Current angle: " + commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees());
-                    System.out.println("Goal angle: " + Units.radiansToDegrees(Math.atan(
-                                                    (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))));
+                    // System.out.println("Current angle: " + commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(rotationalOffset)).getDegrees());
+                    // System.out.println("Goal angle: " + Units.radiansToDegrees(Math.atan(
+                                                    // (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))));
                 },
                 interrupted -> {
                 },
