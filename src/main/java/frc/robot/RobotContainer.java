@@ -287,7 +287,7 @@ public class RobotContainer {
         //System.out.println("Distance: " + distance);
         //System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
 //        System.out.println("Shooter sensor: " + indexerSubsystem.isNoteInIndexer());
-        System.out.println("Pigeon angle: " + commandSwerveDrivetrain.getPigeon2().getYaw());
+        // System.out.println("Pigeon angle: " + commandSwerveDrivetrain.getPigeon2().getYaw());
         armAutoAimAngle = LookUpTable.findValue(distance) - angleOffset;
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
