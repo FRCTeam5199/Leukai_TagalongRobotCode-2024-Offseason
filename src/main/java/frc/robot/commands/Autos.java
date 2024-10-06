@@ -41,6 +41,9 @@ public class Autos extends Command {
     private Map<String, Command> commandsMap = new HashMap<>();
     private SendableChooser<Command> autoChooser = new SendableChooser<Command>();
     private Command fourPieceRed;
+    private Command fourPieceBlue;
+    private Command threePieceExtendedRed;
+    private Command threePieceExtendedBlue;
 
     public Autos(CommandSwerveDrivetrain swerveDrive) {
         this.swerveDrive = swerveDrive;
@@ -89,7 +92,8 @@ public class Autos extends Command {
         NamedCommands.registerCommand("index", new InstantCommand(() -> ScoreCommands.setShooterSpeeds(60))
                 .andThen(ScoreCommands.indexerFeedCommand(60).until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())));
 
-        NamedCommands.registerCommand("subWooferShotNoMove", new InstantCommand(() -> aiming.initialize()));
+        NamedCommands.registerCommand("subWooferShotNoMove", new InstantCommand(() -> aiming.initialize())
+                .andThen(() -> System.out.println("initializing aiming")));
         NamedCommands.registerCommand("updateShot", new WaitCommand(0.2).andThen(
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle))));
         NamedCommands.registerCommand("autoShootWithCheck",
@@ -103,19 +107,22 @@ public class Autos extends Command {
         );
 
         fourPieceRed = fourPieceRed();
+        fourPieceBlue = fourPieceBlue();
+        threePieceExtendedRed = threePieceRedExtended();
+        threePieceExtendedBlue = threePieceBlueExtended();
 
         Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
-        autonChooserRed.addOption("3 Piece Extended", threePieceRedExtended());
+        autonChooserRed.addOption("3 Piece Extended", threePieceExtendedRed);
         autonChooserRed.setDefaultOption("4 Piece", fourPieceRed);
         autonChooserRed.addOption("5 Piece", fivePieceRed());
         autonChooserRed.addOption("5 Piece Middle", fivePieceMiddleRed());
         autonChooserRed.addOption("Shoot Do Nothing", shootNoMove());
 
-        autonChooserBlue.addOption("3 Piece Extended", threePieceBlueExtended());
-        autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue());
+        autonChooserBlue.addOption("3 Piece Extended", threePieceExtendedBlue);
+        autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue);
         autonChooserBlue.addOption("5 Piece", fivePieceBlue());
         autonChooserBlue.addOption("Shoot Do Nothing", shootNoMove());
 

@@ -22,14 +22,13 @@
     "4 Piece Blue",
     "4 Piece Red",
     "5 Piece Blue ",
+    "5 Piece Middle Red",
     "5 Piece Red",
     "6 Piece Blue",
     "6 Piece Blue Alt",
     "6 Piece Red",
     "6 Piece Red Alt",
-    "New Folder",
-    "Test Blue Autos",
-    "5 Piece Middle Red"
+    "Test Blue Autos"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

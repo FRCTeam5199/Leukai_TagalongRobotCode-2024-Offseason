@@ -289,7 +289,8 @@ public class RobotContainer {
         //System.out.println("Speed: " + shooterSubsystem.getFlywheel().getFlywheelVelocity());
 //        System.out.println("Shooter sensor: " + indexerSubsystem.isNoteInIndexer());
         // System.out.println("Pigeon angle: " + commandSwerveDrivetrain.getPigeon2().getYaw());
-        armAutoAimAngle = LookUpTable.findArmAngle(distance) - angleOffset;
+        armAutoAimAngle += angleOffset;
+        armAutoAimAngle = LookUpTable.findArmAngle(distance);
 //        System.out.println("Auto Aim Angle: " + armAutoAimAngle);
         if (distance > 4.5) shooterRPS = 70;
         else shooterRPS = 60;
@@ -322,10 +323,16 @@ public class RobotContainer {
         }
 
         driveAngleOffset += LookUpTable.findDriveOffsetAngle(distance);
-        if (commandSwerveDrivetrain.getPose().getY() < 4.102) {
-            driveAngleOffset -= 2;
-        } else if (commandSwerveDrivetrain.getPose().getY() > 7.5) {
-            driveAngleOffset += 1;
+        if (DriverStation.getAlliance().isPresent()) {
+            if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red && commandSwerveDrivetrain.getPose().getY() < 4.102) {
+                driveAngleOffset -= 2;
+            } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red && commandSwerveDrivetrain.getPose().getY() > 7.5) {
+                driveAngleOffset += 1;
+            } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue && commandSwerveDrivetrain.getPose().getY() < 4.102) {
+                driveAngleOffset += 2;
+            } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue && commandSwerveDrivetrain.getPose().getY() > 7.5) {
+                driveAngleOffset -= 1;
+            }
         }
 //        System.out.println(driveAngleOffset);
     }
