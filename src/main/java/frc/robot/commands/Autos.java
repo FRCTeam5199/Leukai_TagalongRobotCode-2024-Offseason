@@ -94,14 +94,27 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("subWooferShotNoMove", new InstantCommand(() -> aiming.initialize())
                 .andThen(() -> System.out.println("initializing aiming")));
-        NamedCommands.registerCommand("updateShot", new WaitCommand(0.2).andThen(
+
+        NamedCommands.registerCommand("updateShot", new WaitCommand(0.1).andThen(
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle))));
+
+
         NamedCommands.registerCommand("autoShootWithCheck",
                 ScoreCommands.setShooterSpeeds(60)
                         .andThen(() -> System.out.println("waiting until shoot"))
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
                                 && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .andThen(new WaitCommand(0.2))
+                        .andThen(new WaitCommand(0.0))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+
+        NamedCommands.registerCommand("autoShootWithCheckLong",
+                ScoreCommands.setShooterSpeeds(60)
+                        .andThen(() -> System.out.println("waiting until shoot"))
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
+                                && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
+                        .andThen(new WaitCommand(0))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
@@ -120,11 +133,13 @@ public class Autos extends Command {
         autonChooserRed.addOption("5 Piece", fivePieceRed());
         autonChooserRed.addOption("5 Piece Middle", fivePieceMiddleRed());
         autonChooserRed.addOption("Shoot Do Nothing", shootNoMove());
+        autonChooserRed.addOption("4 Piece B", fourPieceBRed());
 
         autonChooserBlue.addOption("3 Piece Extended", threePieceExtendedBlue);
         autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue);
         autonChooserBlue.addOption("5 Piece", fivePieceBlue());
         autonChooserBlue.addOption("Shoot Do Nothing", shootNoMove());
+        autonChooserBlue.addOption("4 Piece B", fourPieceBBlue());
 
 
     }
@@ -225,5 +240,13 @@ public class Autos extends Command {
                 ScoreCommands.indexerFeedCommandAutoStop(50)
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
+    }
+
+    public Command fourPieceBRed() {
+        return AutoBuilder.buildAuto("4 piece B red");
+    }
+
+    public Command fourPieceBBlue() {
+        return AutoBuilder.buildAuto("blue");
     }
 }

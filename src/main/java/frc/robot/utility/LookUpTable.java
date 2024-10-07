@@ -10,11 +10,13 @@ public class LookUpTable {
             //Distances, Averages
             add(new Pair<>(1.35, 57d));
             add(new Pair<>(1.6, 53d));
-            add(new Pair<>(1.83, 47.5));
+            add(new Pair<>(1.83, 47.0));
             add(new Pair<>(2.34, 41d));
             add(new Pair<>(2.75, 36.5));
             add(new Pair<>(3.1, 34d));
-            add(new Pair<>(3.53, 31d));
+            add(new Pair<>(3.28, 31.8));
+            add(new Pair<>(3.48, 29.5));
+            add(new Pair<>(3.53, 29.3d));
             add(new Pair<>(4.064, 29d));
             add(new Pair<>(4.5, 26.75));
             add(new Pair<>(4.5, 25d));
@@ -24,11 +26,12 @@ public class LookUpTable {
 
     public static ArrayList<Pair<Double, Double>> lookUpTableDriveOffsetAngle = new ArrayList<>() {
         {
-            //Distances, Angle
+            //Y Distances, Angle
+            add(new Pair<>(1.00, 0d));
             add(new Pair<>(1.35, 0d));
             add(new Pair<>(2.5, 0d));
             add(new Pair<>(3d, 2.5));
-            add(new Pair<>(5d, 4d));
+            add(new Pair<>(5d, 5d));
         }
     };
 

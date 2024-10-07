@@ -270,11 +270,11 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return new ConditionalCommand(
-                Autos.autonChooserRed.getSelected(),
-                Autos.autonChooserBlue.getSelected(),
-                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
-        );
+        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+            return Autos.autonChooserRed.getSelected();
+        } else {
+            return Autos.autonChooserBlue.getSelected();
+        }
     }
 
     public void periodic() {
@@ -296,7 +296,7 @@ public class RobotContainer {
         else shooterRPS = 60;
 
         armAutoAim.changeSetpoint(armAutoAimAngle);
-        // armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
+//        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
             Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle);

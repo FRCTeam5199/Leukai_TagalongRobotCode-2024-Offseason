@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 1.31,
-      "y": 5.5
+      "x": 15.174635141678351,
+      "y": 5.472864279061892
     },
-    "rotation": 0
+    "rotation": 180.0
   },
   "command": {
     "type": "sequential",
@@ -32,19 +32,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "start to note 2 blue"
+            "pathName": "4 Piece B start to note 2 "
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": " note 1 to shoot blue"
+            "pathName": "4 Piece B note 2 to sub"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "subWooferShotNoMove"
           }
         },
         {
@@ -56,19 +56,25 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootSub"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "shoot to note 2 blue"
+            "pathName": "4 Piece B sub to note 3 "
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece B note 3 to sub"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "subWooferShotNoMove"
           }
         },
         {
@@ -80,19 +86,25 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootSub"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "note 2 to note 3 blue"
+            "pathName": "4 Piece B sub to note 4 "
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece B note 4 to sub"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "subWooferShotNoMove"
           }
         },
         {
@@ -104,12 +116,12 @@
         {
           "type": "named",
           "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootSub"
           }
         }
       ]
     }
   },
-  "folder": "4 Piece Blue",
+  "folder": "4 Piece Red",
   "choreoAuto": false
 }
