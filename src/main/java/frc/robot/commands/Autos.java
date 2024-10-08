@@ -104,19 +104,16 @@ public class Autos extends Command {
                         .andThen(() -> System.out.println("waiting until shoot"))
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
                                 && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .andThen(new WaitCommand(0.0))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
-        NamedCommands.registerCommand("autoShootWithCheckLong",
-                ScoreCommands.setShooterSpeeds(60)
-                        .andThen(() -> System.out.println("waiting until shoot"))
-                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
-                                && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .andThen(new WaitCommand(0))
-                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
-                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        NamedCommands.registerCommand("autoShootWithCheckLong", ScoreCommands.setShooterSpeeds(60)
+                .andThen(() -> System.out.println("waiting until shoot"))
+                .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
+                        && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
+                .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
+                .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
         fourPieceRed = fourPieceRed();
