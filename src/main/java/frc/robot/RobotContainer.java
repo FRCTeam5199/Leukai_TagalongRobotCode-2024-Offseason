@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 

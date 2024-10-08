@@ -12,6 +12,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 import org.photonvision.PhotonPoseEstimator.PoseStrategy;
+import org.photonvision.proto.Photon;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
@@ -25,9 +26,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 
 public class ApriltagSubsystem extends SubsystemBase {
-
+    
     private final PhotonCamera camera;
+    private final PhotonCamera camera_Back;
     private final PhotonPoseEstimator photonEstimator;
+    private final PhotonPoseEstimator photonEstimatorBack;
     private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private double lastEstTimestamp = 0;
     private PhotonPipelineResult lastResult;
@@ -35,15 +38,21 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     public ApriltagSubsystem() {
         camera = new PhotonCamera(Constants.Vision.kCameraName);
+        camera_Back = new PhotonCamera(Constants.Vision.kCameraName_Back);
         try {
             customLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/configs/2024-crescendo.json");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        
+
         photonEstimator =
                 new PhotonPoseEstimator(customLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
+        photonEstimatorBack =
+                new PhotonPoseEstimator(customLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera_Back, Constants.Vision.kRobotToCamBack);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+        photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
     }
 
     @Override
@@ -55,8 +64,14 @@ public class ApriltagSubsystem extends SubsystemBase {
                 + Math.pow((5.547867999 - drivetrain.getPose().getY()), 2));
     }
 
+    
     public void getLatestResult() {
+        if (camera.getLatestResult().hasTargets()) {
         lastResult = camera.getLatestResult();
+        }
+        else if (camera_Back.getLatestResult().hasTargets()) {
+        lastResult = camera_Back.getLatestResult();
+        }
     }
 
     // public int[] getTargets() {
@@ -75,6 +90,7 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     public Pair<Optional<EstimatedRobotPose>, Double> getEstimatedGlobalPose() {
         photonEstimator.setReferencePose(drivetrain.getPose());
+        photonEstimatorBack.setReferencePose(drivetrain.getPose());
 
         getLatestResult();
 
@@ -87,9 +103,17 @@ public class ApriltagSubsystem extends SubsystemBase {
             return new Pair<Optional<EstimatedRobotPose>, Double>(Optional.empty(), 0d);
         } else {
             lastEstTimestamp = lastResult.getTimestampSeconds();
+            if (camera.getLatestResult().hasTargets()) {
             return new Pair<Optional<EstimatedRobotPose>, Double>(photonEstimator.update(lastResult), lastResult.getTimestampSeconds());
-        }
-    }
+            } else {
+            return new Pair<Optional<EstimatedRobotPose>, Double>(photonEstimatorBack.update(lastResult), lastResult.getTimestampSeconds());
+            }
+
+            }
+            
+        } 
+
+
 
     public double getTimestamp() {
         return lastResult.getTimestampSeconds();
