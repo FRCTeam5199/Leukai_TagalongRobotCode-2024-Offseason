@@ -1,0 +1,139 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 15.178312501147143,
+      "y": 5.6355193363067375
+    },
+    "rotation": 180.0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "subWooferShotNoMove"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootSub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp start to note 4 red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 4 to shoot red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 4 to note 3 shoot red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 3 to note 2 shoot red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 2 to note 1 shoot red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "5 Piece Amp Red",
+  "choreoAuto": false
+}
