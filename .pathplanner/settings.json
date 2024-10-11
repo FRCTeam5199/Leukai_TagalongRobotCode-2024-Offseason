@@ -7,6 +7,7 @@
     "3 Piece Blue Paths",
     "3 Piece Red Paths",
     "4 Piece Red Paths",
+    "5 Piece Amp Red Paths",
     "5 Piece Blue Paths",
     "5 Piece Middle Red Paths",
     "5 Piece Red Paths",
@@ -15,13 +16,14 @@
     "6 Piece Red alt paths",
     "Blue Paths",
     "California Auto",
-    "5 Piece Amp Red Paths"
+    "5 Piece Amp Blue Paths"
   ],
   "autoFolders": [
     "3 Piece Blue",
     "3 Piece Red",
     "4 Piece Blue",
     "4 Piece Red",
+    "5 Piece Amp Red",
     "5 Piece Blue ",
     "5 Piece Middle Red",
     "5 Piece Red",
@@ -29,7 +31,7 @@
     "6 Piece Blue Alt",
     "6 Piece Red",
     "6 Piece Red Alt",
-    "5 Piece Amp Red",
+    "5 Piece Amp Blue",
     "Test Blue Autos"
   ],
   "defaultMaxVel": 3.0,

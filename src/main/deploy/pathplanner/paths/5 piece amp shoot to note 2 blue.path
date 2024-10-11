@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 14.42,
-        "y": 5.625951391762923
+        "x": 1.99,
+        "y": 5.48
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.01102326680178,
-        "y": 5.645087280850552
+        "x": 2.99,
+        "y": 5.48
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.513490150523426,
-        "y": 5.625951391762923
+        "x": 3.45710272019688,
+        "y": 5.48
       },
       "prevControl": {
-        "x": 14.144974490415184,
-        "y": 5.606815502675295
+        "x": 3.433681047105316,
+        "y": 5.4806715034257465
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,16 +35,9 @@
       "name": "intake",
       "waypointRelativePos": 0,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "intake"
-              }
-            }
-          ]
+          "commands": []
         }
       }
     }
@@ -57,13 +50,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0,
+    "rotation": 0,
     "rotateFast": false
   },
   "reversed": false,
-  "folder": "5 Piece Amp Red Paths",
+  "folder": "5 Piece Amp Blue Paths",
   "previewStartingState": {
-    "rotation": 180.0,
+    "rotation": 0,
     "velocity": 0
   },
   "useDefaultConstraints": false
