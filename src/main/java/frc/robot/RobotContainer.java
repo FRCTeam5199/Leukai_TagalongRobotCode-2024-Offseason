@@ -330,9 +330,9 @@ public class RobotContainer {
             } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red && commandSwerveDrivetrain.getPose().getY() > 7.5) {
                 driveAngleOffset += 1;
             } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue && commandSwerveDrivetrain.getPose().getY() < 4.102) {
-                driveAngleOffset += 2;
+                driveAngleOffset += 1;
             } else if (DriverStation.getAlliance().get() == DriverStation.Alliance.Blue && commandSwerveDrivetrain.getPose().getY() > 7.5) {
-                driveAngleOffset -= 1;
+                driveAngleOffset -= 2;
             }
         }
 //        System.out.println(driveAngleOffset);

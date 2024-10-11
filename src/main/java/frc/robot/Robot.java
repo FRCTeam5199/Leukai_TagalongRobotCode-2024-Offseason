@@ -124,7 +124,7 @@ public class Robot extends LoggedRobot {
     @Override
     public void autonomousPeriodic() {
         Pair<Optional<EstimatedRobotPose>, Double> estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
-        Pair<Optional<EstimatedRobotPose>, Double> estimatePoseBack = aprilTagSubsystem.getEstimatedGlobalPose();
+        Pair<Optional<EstimatedRobotPose>, Double> estimatePoseBack = aprilTagSubsystem.getEstimatedGlobalPoseBack();
 
         if (estimatePose.getFirst().isPresent() && estimatePoseBack.getFirst().isPresent()) {
             EstimatedRobotPose robotPose = aprilTagSubsystem.getAmbiguity() < aprilTagSubsystem.getAmbiguityBack()

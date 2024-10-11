@@ -54,6 +54,9 @@ public class ApriltagSubsystem extends SubsystemBase {
                 new PhotonPoseEstimator(customLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera_Back, Constants.Vision.kRobotToCamBack);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+
+        lastResult = camera.getLatestResult();
+        lastResultBack = camera_Back.getLatestResult();
     }
 
     @Override
@@ -74,7 +77,7 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     public void getLatestResultBack() {
         if (camera_Back.getLatestResult().hasTargets()) {
-            lastResult = camera_Back.getLatestResult();
+            lastResultBack = camera_Back.getLatestResult();
         }
     }
 
@@ -122,7 +125,7 @@ public class ApriltagSubsystem extends SubsystemBase {
         } else if (lastResultBack.getTargets().size() < 2) {
             return new Pair<>(Optional.empty(), 0d);
         } else {
-            return new Pair<>(photonEstimator.update(lastResultBack), lastResultBack.getTimestampSeconds());
+            return new Pair<>(photonEstimatorBack.update(lastResultBack), lastResultBack.getTimestampSeconds());
         }
 
     }
