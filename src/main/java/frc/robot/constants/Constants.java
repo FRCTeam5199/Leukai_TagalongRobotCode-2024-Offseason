@@ -76,10 +76,14 @@ public class Constants {
         public static final Matrix<N3, N1> kMultiTagStdDevsTeleop = VecBuilder.fill(0.00, .00, 999);
 
         public static final String kCameraName = "Camera";
+        public static final String kCameraName_Back = "Camera Back";
         public static final String LIMELIGHT = "limelight";
 
         public static final Transform3d kRobotToCam =
                 new Transform3d(new Translation3d(-0.1006348, 0.0, 0.4481322), new Rotation3d(0, -.29, 0));
+        public static final Transform3d kRobotToCamBack =
+                new Transform3d(new Translation3d(-0.381, -0.348, 0.128), new Rotation3d(0, .59, 0));
+
 
         // The layout of the AprilTags on the field
         public static final AprilTagFieldLayout kTagLayout =
