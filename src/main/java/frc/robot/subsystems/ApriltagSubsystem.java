@@ -26,14 +26,16 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.Constants;
 
 public class ApriltagSubsystem extends SubsystemBase {
-    
+
     private final PhotonCamera camera;
     private final PhotonCamera camera_Back;
     private final PhotonPoseEstimator photonEstimator;
     private final PhotonPoseEstimator photonEstimatorBack;
     private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private double lastEstTimestamp = 0;
+    private double lastEstTimestampBack = 0;
     private PhotonPipelineResult lastResult;
+    private PhotonPipelineResult lastResultBack;
     private AprilTagFieldLayout customLayout;
 
     public ApriltagSubsystem() {
@@ -45,7 +47,6 @@ public class ApriltagSubsystem extends SubsystemBase {
             throw new RuntimeException(e);
         }
 
-        
 
         photonEstimator =
                 new PhotonPoseEstimator(customLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
@@ -64,13 +65,16 @@ public class ApriltagSubsystem extends SubsystemBase {
                 + Math.pow((5.547867999 - drivetrain.getPose().getY()), 2));
     }
 
-    
+
     public void getLatestResult() {
         if (camera.getLatestResult().hasTargets()) {
-        lastResult = camera.getLatestResult();
+            lastResult = camera.getLatestResult();
         }
-        else if (camera_Back.getLatestResult().hasTargets()) {
-        lastResult = camera_Back.getLatestResult();
+    }
+
+    public void getLatestResultBack() {
+        if (camera_Back.getLatestResult().hasTargets()) {
+            lastResult = camera_Back.getLatestResult();
         }
     }
 
@@ -90,7 +94,6 @@ public class ApriltagSubsystem extends SubsystemBase {
 
     public Pair<Optional<EstimatedRobotPose>, Double> getEstimatedGlobalPose() {
         photonEstimator.setReferencePose(drivetrain.getPose());
-        photonEstimatorBack.setReferencePose(drivetrain.getPose());
 
         getLatestResult();
 
@@ -98,21 +101,39 @@ public class ApriltagSubsystem extends SubsystemBase {
         // filtering stages
         // Ensure the result is
         if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
-            return new Pair<Optional<EstimatedRobotPose>, Double>(Optional.empty(), 0d);
+            return new Pair<>(Optional.empty(), 0d);
         } else if (lastResult.getTargets().size() < 2) {
-            return new Pair<Optional<EstimatedRobotPose>, Double>(Optional.empty(), 0d);
+            return new Pair<>(Optional.empty(), 0d);
         } else {
-            lastEstTimestamp = lastResult.getTimestampSeconds();
-            if (camera.getLatestResult().hasTargets()) {
-            return new Pair<Optional<EstimatedRobotPose>, Double>(photonEstimator.update(lastResult), lastResult.getTimestampSeconds());
-            } else {
-            return new Pair<Optional<EstimatedRobotPose>, Double>(photonEstimatorBack.update(lastResult), lastResult.getTimestampSeconds());
-            }
+            return new Pair<>(photonEstimator.update(lastResult), lastResult.getTimestampSeconds());
+        }
 
-            }
-            
-        } 
+    }
 
+    public Pair<Optional<EstimatedRobotPose>, Double> getEstimatedGlobalPoseBack() {
+        photonEstimatorBack.setReferencePose(drivetrain.getPose());
+
+        getLatestResultBack();
+
+        // filtering stages
+        // Ensure the result is
+        if (lastResultBack.getTimestampSeconds() <= lastEstTimestampBack) {
+            return new Pair<>(Optional.empty(), 0d);
+        } else if (lastResultBack.getTargets().size() < 2) {
+            return new Pair<>(Optional.empty(), 0d);
+        } else {
+            return new Pair<>(photonEstimator.update(lastResultBack), lastResultBack.getTimestampSeconds());
+        }
+
+    }
+
+    public double getAmbiguity() {
+        return lastResult.getMultiTagResult().estimatedPose.ambiguity;
+    }
+
+    public double getAmbiguityBack() {
+        return lastResultBack.getMultiTagResult().estimatedPose.ambiguity;
+    }
 
 
     public double getTimestamp() {
