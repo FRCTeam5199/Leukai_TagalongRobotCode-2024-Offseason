@@ -120,8 +120,8 @@ public class ScoreCommands {
                 },
                 interrupted -> {
                 },
-                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset + .5)).getDegrees() >= Units.radiansToDegrees(Math.atan(
-                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset - .5)).getDegrees() <= Units.radiansToDegrees(Math.atan(
+                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset + .75)).getDegrees() >= Units.radiansToDegrees(Math.atan(
+                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset - .75)).getDegrees() <= Units.radiansToDegrees(Math.atan(
                         (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))),
                 commandSwerveDrivetrain
         );

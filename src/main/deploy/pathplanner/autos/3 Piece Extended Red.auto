@@ -20,12 +20,6 @@
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
             "name": "autoShootSub"
           }
         },
@@ -63,12 +57,6 @@
           "type": "path",
           "data": {
             "pathName": "3 Piece Note 8 shoot to note 7 Red"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 Piece Note 7 to note 7 shoot Red"
           }
         },
         {
