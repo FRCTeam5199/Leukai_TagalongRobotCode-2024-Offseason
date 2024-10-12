@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.generated.TunerConstants;
 import org.photonvision.EstimatedRobotPose;
@@ -37,6 +38,7 @@ public class ApriltagSubsystem extends SubsystemBase {
     private PhotonPipelineResult lastResult;
     private PhotonPipelineResult lastResultBack;
     private AprilTagFieldLayout customLayout;
+    private AprilTagFieldLayout backCameraLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
 
     public ApriltagSubsystem() {
         camera = new PhotonCamera(Constants.Vision.kCameraName);
@@ -51,7 +53,7 @@ public class ApriltagSubsystem extends SubsystemBase {
         photonEstimator =
                 new PhotonPoseEstimator(customLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
         photonEstimatorBack =
-                new PhotonPoseEstimator(customLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera_Back, Constants.Vision.kRobotToCamBack);
+                new PhotonPoseEstimator(backCameraLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera_Back, Constants.Vision.kRobotToCamBack);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
         photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
