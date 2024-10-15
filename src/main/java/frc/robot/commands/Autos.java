@@ -148,12 +148,12 @@ public class Autos extends Command {
         autonChooserRed.addOption("Shoot Do Nothing", shootNoMove());
         autonChooserRed.addOption("3 Piece Extended", threePieceExtendedRed);
         autonChooserRed.setDefaultOption("4 Piece", fourPieceRed);
-//        autonChooserRed.addOption("5 Piece Amp", fivePieceAmpRed);
+        autonChooserRed.addOption("5 Piece Amp", fivePieceAmpRed);
 
         autonChooserBlue.addOption("Shoot Do Nothing", shootNoMove());
         autonChooserBlue.addOption("3 Piece Extended", threePieceExtendedBlue);
         autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue);
-//        autonChooserBlue.setDefaultOption("5 Piece Amp", fivePieceAmpBlue);
+        autonChooserBlue.setDefaultOption("5 Piece Amp", fivePieceAmpBlue);
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
