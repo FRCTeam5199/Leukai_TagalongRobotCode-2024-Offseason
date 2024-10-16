@@ -246,6 +246,7 @@ public class Autos extends Command {
 //                        && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
 //                .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
 //                .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer());
+
     }
 
     public Command threePieceBlueExtended() {
