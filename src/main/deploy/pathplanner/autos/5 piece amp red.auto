@@ -44,91 +44,61 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootSub"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "5 piece amp note 4 to note 3 shoot red"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "pathName": "5 piece amp sub to note 1 red"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "5 piece amp note 3 to note 2 shoot red"
+            "pathName": "5 piece amp note 1 to sub red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootSub"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "5 piece amp note 2 to note 1 shoot red"
+            "pathName": "5 piece amp sub to note 2 red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 2 to sub red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "autoShootSub"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp sub to note 3 red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 3 to sub red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootSub"
           }
         }
       ]
