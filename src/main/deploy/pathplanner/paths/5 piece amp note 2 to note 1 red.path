@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 15.174635141678351,
-        "y": 5.5
+        "x": 13.35,
+        "y": 5.56
       },
       "prevControl": null,
       "nextControl": {
-        "x": 14.580605388973655,
-        "y": 6.123244330706804
+        "x": 15.469661414786453,
+        "y": 4.833928134161545
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 13.665215278236015,
-        "y": 6.982284142509097
+        "x": 13.739217207393045,
+        "y": 4.133925300660873
       },
       "prevControl": {
-        "x": 14.171601296939253,
-        "y": 6.42720716047388
+        "x": 14.336469871227903,
+        "y": 4.309587848847595
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,10 +32,10 @@
   "constraintZones": [],
   "eventMarkers": [
     {
-      "name": "New Event Marker",
-      "waypointRelativePos": 0,
+      "name": "intake",
+      "waypointRelativePos": 0.0,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
@@ -56,14 +56,14 @@
     "maxAngularAcceleration": 720.0
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 137.12109639668097,
+    "velocity": 0,
+    "rotation": -178.49256424122504,
     "rotateFast": false
   },
   "reversed": false,
   "folder": "5 Piece Amp Red Paths",
   "previewStartingState": {
-    "rotation": -179.09061955080088,
+    "rotation": 180.0,
     "velocity": 0
   },
   "useDefaultConstraints": false

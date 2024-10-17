@@ -56,7 +56,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = 2.5 * Math.PI;
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -103,19 +103,7 @@ public class RobotContainer {
                                 )
                         ),
                         Map.entry(Mode.AMP, ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
-                                .alongWith(ScoreCommands.isElevatorUp(true)).alongWith(
-                                        commandSwerveDrivetrain.applyRequest(
-                                                () -> {
-                                                    return
-                                                            // Drive forward with negative Y (forward)
-                                                            fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
-                                                                    // Drive left with negative X (left)
-                                                                    .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
-                                                                    // Drive counterclockwise with negative X (left)
-                                                                    .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
-                                                }
-                                        )
-                                )),
+                                .alongWith(ScoreCommands.highShuttleAutoTurn(fieldCentricSwerveDrive))),
                         Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
                                 .alongWith(commandSwerveDrivetrain.applyRequest(
                                         () -> {

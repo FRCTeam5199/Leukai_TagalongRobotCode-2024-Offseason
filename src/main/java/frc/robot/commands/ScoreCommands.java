@@ -135,12 +135,12 @@ public class ScoreCommands {
         );
     }
 
-    // public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
-    //     return new ConditionalCommand(
-    //             autoShuttleAim(fieldCentricSwerveDrive, 16.58, 13d, getAutoAimOffset()),
-    //             autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 13d, getAutoAimOffset()),
-    //             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
-    // }
+    public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
+        return new ConditionalCommand(
+                autoShuttleAim(fieldCentricSwerveDrive, 16.58, 13d, 0),
+                autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 13d, 0),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
 
 
     public static Command elevatorStable() {
@@ -289,6 +289,10 @@ public class ScoreCommands {
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
                 () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
+    }
+
+    public static Command indexerFeedCommandInstant() {
+        return new InstantCommand(() -> indexerSubsystem.setRollerPowers(50, -75, 50));
     }
 
     public static Command indexerFeedCommand(double targetSpeed) {
