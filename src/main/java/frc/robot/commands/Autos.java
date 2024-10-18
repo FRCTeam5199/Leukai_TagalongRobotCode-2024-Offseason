@@ -71,6 +71,12 @@ public class Autos extends Command {
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(35))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
+        NamedCommands.registerCommand("autoShootSubExtended",
+                ScoreCommands.setShooterSpeeds(70)
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(35))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(35))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
 
         NamedCommands.registerCommand("updateShotSub",
                 new InstantCommand(() -> aiming.updateSetpointMidShot(ShooterPivotAngles.MAX.getDegrees())));
@@ -97,7 +103,7 @@ public class Autos extends Command {
                 )));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
-                .andThen(new WaitCommand(.4)));
+                .andThen(new WaitCommand(.5)));
         NamedCommands.registerCommand("driveAutoAimFast", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
                 .andThen(new WaitCommand(.2)));
 
@@ -117,19 +123,13 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("updateShotExtendedLong", new WaitCommand(.5).andThen(
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)).andThen(new WaitCommand(.3))));
-        
+
         NamedCommands.registerCommand("autoShootWithCheck",
                 new WaitCommand(0.3).andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
         );
 
         NamedCommands.registerCommand("autoShootWithCheckExtended",
-                ScoreCommands.setShooterSpeeds(60).andThen(new WaitCommand(0.25))
-                        .andThen(new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)))
-                        .onlyIf(() -> RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
-                                && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
-                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+                new WaitCommand(0.3).andThen(ScoreCommands.indexerFeedCommandAutoStop(70))
         );
 
         NamedCommands.registerCommand("autoShootWithCheckLong", ScoreCommands.setShooterSpeeds(60)
@@ -139,6 +139,8 @@ public class Autos extends Command {
                 .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
                 .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
+
+        NamedCommands.registerCommand("Stable", new InstantCommand(() -> aiming.changeSetpoint(ShooterPivotAngles.STABLE.getDegrees())));
 
         threePieceExtendedRed = threePieceRedExtended();
         threePieceExtendedBlue = threePieceBlueExtended();
