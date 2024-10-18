@@ -115,8 +115,9 @@ public class RobotContainer {
                                                             .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
                                         }
                                 ))),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
-                                .alongWith(ScoreCommands.highShuttleAutoTurn(commandXboxController.getLeftX(), commandXboxController.getLeftY(),
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 57.8935)
+                                .alongWith(ScoreCommands.highShuttleAutoTurn(
+                                        commandXboxController::getLeftX, commandXboxController::getLeftY,
                                         fieldCentricSwerveDrive))),
                         Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.6).alongWith(
                                 commandSwerveDrivetrain.applyRequest(

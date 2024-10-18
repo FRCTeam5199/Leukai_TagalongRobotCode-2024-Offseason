@@ -124,29 +124,11 @@ public class Robot extends LoggedRobot {
     @Override
     public void autonomousPeriodic() {
         Pair<Optional<EstimatedRobotPose>, Double> estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
-        Pair<Optional<EstimatedRobotPose>, Double> estimatePoseBack = aprilTagSubsystem.getEstimatedGlobalPoseBack();
 
-        if (estimatePose.getFirst().isPresent() && estimatePoseBack.getFirst().isPresent()) {
-            EstimatedRobotPose robotPose = aprilTagSubsystem.getAmbiguity() < aprilTagSubsystem.getAmbiguityBack()
-                    ? estimatePose.getFirst().get() : estimatePoseBack.getFirst().get();
-
-            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
-
-            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
-        } else if (estimatePose.getFirst().isPresent()) {
+        if (estimatePose.getFirst().isPresent()) {
             EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
-
-            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
-        } else if (estimatePoseBack.getFirst().isPresent()) {
-            EstimatedRobotPose robotPose = estimatePoseBack.getFirst().get();
-            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-
             Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
                     Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
 

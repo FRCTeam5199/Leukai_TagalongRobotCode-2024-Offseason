@@ -100,7 +100,6 @@ public class ApriltagSubsystem extends SubsystemBase {
 
         getLatestResult();
 
-
         // filtering stages
         // Ensure the result is
         if (lastResult.getTimestampSeconds() <= lastEstTimestamp) {
