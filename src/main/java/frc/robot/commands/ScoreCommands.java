@@ -140,7 +140,7 @@ public class ScoreCommands {
     public static Command highShuttleAutoTurn(Supplier<Double> driveX, Supplier<Double> driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
                 driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 13d),
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -15d, 4d),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -15d, 5d),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
     }
 

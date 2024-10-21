@@ -1,0 +1,43 @@
+{
+  "version": 1.0,
+  "startingPose": {
+    "position": {
+      "x": 1.2,
+      "y": 5.55076982040085
+    },
+    "rotation": 0
+  },
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece sub to note 4 b blue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece note 4 to sub b blue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "note 2 to note 3 blue"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "4 Piece note 3 to sub b blue"
+          }
+        }
+      ]
+    }
+  },
+  "folder": "4 Piece Blue",
+  "choreoAuto": false
+}

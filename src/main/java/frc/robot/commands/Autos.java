@@ -49,6 +49,10 @@ public class Autos extends Command {
     private Command fivePieceAmpRed;
     private Command fivePieceAmpBlue;
 
+    private Command twoPieceBlue;
+
+    private Command twoPieceRed;
+
     public Autos(CommandSwerveDrivetrain swerveDrive) {
         this.swerveDrive = swerveDrive;
         AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(),
@@ -67,8 +71,8 @@ public class Autos extends Command {
         NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
         NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
-                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(35))
-                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(35))
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(45))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(45))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
         NamedCommands.registerCommand("autoShootSubExtended",
@@ -148,16 +152,20 @@ public class Autos extends Command {
         fourPieceBlue = fourPieceBBlue();
         fivePieceAmpRed = fivePieceAmpRed();
         fivePieceAmpBlue = fivePieceBlue();
+        twoPieceBlue = twoPieceBlue();
+        twoPieceRed = twoPieceRed();
 
         Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         autonChooserRed.addOption("Shoot Do Nothing", shootNoMove());
-        autonChooserRed.addOption("3 Piece Extended", threePieceExtendedRed);
+        autonChooserRed.addOption("2 Piece", twoPieceRed);
+        autonChooserRed.addOption(" 3 Piece Extended", threePieceExtendedRed);
         autonChooserRed.setDefaultOption("4 Piece", fourPieceRed);
         autonChooserRed.addOption("5 Piece Amp", fivePieceAmpRed);
 
         autonChooserBlue.addOption("Shoot Do Nothing", shootNoMove());
+        autonChooserBlue.addOption("2 Piece", twoPieceBlue);
         autonChooserBlue.addOption("3 Piece Extended", threePieceExtendedBlue);
         autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue);
         autonChooserBlue.setDefaultOption("5 Piece Amp", fivePieceAmpBlue);
@@ -184,6 +192,10 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("5 piece red shoot");
     }
 
+    public Command twoPieceBlue() {
+        return AutoBuilder.buildAuto("2 piece blue");
+    }
+
     public Command fivePieceAmpRed() {
         return AutoBuilder.buildAuto("5 piece amp red");
     }
@@ -207,6 +219,10 @@ public class Autos extends Command {
     public Command sixPieceRedPart2() {
         part2Finished = false;
         return AutoBuilder.buildAuto("6 piece red part 2").andThen(() -> part2Finished = true);
+    }
+
+    public Command twoPieceRed() {
+        return AutoBuilder.buildAuto("2 piece red");
     }
 
     public Command sixPieceRedNote5Check() {
