@@ -25,6 +25,7 @@ import frc.robot.subsystems.*;
 import frc.robot.utility.LookUpTable;
 import frc.robot.utility.Mode;
 
+import javax.print.DocFlavor;
 import java.util.Map;
 
 public class RobotContainer {
@@ -56,7 +57,7 @@ public class RobotContainer {
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
     private final Telemetry logger = new Telemetry(MaxSpeed);
-    private double MaxAngularRate = 1.5 * Math.PI; // 3/4 of a rotation per second max angular velocity
+    private double MaxAngularRate = 2.5 * Math.PI;
     private final SwerveRequest.FieldCentric fieldCentricSwerveDrive = new SwerveRequest.FieldCentric()
             .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
             .withDriveRequestType(SwerveModule.DriveRequestType.OpenLoopVoltage); // I want field-centric
@@ -103,20 +104,6 @@ public class RobotContainer {
                                 )
                         ),
                         Map.entry(Mode.AMP, ScoreCommands.moveElevatorToSetpoint(ElevatorHeights.AMP)
-                                .alongWith(ScoreCommands.isElevatorUp(true)).alongWith(
-                                        commandSwerveDrivetrain.applyRequest(
-                                                () -> {
-                                                    return
-                                                            // Drive forward with negative Y (forward)
-                                                            fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
-                                                                    // Drive left with negative X (left)
-                                                                    .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
-                                                                    // Drive counterclockwise with negative X (left)
-                                                                    .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
-                                                }
-                                        )
-                                )),
-                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 50)
                                 .alongWith(commandSwerveDrivetrain.applyRequest(
                                         () -> {
                                             return
@@ -128,6 +115,10 @@ public class RobotContainer {
                                                             .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
                                         }
                                 ))),
+                        Map.entry(Mode.SHUTTLE, ScoreCommands.moveShooterToSetpointAndSpeed(ShooterPivotAngles.HIGH_SHUTTLE, 57.8935)
+                                .alongWith(ScoreCommands.highShuttleAutoTurn(
+                                        commandXboxController::getLeftX, commandXboxController::getLeftY,
+                                        fieldCentricSwerveDrive))),
                         Map.entry(Mode.CLIMB, ClimberCommands.setClimberPowers(-0.6).alongWith(
                                 commandSwerveDrivetrain.applyRequest(
                                         () -> {
@@ -318,11 +309,8 @@ public class RobotContainer {
         // System.out.println("Reached shooting conditions: " + shooterSubsystem.reachedShootingCondtions(60));
         // System.out.println("Has note in indexer: " + indexerSubsystem.isNoteInIndexer());
 
-        if (DriverStation.getAlliance().isPresent()) {
-            if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red) driveAngleOffset = 180;
-            else driveAngleOffset = 0;
-        }
-
+        if (DriverStation.getAlliance().isPresent())
+            driveAngleOffset = DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0;
         driveAngleOffset += LookUpTable.findDriveOffsetAngle(distance);
         if (DriverStation.getAlliance().isPresent()) {
             if (DriverStation.getAlliance().get() == DriverStation.Alliance.Red && commandSwerveDrivetrain.getPose().getY() < 4.102) {

@@ -53,8 +53,8 @@ public class Robot extends LoggedRobot {
         ledSubsystem.start();
         ledSubsystem.setMode(LEDMode.SHOOTING);
 
-        // Logger.addDataReceiver(new WPILOGWriter("/media/sda1/"));
-        // Logger.start();
+//        Logger.addDataReceiver(new WPILOGWriter("/media/sda1"));
+//        Logger.start();
     }
 
     @Override
@@ -62,33 +62,33 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().run();
         m_robotContainer.periodic();
 
-        // Logger.recordOutput("Drive/Pose", commandSwerveDrivetrain.getPose());
-        // Logger.recordOutput("Distance from Red Speaker", ScoreCommands.getDistance(
-        //         new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
-        //         Constants.Vision.RED_SPEAKER_COORDINATES));
-        // Logger.recordOutput("Distance from Blue Speaker", ScoreCommands.getDistance(
-        //         new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
-        //         Constants.Vision.BLUE_SPEAKER_COORDINATES));
+//        Logger.recordOutput("Drive/Pose", commandSwerveDrivetrain.getPose());
+//        Logger.recordOutput("Distance from Red Speaker", ScoreCommands.getDistance(
+//                new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
+//                Constants.Vision.RED_SPEAKER_COORDINATES));
+//        Logger.recordOutput("Distance from Blue Speaker", ScoreCommands.getDistance(
+//                new double[]{commandSwerveDrivetrain.getPose().getX(), commandSwerveDrivetrain.getPose().getY()},
+//                Constants.Vision.BLUE_SPEAKER_COORDINATES));
+//
+//        Logger.recordOutput("Auto Aim Arm Target Angle (degrees)", RobotContainer.armAutoAimAngle);
+//        Logger.recordOutput("Arm Angle (degrees)", RobotContainer.shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
+//
+//        Logger.recordOutput("Shooter Left Speed (rps)", RobotContainer.shooterSubsystem.getFlywheel().getFlywheelVelocity());
+//        Logger.recordOutput("Shooter Right Speed (rps)", RobotContainer.shooterSubsystem.getFlywheel(1).getFlywheelVelocity());
+//
+//        Logger.recordOutput("Indexer Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInIndexer());
+//        Logger.recordOutput("Amp-Trap Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInAmpTrap());
+//        Logger.recordOutput("Intake Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInIntake());
+//
+//        Logger.recordOutput("Reached Shooting Conditions", RobotContainer.shooterSubsystem.reachedShootingCondtions(RobotContainer.shooterRPS));
+//
+//        Logger.recordOutput("Bottom Intake Voltage", RobotContainer.indexerSubsystem.getRoller().getRollerMotor().getSupplyVoltage().getValueAsDouble());
+//        Logger.recordOutput("Bottom Intake Current", RobotContainer.indexerSubsystem.getRoller().getRollerMotor().getSupplyCurrent().getValueAsDouble());
+//        Logger.recordOutput("Indexer Voltage", RobotContainer.indexerSubsystem.getRoller(2).getRollerMotor().getSupplyVoltage().getValueAsDouble());
+//        Logger.recordOutput("Indexer Current", RobotContainer.indexerSubsystem.getRoller(2).getRollerMotor().getSupplyCurrent().getValueAsDouble());
+//        Logger.recordOutput("Indexer speed", RobotContainer.indexerSubsystem.getRoller(2).getRollerMotor().getVelocity().getValueAsDouble());
 
-        // Logger.recordOutput("Auto Aim Arm Target Angle (degrees)", RobotContainer.armAutoAimAngle);
-        // Logger.recordOutput("Arm Angle (degrees)", RobotContainer.shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d);
-
-        // Logger.recordOutput("Shooter Left Speed (rps)", RobotContainer.shooterSubsystem.getFlywheel().getFlywheelVelocity());
-        // Logger.recordOutput("Shooter Right Speed (rps)", RobotContainer.shooterSubsystem.getFlywheel(1).getFlywheelVelocity());
-
-        // Logger.recordOutput("Indexer Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInIndexer());
-        // Logger.recordOutput("Amp-Trap Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInAmpTrap());
-        // Logger.recordOutput("Intake Breakbeam Sensor", RobotContainer.indexerSubsystem.isNoteInIntake());
-
-        // Logger.recordOutput("Reached Shooting Conditions", RobotContainer.shooterSubsystem.reachedShootingCondtions(RobotContainer.shooterRPS));
-
-        // Logger.recordOutput("Bottom Intake Voltage", RobotContainer.indexerSubsystem.getRoller().getRollerMotor().getSupplyVoltage().getValueAsDouble());
-        // Logger.recordOutput("Bottom Intake Current", RobotContainer.indexerSubsystem.getRoller().getRollerMotor().getSupplyCurrent().getValueAsDouble());
-        // Logger.recordOutput("Indexer Voltage", RobotContainer.indexerSubsystem.getRoller(2).getRollerMotor().getSupplyVoltage().getValueAsDouble());
-        // Logger.recordOutput("Indexer Current", RobotContainer.indexerSubsystem.getRoller(2).getRollerMotor().getSupplyCurrent().getValueAsDouble());
-        // Logger.recordOutput("Indexer speed", RobotContainer.indexerSubsystem.getRoller(2).getRollerMotor().getVelocity().getValueAsDouble());
-
-        // Logger.recordOutput("April Tag Target 1", aprilTagSubsystem.getTargets().get(0));
+//        Logger.recordOutput("April Tag Target 1", aprilTagSubsystem.getTargets().get(0));
 
     }
 
@@ -124,29 +124,11 @@ public class Robot extends LoggedRobot {
     @Override
     public void autonomousPeriodic() {
         Pair<Optional<EstimatedRobotPose>, Double> estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
-        Pair<Optional<EstimatedRobotPose>, Double> estimatePoseBack = aprilTagSubsystem.getEstimatedGlobalPoseBack();
 
-        if (estimatePose.getFirst().isPresent() && estimatePoseBack.getFirst().isPresent()) {
-            EstimatedRobotPose robotPose = aprilTagSubsystem.getAmbiguity() < aprilTagSubsystem.getAmbiguityBack()
-                    ? estimatePose.getFirst().get() : estimatePoseBack.getFirst().get();
-
-            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
-
-            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
-        } else if (estimatePose.getFirst().isPresent()) {
+        if (estimatePose.getFirst().isPresent()) {
             EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
-
-            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
-        } else if (estimatePoseBack.getFirst().isPresent()) {
-            EstimatedRobotPose robotPose = estimatePoseBack.getFirst().get();
-            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-
             Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
                     Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
 

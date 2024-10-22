@@ -29,6 +29,8 @@ import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
 import frc.robot.utility.LookUpTable;
 
+import java.util.function.Supplier;
+
 public class ScoreCommands {
     private static final CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain;
     private static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
@@ -40,8 +42,8 @@ public class ScoreCommands {
 
     public static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive) {
         return new ConditionalCommand(
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 5.59),
-                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -.0381, 5.48),
+                driveAutoTurn(() -> 0.0, () -> 0.0, fieldCentricSwerveDrive, 16.58, 5.59),
+                driveAutoTurn(() -> 0.0, () -> 0.0, fieldCentricSwerveDrive, -.0381, 5.48),
                 () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red
         );
     }
@@ -70,14 +72,14 @@ public class ScoreCommands {
         return new InstantCommand(() -> isElevatorUp = up);
     }
 
-    private static Command driveAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY) {
+    private static Command driveAutoTurn(Supplier<Double> driveX, Supplier<Double> driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY) {
         return new FunctionalCommand(
                 () -> driveRotationalPIDController = new PIDController(0.175, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
-                                    .withVelocityX(-driveY * TunerConstants.kSpeedAt12VoltsMps)
-                                    .withVelocityY(-driveX * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withVelocityX(-driveY.get() * TunerConstants.kSpeedAt12VoltsMps)
+                                    .withVelocityY(-driveX.get() * TunerConstants.kSpeedAt12VoltsMps)
                                     .withRotationalRate(driveRotationalPIDController.calculate(
                                             commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset)).getDegrees(),
                                             Units.radiansToDegrees(Math.atan(
@@ -120,8 +122,8 @@ public class ScoreCommands {
                 },
                 interrupted -> {
                 },
-                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset + .75)).getDegrees() >= Units.radiansToDegrees(Math.atan(
-                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset - .75)).getDegrees() <= Units.radiansToDegrees(Math.atan(
+                () -> commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset + .85)).getDegrees() >= Units.radiansToDegrees(Math.atan(
+                        (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))) && commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset - .85)).getDegrees() <= Units.radiansToDegrees(Math.atan(
                         (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))),
                 commandSwerveDrivetrain
         );
@@ -135,12 +137,12 @@ public class ScoreCommands {
         );
     }
 
-    // public static Command highShuttleAutoTurn(FieldCentric fieldCentricSwerveDrive) {
-    //     return new ConditionalCommand(
-    //             autoShuttleAim(fieldCentricSwerveDrive, 16.58, 13d, getAutoAimOffset()),
-    //             autoShuttleAim(fieldCentricSwerveDrive, -0.0381, 13d, getAutoAimOffset()),
-    //             () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
-    // }
+    public static Command highShuttleAutoTurn(Supplier<Double> driveX, Supplier<Double> driveY, FieldCentric fieldCentricSwerveDrive) {
+        return new ConditionalCommand(
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, 16.58, 13d),
+                driveAutoTurn(driveX, driveY, fieldCentricSwerveDrive, -15d, 5d),
+                () -> DriverStation.getAlliance().get() == DriverStation.Alliance.Red);
+    }
 
 
     public static Command elevatorStable() {
@@ -289,6 +291,10 @@ public class ScoreCommands {
                 interrupted -> indexerSubsystem.setRollerSpeeds(0, 0, 0),
                 () -> (shooterSubsystem.reachedShootingCondtions(targetSpeed) && !indexerSubsystem.isNoteInIndexer()),
                 indexerSubsystem);
+    }
+
+    public static Command indexerFeedCommandInstant() {
+        return new InstantCommand(() -> indexerSubsystem.setRollerPowers(50, -75, 50));
     }
 
     public static Command indexerFeedCommand(double targetSpeed) {

@@ -49,6 +49,10 @@ public class Autos extends Command {
     private Command fivePieceAmpRed;
     private Command fivePieceAmpBlue;
 
+    private Command twoPieceBlue;
+
+    private Command twoPieceRed;
+
     public Autos(CommandSwerveDrivetrain swerveDrive) {
         this.swerveDrive = swerveDrive;
         AutoBuilder.configureHolonomic(() -> swerveDrive.getPose(),
@@ -67,10 +71,23 @@ public class Autos extends Command {
         NamedCommands.registerCommand("subWooferShot", new InstantCommand(() -> aimingWhileMoving = new PivotToCommand(RobotContainer.shooterSubsystem, ShooterPivotAngles.MAX.getRotations(), true)));
         NamedCommands.registerCommand("autoShootSub",
                 ScoreCommands.setShooterSpeeds(60)
+                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(45))
+                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(45))
+                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+        );
+        NamedCommands.registerCommand("autoShootSubExtended",
+                ScoreCommands.setShooterSpeeds(70)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(35))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(35))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
+
+        NamedCommands.registerCommand("updateShotSub",
+                new InstantCommand(() -> aiming.updateSetpointMidShot(ShooterPivotAngles.MAX.getDegrees())));
+        NamedCommands.registerCommand("updateShotMid",
+                new InstantCommand(() -> aiming.updateSetpointMidShot(ShooterPivotAngles.MID.getDegrees())));
+
+        NamedCommands.registerCommand("autoShootSubInstant", ScoreCommands.indexerFeedCommandInstant());
 
         NamedCommands.registerCommand("autoShootFast",
                 ScoreCommands.setShooterSpeeds(70)
@@ -90,17 +107,20 @@ public class Autos extends Command {
                 )));
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
-                .andThen(new WaitCommand(.4)));
+                .andThen(new WaitCommand(.5)));
+        NamedCommands.registerCommand("driveAutoAimFast", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
+                .andThen(new WaitCommand(.2)));
 
         NamedCommands.registerCommand("instantDriveAim", new InstantCommand(() -> ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()))
-                .andThen(new WaitCommand(0.3)));
+                .andThen(new WaitCommand(.5)));
         NamedCommands.registerCommand("index", new InstantCommand(() -> ScoreCommands.setShooterSpeeds(60))
                 .andThen(ScoreCommands.indexerFeedCommand(60).until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())));
 
         NamedCommands.registerCommand("subWooferShotNoMove", new InstantCommand(() -> aiming.initialize())
                 .andThen(() -> System.out.println("initializing aiming")));
 
-        NamedCommands.registerCommand("updateShot", new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)));
+        NamedCommands.registerCommand("updateShot",
+                new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)));
 
         NamedCommands.registerCommand("updateShotExtended",
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)));
@@ -108,23 +128,12 @@ public class Autos extends Command {
         NamedCommands.registerCommand("updateShotExtendedLong", new WaitCommand(.5).andThen(
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)).andThen(new WaitCommand(.3))));
 
-
         NamedCommands.registerCommand("autoShootWithCheck",
-                ScoreCommands.setShooterSpeeds(60)
-                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
-                                && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
-                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+                new WaitCommand(0.3).andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
         );
 
         NamedCommands.registerCommand("autoShootWithCheckExtended",
-                ScoreCommands.setShooterSpeeds(60).andThen(new WaitCommand(0.25))
-                        .andThen(new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)))
-                        .onlyIf(() -> RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
-                                && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-                        .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
-                        .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+                new WaitCommand(0.3).andThen(ScoreCommands.indexerFeedCommandAutoStop(70))
         );
 
         NamedCommands.registerCommand("autoShootWithCheckLong", ScoreCommands.setShooterSpeeds(60)
@@ -135,25 +144,31 @@ public class Autos extends Command {
                 .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
         );
 
+        NamedCommands.registerCommand("Stable", new InstantCommand(() -> aiming.changeSetpoint(ShooterPivotAngles.STABLE.getDegrees())));
+
         threePieceExtendedRed = threePieceRedExtended();
         threePieceExtendedBlue = threePieceBlueExtended();
         fourPieceRed = fourPieceBRed();
         fourPieceBlue = fourPieceBBlue();
         fivePieceAmpRed = fivePieceAmpRed();
         fivePieceAmpBlue = fivePieceBlue();
+        twoPieceBlue = twoPieceBlue();
+        twoPieceRed = twoPieceRed();
 
         Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         autonChooserRed.addOption("Shoot Do Nothing", shootNoMove());
-        autonChooserRed.addOption("3 Piece Extended", threePieceExtendedRed);
+        autonChooserRed.addOption("2 Piece", twoPieceRed);
+        autonChooserRed.addOption(" 3 Piece Extended", threePieceExtendedRed);
         autonChooserRed.setDefaultOption("4 Piece", fourPieceRed);
-//        autonChooserRed.addOption("5 Piece Amp", fivePieceAmpRed);
+        autonChooserRed.addOption("5 Piece Amp", fivePieceAmpRed);
 
         autonChooserBlue.addOption("Shoot Do Nothing", shootNoMove());
+        autonChooserBlue.addOption("2 Piece", twoPieceBlue);
         autonChooserBlue.addOption("3 Piece Extended", threePieceExtendedBlue);
         autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue);
-//        autonChooserBlue.setDefaultOption("5 Piece Amp", fivePieceAmpBlue);
+        autonChooserBlue.setDefaultOption("5 Piece Amp", fivePieceAmpBlue);
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
@@ -175,6 +190,10 @@ public class Autos extends Command {
 
     public Command fivePieceRed() {
         return AutoBuilder.buildAuto("5 piece red shoot");
+    }
+
+    public Command twoPieceBlue() {
+        return AutoBuilder.buildAuto("2 piece blue");
     }
 
     public Command fivePieceAmpRed() {
@@ -200,6 +219,10 @@ public class Autos extends Command {
     public Command sixPieceRedPart2() {
         part2Finished = false;
         return AutoBuilder.buildAuto("6 piece red part 2").andThen(() -> part2Finished = true);
+    }
+
+    public Command twoPieceRed() {
+        return AutoBuilder.buildAuto("2 piece red");
     }
 
     public Command sixPieceRedNote5Check() {
@@ -246,6 +269,7 @@ public class Autos extends Command {
 //                        && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
 //                .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
 //                .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer());
+
     }
 
     public Command threePieceBlueExtended() {

@@ -20,13 +20,19 @@
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
+            "name": "updateShotSub"
           }
         },
         {
           "type": "named",
           "data": {
             "name": "autoShootSub"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShootMid"
           }
         },
         {
@@ -62,37 +68,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5 piece amp note 4 to note 3 shoot red"
+            "pathName": "5 piece amp shoot to note 3 red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "5 piece amp note 3 to note 2 shoot red"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
@@ -110,13 +92,43 @@
         {
           "type": "path",
           "data": {
-            "pathName": "5 piece amp note 2 to note 1 shoot red"
+            "pathName": "5 piece amp note 3 to note 2 red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 2 to note 1 red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "intake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAimFast"
           }
         },
         {

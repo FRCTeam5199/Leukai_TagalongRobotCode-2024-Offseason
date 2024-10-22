@@ -5,7 +5,12 @@
     "id": 20,
     "canbus": "rio"
   },
-  "gearRatio": [[1, 1]],
+  "gearRatio": [
+    [
+      1,
+      1
+    ]
+  ],
   "feedforward": {
     "s": 0.49,
     "v": 0.14084507042253521126760563380282,
@@ -48,9 +53,9 @@
     },
     "motorCurrentLimits": {
       "statorEnableLimit": true,
-      "statorPeakLimit": 100,
+      "statorPeakLimit": 140,
       "supplyEnableLimit": true,
-      "supplyPeakLimit": 140,
+      "supplyPeakLimit": 80,
       "supplyContinuousLimit": 100,
       "peakDuration": 1.0
     }

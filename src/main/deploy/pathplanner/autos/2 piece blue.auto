@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7,
-      "y": 4.39
+      "x": 0.6744662599645491,
+      "y": 4.372448507649092
     },
-    "rotation": -57.68038349181979
+    "rotation": -60.875946505222586
   },
   "command": {
     "type": "sequential",
@@ -57,12 +57,6 @@
           "type": "named",
           "data": {
             "name": "autoShootWithCheck"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 Piece shoot to note 6 blue"
           }
         }
       ]

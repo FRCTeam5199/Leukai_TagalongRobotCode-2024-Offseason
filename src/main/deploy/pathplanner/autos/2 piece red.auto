@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7,
-      "y": 4.39
+      "x": 15.827094050387263,
+      "y": 4.382186700316462
     },
-    "rotation": -57.68038349181979
+    "rotation": -120.83783194458218
   },
   "command": {
     "type": "sequential",
@@ -32,13 +32,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece start to Note 7 Blue"
+            "pathName": "3 Piece start to Note 7 Red"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece note 7 to shoot blue"
+            "pathName": "3 Piece Note 7 to shoot Red"
           }
         },
         {
@@ -58,16 +58,10 @@
           "data": {
             "name": "autoShootWithCheck"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 Piece shoot to note 6 blue"
-          }
         }
       ]
     }
   },
-  "folder": "3 Piece Blue",
+  "folder": "2 Piece Red",
   "choreoAuto": false
 }
