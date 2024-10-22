@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
@@ -25,7 +24,6 @@ import frc.robot.subsystems.*;
 import frc.robot.utility.LookUpTable;
 import frc.robot.utility.Mode;
 
-import javax.print.DocFlavor;
 import java.util.Map;
 
 public class RobotContainer {
@@ -71,8 +69,8 @@ public class RobotContainer {
 
 
     public RobotContainer() {
-        threePieceRedExtended = autos.threePieceRedExtended();
-        threePieceBlueExtended = autos.threePieceBlueExtended();
+        threePieceRedExtended = autos.twoAndAHalfPieceRedExtended();
+        threePieceBlueExtended = autos.twoAndAHalfPieceBlueExtended();
         fourPieceRed = autos.fourPieceRed();
         fourPieceBlue = autos.fourPieceBlue();
         sixPieceRed = autos.sixPieceRed();

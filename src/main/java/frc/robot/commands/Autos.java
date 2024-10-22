@@ -9,7 +9,6 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -17,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotContainer;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 
 public class Autos extends Command {
@@ -42,16 +40,17 @@ public class Autos extends Command {
     private CommandSwerveDrivetrain swerveDrive;
     private Map<String, Command> commandsMap = new HashMap<>();
     private SendableChooser<Command> autoChooser = new SendableChooser<Command>();
+    private Command twoPieceExtendedBlue;
+
+    private Command twoPieceExtendedRed;
+    private Command twoAndAHalfPieceExtendedRed;
+    private Command twoAndAHalfPieceExtendedBlue;
     private Command threePieceExtendedRed;
     private Command threePieceExtendedBlue;
     private Command fourPieceRed;
     private Command fourPieceBlue;
     private Command fivePieceAmpRed;
     private Command fivePieceAmpBlue;
-
-    private Command twoPieceBlue;
-
-    private Command twoPieceRed;
 
     public Autos(CommandSwerveDrivetrain swerveDrive) {
         this.swerveDrive = swerveDrive;
@@ -129,7 +128,7 @@ public class Autos extends Command {
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)).andThen(new WaitCommand(.3))));
 
         NamedCommands.registerCommand("autoShootWithCheck",
-                new WaitCommand(0.3).andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
+                new WaitCommand(0.2).andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
         );
 
         NamedCommands.registerCommand("autoShootWithCheckExtended",
@@ -146,29 +145,33 @@ public class Autos extends Command {
 
         NamedCommands.registerCommand("Stable", new InstantCommand(() -> aiming.changeSetpoint(ShooterPivotAngles.STABLE.getDegrees())));
 
+        twoPieceExtendedRed = twoPieceRedExtended();
+        twoPieceExtendedBlue = twoPieceBlueExtended();
+        twoAndAHalfPieceExtendedRed = twoAndAHalfPieceRedExtended();
+        twoAndAHalfPieceExtendedBlue = twoAndAHalfPieceBlueExtended();
         threePieceExtendedRed = threePieceRedExtended();
         threePieceExtendedBlue = threePieceBlueExtended();
         fourPieceRed = fourPieceBRed();
         fourPieceBlue = fourPieceBBlue();
         fivePieceAmpRed = fivePieceAmpRed();
         fivePieceAmpBlue = fivePieceBlue();
-        twoPieceBlue = twoPieceBlue();
-        twoPieceRed = twoPieceRed();
 
         Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
 
         autonChooserRed.addOption("Shoot Do Nothing", shootNoMove());
-        autonChooserRed.addOption("2 Piece", twoPieceRed);
+        autonChooserRed.addOption("2 Piece", twoPieceExtendedRed);
+        autonChooserRed.addOption(" 2.5 Piece Extended", twoAndAHalfPieceExtendedRed);
         autonChooserRed.addOption(" 3 Piece Extended", threePieceExtendedRed);
         autonChooserRed.setDefaultOption("4 Piece", fourPieceRed);
         autonChooserRed.addOption("5 Piece Amp", fivePieceAmpRed);
 
         autonChooserBlue.addOption("Shoot Do Nothing", shootNoMove());
-        autonChooserBlue.addOption("2 Piece", twoPieceBlue);
+        autonChooserBlue.addOption("2 Piece", twoPieceExtendedBlue);
+        autonChooserBlue.addOption("2.5 Piece Extended", twoAndAHalfPieceExtendedBlue);
         autonChooserBlue.addOption("3 Piece Extended", threePieceExtendedBlue);
         autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue);
-        autonChooserBlue.setDefaultOption("5 Piece Amp", fivePieceAmpBlue);
+        autonChooserBlue.addOption("5 Piece Amp", fivePieceAmpBlue);
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {
@@ -192,7 +195,7 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("5 piece red shoot");
     }
 
-    public Command twoPieceBlue() {
+    public Command twoPieceBlueExtended() {
         return AutoBuilder.buildAuto("2 piece blue");
     }
 
@@ -221,7 +224,7 @@ public class Autos extends Command {
         return AutoBuilder.buildAuto("6 piece red part 2").andThen(() -> part2Finished = true);
     }
 
-    public Command twoPieceRed() {
+    public Command twoPieceRedExtended() {
         return AutoBuilder.buildAuto("2 piece red");
     }
 
@@ -258,17 +261,16 @@ public class Autos extends Command {
     }
 
 
+    public Command twoAndAHalfPieceRedExtended() {
+        return AutoBuilder.buildAuto("2.5 piece extended red");
+    }
+
+    public Command twoAndAHalfPieceBlueExtended() {
+        return AutoBuilder.buildAuto("2.5 piece extended blue");
+    }
+
     public Command threePieceRedExtended() {
         return AutoBuilder.buildAuto("3 piece extended red");
-//                .andThen(ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()).withTimeout(0.75))
-//                .andThen(new WaitCommand(0.5))
-//                .andThen(new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)))
-//                .andThen(ScoreCommands.setShooterSpeeds(60))
-//                .andThen(() -> System.out.println("waiting until shoot"))
-//                .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(60)
-//                        && RobotContainer.shooterSubsystem.getPivot().isPivotAtAutoAngle())
-//                .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
-//                .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer());
 
     }
 

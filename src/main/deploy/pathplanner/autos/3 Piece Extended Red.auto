@@ -32,13 +32,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece start to Note 7 Red"
+            "pathName": "3 Piece start to note 7 red"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Note 7 to shoot Red"
+            "pathName": "3 Piece note 7 to shoot red"
           }
         },
         {
@@ -62,12 +62,36 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece shoot to note 6 Red"
+            "pathName": "3 Piece shoot to note 6 red"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 piece note 6 to shoot red"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShotExtended"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
           }
         }
       ]
     }
   },
-  "folder": "3 Piece Red",
+  "folder": "Extended Red",
   "choreoAuto": false
 }
