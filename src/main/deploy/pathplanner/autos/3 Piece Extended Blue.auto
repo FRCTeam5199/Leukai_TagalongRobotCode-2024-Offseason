@@ -64,10 +64,34 @@
           "data": {
             "pathName": "3 Piece shoot to note 6 blue"
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "3 Piece note 6 to shoot blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAim"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
+          }
         }
       ]
     }
   },
-  "folder": "Exteded Blue",
+  "folder": "Extended Blue",
   "choreoAuto": false
 }

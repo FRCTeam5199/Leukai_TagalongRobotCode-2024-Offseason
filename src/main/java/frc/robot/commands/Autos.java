@@ -128,7 +128,7 @@ public class Autos extends Command {
                 new InstantCommand(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)).andThen(new WaitCommand(.3))));
 
         NamedCommands.registerCommand("autoShootWithCheck",
-                new WaitCommand(0.2).andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
+                new WaitCommand(0.2).andThen(() -> aiming.updateSetpointMidShot(RobotContainer.armAutoAimAngle)).andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
         );
 
         NamedCommands.registerCommand("autoShootWithCheckExtended",
