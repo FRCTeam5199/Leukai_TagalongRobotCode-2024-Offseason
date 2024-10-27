@@ -122,7 +122,7 @@ public class Autos extends Command {
         fourPieceRed = fourPieceBRed();
         fourPieceBlue = fourPieceBBlue();
         fivePieceAmpRed = fivePieceAmpRed();
-        fivePieceAmpBlue = fivePieceBlue();
+        fivePieceAmpBlue = fivePieceAmpBlue();
 
         Shuffleboard.getTab("Autons").add("Red Autons", autonChooserRed).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
         Shuffleboard.getTab("Autons").add("Blue Autons", autonChooserBlue).withWidget(BuiltInWidgets.kComboBoxChooser).withPosition(0, 0).withSize(2, 1);
@@ -172,14 +172,14 @@ public class Autos extends Command {
     }
 
     public Command fivePieceAmpBlue() {
-        return AutoBuilder.buildAuto("5 piece amp blue");
+        return AutoBuilder.buildAuto("5 Piece Amp Blue");
     }
 
     public Command fivePieceMiddleRed() {
         return AutoBuilder.buildAuto("5 piece middle red");
     }
 
-    public Command fivePieceBlue() {
+    public Command fivePieceAmp() {
         return AutoBuilder.buildAuto("5 piece blue");
     }
 

@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 15.827094050387263,
-      "y": 4.382186700316462
+      "x": 1.3450849646505476,
+      "y": 5.590000243671248
     },
-    "rotation": -121.87536275141521
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -20,78 +20,96 @@
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
+            "name": "updateShotSub"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShootSub"
+            "name": "autoShootSubFast"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece start to Note 7 Red"
+            "pathName": "5 piece amp start to note 4 blue"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece Note 7 to shoot Red"
+            "pathName": "5 piece amp note 4 to note 3 blue"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShotExtended"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootWithCheckSetpointFast"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece shoot to note 6 Red"
+            "pathName": "5 piece amp note 3 to shoot blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAimFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheckSetpointFast"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 piece note 6 to shoot red"
+            "pathName": "5 piece amp shoot to note 2 blue"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShotExtended"
+            "name": "autoShootWithCheckSetpointFast"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 2 to note 1 blue"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShootWithCheck"
+            "name": "driveAutoAimFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheckSetpointFast"
           }
         }
       ]
     }
   },
-  "folder": "Extended Red",
+  "folder": "5 Piece Amp Blue",
   "choreoAuto": false
 }
