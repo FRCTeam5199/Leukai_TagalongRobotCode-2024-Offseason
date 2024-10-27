@@ -289,14 +289,12 @@ public class RobotContainer {
 //        armAutoAim.changeSetpoint(UserInterface.getInstance().getShooterPositionComponentData());
 
         if (Math.abs(prevArmAngle - armAutoAimAngle) > .5) {
-            Autos.aimingWhileMoving.changeSetpoint(armAutoAimAngle);
-
             prevArmAngle = armAutoAimAngle;
         }
 
         if (isShooting && !hasUpdatedAutoAimShot
                 && Math.abs(shooterSubsystem.getPivot().getPivotAbsolutePositionRot() * 360d - armAutoAimAngle) > .5 && timer.get() > .75) {
-            armAutoAim.updateSetpointMidShot(armAutoAimAngle);
+            armAutoAim.updateSetpoint(armAutoAimAngle);
             timer.restart();
             hasUpdatedAutoAimShot = true;
             if (distance > 4.5) shooterRPS = 70;

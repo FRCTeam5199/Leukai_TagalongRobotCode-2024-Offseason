@@ -20,7 +20,7 @@ public class LookUpTable {
             add(new Pair<>(4.064, 29d));
             add(new Pair<>(4.5, 26.75));
             add(new Pair<>(4.5, 25d));
-            add(new Pair<>(5d, 23d));
+            add(new Pair<>(5d, 23.5d));
         }
     };
 

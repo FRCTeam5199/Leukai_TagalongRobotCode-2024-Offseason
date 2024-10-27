@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.84,
-        "y": 2.41
+        "x": 7.83,
+        "y": 2.4
       },
       "prevControl": null,
       "nextControl": {
-        "x": 11.584423282969247,
-        "y": 4.391563704668065
+        "x": 11.574423282969244,
+        "y": 4.381563704668065
       },
       "isLocked": false,
       "linkedName": null
@@ -75,7 +75,7 @@
   "reversed": false,
   "folder": "3 Piece Red Paths",
   "previewStartingState": {
-    "rotation": 153.61814570454789,
+    "rotation": 172.93,
     "velocity": 0
   },
   "useDefaultConstraints": false

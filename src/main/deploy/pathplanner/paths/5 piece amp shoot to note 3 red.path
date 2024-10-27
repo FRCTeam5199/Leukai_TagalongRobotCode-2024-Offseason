@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 11.6,
-        "y": 7.05
+        "x": 11.67,
+        "y": 6.71
       },
       "prevControl": null,
       "nextControl": {
-        "x": 11.36844572704837,
-        "y": 7.17267093672561
+        "x": 11.43844572704837,
+        "y": 6.83267093672561
       },
       "isLocked": false,
       "linkedName": null
@@ -69,10 +69,27 @@
           ]
         }
       }
+    },
+    {
+      "name": "updateShot",
+      "waypointRelativePos": 0,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "updateShot5Piece1Red"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "globalConstraints": {
-    "maxVelocity": 5.0,
+    "maxVelocity": 3.0,
     "maxAcceleration": 5.0,
     "maxAngularVelocity": 540.0,
     "maxAngularAcceleration": 720.0
@@ -85,7 +102,7 @@
   "reversed": false,
   "folder": "5 Piece Amp Red Paths",
   "previewStartingState": {
-    "rotation": -177.58897025338877,
+    "rotation": 163.06676912691356,
     "velocity": 0
   },
   "useDefaultConstraints": false

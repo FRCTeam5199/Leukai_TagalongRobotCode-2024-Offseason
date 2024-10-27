@@ -118,7 +118,6 @@ public class ScoreCommands {
                                             commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset)).getDegrees(),
                                             Units.radiansToDegrees(Math.atan(
                                                     (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
-                    System.out.println("drive auto aiming");
                 },
                 interrupted -> {
                 },

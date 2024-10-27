@@ -117,7 +117,7 @@ public class PivotToCommand<T extends TagalongSubsystemBase & PivotAugment> exte
         _goalPositionRot = Rotation2d.fromDegrees(degrees).getRotations();
     }
 
-    public void updateSetpointMidShot(double degrees) {
+    public void updateSetpoint(double degrees) {
         System.out.println("Updating mid shot");
         midShotUpdateGoal = degrees / 360d;
         midShotUpdate = true;

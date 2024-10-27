@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 8.094593992326358,
+        "x": 8.3,
         "y": 7.2
       },
       "prevControl": {
-        "x": 10.518728678541514,
-        "y": 7.03352296578639
+        "x": 10.815927785701726,
+        "y": 6.719388054160724
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,19 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "slow",
+      "minWaypointRelativePos": 1.9,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 5.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "intake",
@@ -58,6 +70,23 @@
               "type": "named",
               "data": {
                 "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "updateShot",
+      "waypointRelativePos": 1.25,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "updateShot5PieceFarRed"
               }
             }
           ]
