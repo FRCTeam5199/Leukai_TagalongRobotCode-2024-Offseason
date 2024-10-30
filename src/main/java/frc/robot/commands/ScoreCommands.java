@@ -108,7 +108,7 @@ public class ScoreCommands {
 
     private static Command autonAutoTurn(double driveX, double driveY, FieldCentric fieldCentricSwerveDrive, double targetX, double targetY) {
         return new FunctionalCommand(
-                () -> driveRotationalPIDController = new PIDController(.4, 0, 0),
+                () -> driveRotationalPIDController = new PIDController(.5, 0, 0),
                 () -> {
                     commandSwerveDrivetrain.setControl(
                             fieldCentricSwerveDrive
@@ -118,7 +118,6 @@ public class ScoreCommands {
                                             commandSwerveDrivetrain.getPose().getRotation().plus(Rotation2d.fromDegrees(RobotContainer.driveAngleOffset)).getDegrees(),
                                             Units.radiansToDegrees(Math.atan(
                                                     (targetY - commandSwerveDrivetrain.getPose().getY()) / (targetX - commandSwerveDrivetrain.getPose().getX()))))));
-                    System.out.println("drive auto aiming");
                 },
                 interrupted -> {
                 },

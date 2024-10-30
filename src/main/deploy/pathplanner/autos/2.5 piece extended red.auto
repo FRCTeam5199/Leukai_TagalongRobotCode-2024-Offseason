@@ -64,30 +64,6 @@
           "data": {
             "pathName": "3 Piece shoot to note 6 Red"
           }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "3 piece note 6 to shoot red"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "driveAutoAim"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "updateShotExtended"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
-          }
         }
       ]
     }

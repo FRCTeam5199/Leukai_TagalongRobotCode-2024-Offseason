@@ -8,48 +8,50 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.35628408489843,
-        "y": 6.171610859622041
+        "x": 1.44283883432246,
+        "y": 6.897682725465309
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.8084278165753376,
-        "y": 6.452670936720798
+        "x": 8.2,
+        "y": 7.7
       },
       "prevControl": {
-        "x": 2.286019065623741,
-        "y": 6.417538427083454
-      },
-      "nextControl": {
-        "x": 3.9916826135423666,
-        "y": 6.456899893573883
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 8.410786579067471,
-        "y": 7.47
-      },
-      "prevControl": {
-        "x": 5.61189664462569,
-        "y": 7.481710836545782
+        "x": 6.759567104868874,
+        "y": 6.776357629091864
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6,
+      "rotationDegrees": 31.95,
+      "rotateFast": false
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "slow",
+      "minWaypointRelativePos": 0.8,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 5.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0
+      }
+    }
+  ],
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.45,
       "command": {
         "type": "sequential",
         "data": {
@@ -58,6 +60,23 @@
               "type": "named",
               "data": {
                 "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "updateShot",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "updateShot5PieceFarRed"
               }
             }
           ]
@@ -73,7 +92,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": 31.95,
     "rotateFast": false
   },
   "reversed": false,

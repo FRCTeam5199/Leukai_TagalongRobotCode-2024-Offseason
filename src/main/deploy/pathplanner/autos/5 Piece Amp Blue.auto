@@ -2,10 +2,10 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 0.7,
-      "y": 4.39
+      "x": 1.3450849646505476,
+      "y": 5.590000243671248
     },
-    "rotation": -57.68038349181979
+    "rotation": 0.0
   },
   "command": {
     "type": "sequential",
@@ -20,90 +20,120 @@
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
+            "name": "updateShotSub"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShootSub"
+            "name": "autoShootSubFast"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece start to Note 7 Blue"
+            "pathName": "5 piece amp start to note 4 blue"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece note 7 to shoot blue"
+            "pathName": "5 piece amp note 4 to note 3 blue"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootFastInstant"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece shoot to note 6 blue"
+            "pathName": "5 piece amp note 3 to shoot blue"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAimFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAimFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootFastInstant"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece note 6 to shoot blue"
+            "pathName": "5 piece amp shoot to note 2 blue"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "autoShootFastInstant"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "5 piece amp note 2 to note 1 blue"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
+            "name": "intake"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShootWithCheck"
+            "name": "driveAutoAimFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "driveAutoAimFast"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootFastInstant"
           }
         }
       ]
     }
   },
-  "folder": "Extended Blue",
+  "folder": "5 Piece Amp Blue",
   "choreoAuto": false
 }
