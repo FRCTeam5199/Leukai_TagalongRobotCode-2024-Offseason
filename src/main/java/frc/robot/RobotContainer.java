@@ -260,7 +260,8 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        if (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == DriverStation.Alliance.Red) {
+        var alliance = DriverStation.getAlliance();
+        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
             return Autos.autonChooserRed.getSelected();
         } else {
             return Autos.autonChooserBlue.getSelected();
