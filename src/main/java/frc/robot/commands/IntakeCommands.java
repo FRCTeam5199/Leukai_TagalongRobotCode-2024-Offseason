@@ -95,7 +95,7 @@ public class IntakeCommands {
                 () -> {
                 },
                 interrupted -> indexerSubsystem.setRollerPowers(0, 0, 0),
-                () -> (indexerSubsystem.isNoteInIndexer() || indexerSubsystem.isNoteInAmpTrap()),
+                () -> false,
                 indexerSubsystem
         );
     }

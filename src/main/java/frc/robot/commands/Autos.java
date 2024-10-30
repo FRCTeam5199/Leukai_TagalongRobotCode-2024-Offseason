@@ -78,6 +78,8 @@ public class Autos extends Command {
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
                 .andThen(new WaitCommand(.5)));
         NamedCommands.registerCommand("driveAutoAimFast", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric()));
+        NamedCommands.registerCommand("driveAutoAimInstant",
+                new InstantCommand(() -> ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())));
 
         NamedCommands.registerCommand("updateShot",
                 new InstantCommand(() -> aiming.updateSetpoint(RobotContainer.armAutoAimAngle)));
@@ -111,6 +113,14 @@ public class Autos extends Command {
         NamedCommands.registerCommand("autoShootWithCheckSetpointFast",
                 new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(70))
+        );
+        NamedCommands.registerCommand("autoShootFastInstant",
+                new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
+                        .andThen(ScoreCommands.indexerFeedCommandInstant())
+        );
+        NamedCommands.registerCommand("autoShootInstant",
+                new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(60))
+                        .andThen(ScoreCommands.indexerFeedCommandInstant())
         );
 
         twoPieceExtendedRed = twoPieceRedExtended();
@@ -243,7 +253,7 @@ public class Autos extends Command {
     }
 
     public Command threePieceBlueExtended() {
-        return AutoBuilder.buildAuto("3 piece extended blue");
+        return AutoBuilder.buildAuto("3 Piece Extended Blue");
     }
 
     public Command shootNoMove() {

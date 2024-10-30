@@ -3,53 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.46,
-        "y": 5.48
+        "x": 3.05,
+        "y": 5.6
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3842846515935527,
-        "y": 4.848286329953544
+        "x": 0.5996586030261917,
+        "y": 4.973948878140266
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.7310308543584263,
-        "y": 4.087081954477746
+        "x": 2.9066934025451485,
+        "y": 4.286166175756032
       },
       "prevControl": {
-        "x": 2.7427416909042077,
-        "y": 4.087081954477746
+        "x": 3.058934277640308,
+        "y": 4.239322829572905
       },
       "nextControl": {
-        "x": 2.671317070290993,
-        "y": 4.087081954477746
+        "x": 2.8259797354420852,
+        "y": 4.311001150249282
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 2.21575404634404,
-        "y": 4.8131538203162
+        "x": 2.3914165945307624,
+        "y": 4.66091294522104
       },
       "prevControl": {
-        "x": 2.098645680886225,
-        "y": 4.590647925946351
+        "x": 2.4148382676223257,
+        "y": 4.602358762492133
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.45,
+      "rotationDegrees": -26.569999999999993,
+      "rotateFast": false
+    }
+  ],
   "constraintZones": [],
   "eventMarkers": [
     {
       "name": "intake",
-      "waypointRelativePos": 0,
+      "waypointRelativePos": 0.05,
       "command": {
         "type": "sequential",
         "data": {
@@ -58,6 +64,23 @@
               "type": "named",
               "data": {
                 "name": "intake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "updateShot",
+      "waypointRelativePos": 0.1,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "updateShot5Piece3Red"
               }
             }
           ]
@@ -73,7 +96,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0,
+    "rotation": -26.569999999999993,
     "rotateFast": false
   },
   "reversed": false,

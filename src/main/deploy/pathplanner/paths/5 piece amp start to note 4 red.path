@@ -78,7 +78,7 @@
     },
     {
       "name": "updateShot",
-      "waypointRelativePos": 1.25,
+      "waypointRelativePos": 0.5,
       "command": {
         "type": "sequential",
         "data": {
