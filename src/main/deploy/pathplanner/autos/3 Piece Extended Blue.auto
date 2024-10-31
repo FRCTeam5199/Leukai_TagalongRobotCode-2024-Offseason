@@ -44,25 +44,19 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootWithCheckSetpointFast"
           }
         },
         {
@@ -80,25 +74,19 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootWithCheckSetpoint"
           }
         }
       ]

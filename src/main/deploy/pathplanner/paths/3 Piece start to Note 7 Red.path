@@ -58,13 +58,13 @@
       "name": "updateShot",
       "waypointRelativePos": 0.55,
       "command": {
-        "type": "parallel",
+        "type": "sequential",
         "data": {
           "commands": [
             {
               "type": "named",
               "data": {
-                "name": "updateShot"
+                "name": "updateShotExtended1Red"
               }
             }
           ]

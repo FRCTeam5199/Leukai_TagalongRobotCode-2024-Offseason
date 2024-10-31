@@ -29,20 +29,20 @@ import frc.robot.constants.Constants;
 public class ApriltagSubsystem extends SubsystemBase {
 
     private final PhotonCamera camera;
-    private final PhotonCamera camera_Back;
+    //    private final PhotonCamera camera_Back;
     private final PhotonPoseEstimator photonEstimator;
-    private final PhotonPoseEstimator photonEstimatorBack;
+    //    private final PhotonPoseEstimator photonEstimatorBack;
     private final CommandSwerveDrivetrain drivetrain = TunerConstants.DriveTrain;
     private double lastEstTimestamp = 0;
     private double lastEstTimestampBack = 0;
     private PhotonPipelineResult lastResult;
-    private PhotonPipelineResult lastResultBack;
+    //    private PhotonPipelineResult lastResultBack;
     private AprilTagFieldLayout customLayout;
-    private AprilTagFieldLayout backCameraLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
+//    private AprilTagFieldLayout backCameraLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2024Crescendo);
 
     public ApriltagSubsystem() {
         camera = new PhotonCamera(Constants.Vision.kCameraName);
-        camera_Back = new PhotonCamera(Constants.Vision.kCameraName_Back);
+//        camera_Back = new PhotonCamera(Constants.Vision.kCameraName_Back);
         try {
             customLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/configs/2024-crescendo.json");
         } catch (IOException e) {
@@ -52,13 +52,13 @@ public class ApriltagSubsystem extends SubsystemBase {
 
         photonEstimator =
                 new PhotonPoseEstimator(customLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera, Constants.Vision.kRobotToCam);
-        photonEstimatorBack =
-                new PhotonPoseEstimator(backCameraLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera_Back, Constants.Vision.kRobotToCamBack);
+//        photonEstimatorBack =
+//                new PhotonPoseEstimator(backCameraLayout, PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR, camera_Back, Constants.Vision.kRobotToCamBack);
         photonEstimator.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
-        photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
+//        photonEstimatorBack.setMultiTagFallbackStrategy(PoseStrategy.LOWEST_AMBIGUITY);
 
         lastResult = camera.getLatestResult();
-        lastResultBack = camera_Back.getLatestResult();
+//        lastResultBack = camera_Back.getLatestResult();
     }
 
     @Override
@@ -78,9 +78,9 @@ public class ApriltagSubsystem extends SubsystemBase {
     }
 
     public void getLatestResultBack() {
-        if (camera_Back.getLatestResult().hasTargets()) {
-            lastResultBack = camera_Back.getLatestResult();
-        }
+//        if (camera_Back.getLatestResult().hasTargets()) {
+//            lastResultBack = camera_Back.getLatestResult();
+//        }
     }
 
     // public int[] getTargets() {
@@ -115,20 +115,20 @@ public class ApriltagSubsystem extends SubsystemBase {
     }
 
     public Pair<Optional<EstimatedRobotPose>, Double> getEstimatedGlobalPoseBack() {
-        photonEstimatorBack.setReferencePose(drivetrain.getPose());
-
-        getLatestResultBack();
-
-        // filtering stages
-        // Ensure the result is
-        if (lastResultBack.getTimestampSeconds() <= lastEstTimestampBack) {
-            return new Pair<>(Optional.empty(), 0d);
-        } else if (lastResultBack.getTargets().size() < 2) {
-            return new Pair<>(Optional.empty(), 0d);
-        } else {
-            return new Pair<>(photonEstimatorBack.update(lastResultBack), lastResultBack.getTimestampSeconds());
-        }
-
+//        photonEstimatorBack.setReferencePose(drivetrain.getPose());
+//
+//        getLatestResultBack();
+//
+//        // filtering stages
+//        // Ensure the result is
+//        if (lastResultBack.getTimestampSeconds() <= lastEstTimestampBack) {
+//            return new Pair<>(Optional.empty(), 0d);
+//        } else if (lastResultBack.getTargets().size() < 2) {
+//            return new Pair<>(Optional.empty(), 0d);
+//        } else {
+//            return new Pair<>(photonEstimatorBack.update(lastResultBack), lastResultBack.getTimestampSeconds());
+//        }
+        return new Pair<>(Optional.empty(), 0d);
     }
 
     public double getAmbiguity() {
@@ -136,7 +136,8 @@ public class ApriltagSubsystem extends SubsystemBase {
     }
 
     public double getAmbiguityBack() {
-        return lastResultBack.getMultiTagResult().estimatedPose.ambiguity;
+//        return lastResultBack.getMultiTagResult().estimatedPose.ambiguity;
+        return 0;
     }
 
 

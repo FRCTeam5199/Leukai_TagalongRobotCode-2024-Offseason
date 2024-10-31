@@ -9,14 +9,19 @@ import com.pathplanner.lib.auto.NamedCommands;
 import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
 import com.pathplanner.lib.util.ReplanningConfig;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.*;
+import frc.robot.Robot;
 import frc.robot.RobotContainer;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
+import org.photonvision.EstimatedRobotPose;
 
 public class Autos extends Command {
 
@@ -94,15 +99,29 @@ public class Autos extends Command {
         NamedCommands.registerCommand("updateShot5Piece3Red",
                 new InstantCommand(() -> aiming.updateSetpoint(38)));
 
+        NamedCommands.registerCommand("updateShotExtended1Red",
+                new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
+                        .andThen(() -> aiming.updateSetpoint(27.5)));
+        NamedCommands.registerCommand("updateShotExtended2Red",
+                new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
+                        .andThen(() -> aiming.updateSetpoint(29)));
+
+        NamedCommands.registerCommand("updateShotExtended1Blue",
+                new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
+                        .andThen(() -> aiming.updateSetpoint(29)));
+        NamedCommands.registerCommand("updateShotExtended2Blue",
+                new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
+                        .andThen(() -> aiming.updateSetpoint(29)));
+
         NamedCommands.registerCommand("autoShootWithCheck",
                 new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(60))
-                        .andThen(new WaitCommand(0.2))
+                        .andThen(new WaitCommand(0.25))
                         .andThen(() -> aiming.updateSetpoint(RobotContainer.armAutoAimAngle))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(60))
         );
         NamedCommands.registerCommand("autoShootWithCheckFast",
                 new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
-                        .andThen(new WaitCommand(0.2))
+                        .andThen(new WaitCommand(0.25))
                         .andThen(() -> aiming.updateSetpoint(RobotContainer.armAutoAimAngle))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(70))
         );
@@ -150,6 +169,18 @@ public class Autos extends Command {
         autonChooserBlue.addOption("3 Piece Extended", threePieceExtendedBlue);
         autonChooserBlue.setDefaultOption("4 Piece", fourPieceBlue);
         autonChooserBlue.addOption("5 Piece Amp", fivePieceAmpBlue);
+
+//        if (Robot.estimatePose.getFirst().isPresent()) {
+//            EstimatedRobotPose robotPose = Robot.estimatePose.getFirst().get();
+//
+//            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+//            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+//                    Rotation2d.fromDegrees(Robot.alliance.get() == DriverStation.Alliance.Red ? 180 : 0));
+//
+//            swerveDrive.addVisionMeasurement(modify, Robot.estimatePose.getSecond());
+//        }
+
+        aiming.execute();
     }
 
     public static Autos getInstance(CommandSwerveDrivetrain commandSwerveDriveTrain) {

@@ -42,6 +42,8 @@ public class Robot extends LoggedRobot {
     public double armAngle;
     private Command m_autonomousCommand;
     private RobotContainer m_robotContainer;
+    public static Optional<DriverStation.Alliance> alliance;
+    public static Pair<Optional<EstimatedRobotPose>, Double> estimatePose;
 
     @Override
     public void robotInit() {
@@ -61,6 +63,7 @@ public class Robot extends LoggedRobot {
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
         m_robotContainer.periodic();
+        estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
 
 //        Logger.recordOutput("Drive/Pose", commandSwerveDrivetrain.getPose());
 //        Logger.recordOutput("Distance from Red Speaker", ScoreCommands.getDistance(
@@ -118,26 +121,20 @@ public class Robot extends LoggedRobot {
             m_autonomousCommand.schedule();
         }
 
-
+        alliance = DriverStation.getAlliance();
     }
 
     @Override
     public void autonomousPeriodic() {
-        Pair<Optional<EstimatedRobotPose>, Double> estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
-
         if (estimatePose.getFirst().isPresent()) {
             EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
             Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180 : 0));
+                    Rotation2d.fromDegrees(alliance.get() == DriverStation.Alliance.Red ? 180 : 0));
 
             commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
         }
-
-//        Autos.aimingWhileMoving.initialize();
-//        Autos.aimingWhileMoving.execute();
-//        Autos.aimingWhileMoving.end(Autos.aimingWhileMoving.isFinished());
 
         Autos.aiming.execute();
     }
@@ -163,16 +160,14 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopPeriodic() {
-        Pair<Optional<EstimatedRobotPose>, Double> estimatePose1 = aprilTagSubsystem.getEstimatedGlobalPose();
-
-        if (estimatePose1.getFirst().isPresent()) {
-            EstimatedRobotPose robotPose = estimatePose1.getFirst().get();
+        if (estimatePose.getFirst().isPresent()) {
+            EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
             Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), commandSwerveDrivetrain.getPose().getRotation());
 
-            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose1.getSecond());
+            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
         }
 
         RobotContainer.teleopPeriodic();
