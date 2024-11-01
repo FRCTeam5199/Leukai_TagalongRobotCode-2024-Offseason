@@ -44,19 +44,25 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimFast"
+            "name": "driveAutoAim"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimFast"
+            "name": "driveAutoAimInstant"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "autoShootWithCheckSetpoint"
+            "name": "updateShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "autoShootWithCheck"
           }
         }
       ]
