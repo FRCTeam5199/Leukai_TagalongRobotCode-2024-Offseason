@@ -21,6 +21,7 @@ public class LookUpTable {
             add(new Pair<>(4.5, 26.75));
             add(new Pair<>(4.5, 25d));
             add(new Pair<>(5d, 23.5d));
+            add(new Pair<>(6.71, 23d));
         }
     };
 
