@@ -32,37 +32,31 @@
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece start to note 7 red"
+            "pathName": "3 Piece start to Note 7 Red"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "3 Piece note 7 to shoot red"
+            "pathName": "3 Piece Note 7 to shoot Red"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootWithCheckSetpoint"
           }
         },
         {
@@ -80,25 +74,19 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "driveAutoAimFast"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "updateShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "autoShootWithCheck"
+            "name": "autoShootWithCheckSetpoint"
           }
         }
       ]
