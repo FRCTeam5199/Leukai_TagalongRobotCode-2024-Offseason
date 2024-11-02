@@ -44,6 +44,7 @@ public class Robot extends LoggedRobot {
     private RobotContainer m_robotContainer;
     public static Optional<DriverStation.Alliance> alliance;
     public static Pair<Optional<EstimatedRobotPose>, Double> estimatePose;
+    public static boolean useVisionInAuton = false;
 
     @Override
     public void robotInit() {
@@ -126,7 +127,7 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void autonomousPeriodic() {
-        if (estimatePose.getFirst().isPresent()) {
+        if (useVisionInAuton && estimatePose.getFirst().isPresent()) {
             EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();

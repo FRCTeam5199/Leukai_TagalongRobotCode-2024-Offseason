@@ -72,12 +72,14 @@ public class Autos extends Command {
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(45))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(45))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+                        .andThen(new InstantCommand(() -> Robot.useVisionInAuton = true))
         );
         NamedCommands.registerCommand("autoShootSubFast",
                 ScoreCommands.setShooterSpeeds(70)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(45))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(45))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
+                        .andThen(new InstantCommand(() -> Robot.useVisionInAuton = true))
         );
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
