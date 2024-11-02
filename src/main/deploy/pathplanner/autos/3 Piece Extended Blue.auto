@@ -44,13 +44,13 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAim"
+            "name": "driveAutoAimBlueExtended"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "driveAutoAimInstantBlueExtended"
           }
         },
         {
@@ -80,13 +80,13 @@
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimFast"
+            "name": "driveAutoAimFastBlueExtended"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "driveAutoAimInstant"
+            "name": "driveAutoAimInstantBlueExtended"
           }
         },
         {

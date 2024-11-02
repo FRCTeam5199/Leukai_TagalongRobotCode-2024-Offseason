@@ -86,6 +86,11 @@ public class Autos extends Command {
         NamedCommands.registerCommand("driveAutoAimInstant",
                 new InstantCommand(() -> ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())));
 
+        NamedCommands.registerCommand("driveAutoAimBlueExtended", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric(), -2)
+                .andThen(new WaitCommand(.5)));
+        NamedCommands.registerCommand("driveAutoAimInstantBlueExtended",
+                new InstantCommand(() -> ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric(), -2)));
+
         NamedCommands.registerCommand("updateShot",
                 new InstantCommand(() -> aiming.updateSetpoint(RobotContainer.armAutoAimAngle)));
 
