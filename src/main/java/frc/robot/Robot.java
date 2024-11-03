@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.sql.Driver;
 import java.util.Optional;
 
 import frc.robot.commands.Autos;
@@ -44,7 +45,6 @@ public class Robot extends LoggedRobot {
     private RobotContainer m_robotContainer;
     public static Optional<DriverStation.Alliance> alliance;
     public static Pair<Optional<EstimatedRobotPose>, Double> estimatePose;
-    public static boolean useVisionInAuton = false;
 
     @Override
     public void robotInit() {
@@ -103,6 +103,17 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
+        alliance = DriverStation.getAlliance();
+        estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
+        if (alliance != null && alliance.isPresent() && estimatePose.getFirst().isPresent()) {
+            EstimatedRobotPose robotPose = estimatePose.getFirst().get();
+
+            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+                    Rotation2d.fromDegrees(alliance.get() == DriverStation.Alliance.Red ? 180 : 0));
+
+            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
+        }
     }
 
     @Override
@@ -121,13 +132,11 @@ public class Robot extends LoggedRobot {
         if (m_autonomousCommand != null) {
             m_autonomousCommand.schedule();
         }
-
-        alliance = DriverStation.getAlliance();
     }
 
     @Override
     public void autonomousPeriodic() {
-        if (useVisionInAuton && estimatePose.getFirst().isPresent()) {
+        if (estimatePose.getFirst().isPresent()) {
             EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
             Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();

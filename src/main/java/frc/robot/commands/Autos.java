@@ -72,14 +72,12 @@ public class Autos extends Command {
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(45))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(45))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
-                        .andThen(new InstantCommand(() -> Robot.useVisionInAuton = true))
         );
         NamedCommands.registerCommand("autoShootSubFast",
                 ScoreCommands.setShooterSpeeds(70)
                         .until(() -> RobotContainer.shooterSubsystem.reachedShootingCondtions(45))
                         .andThen(ScoreCommands.indexerFeedCommandAutoStop(45))
                         .until(() -> !RobotContainer.indexerSubsystem.isNoteInIndexer())
-                        .andThen(new InstantCommand(() -> Robot.useVisionInAuton = true))
         );
 
         NamedCommands.registerCommand("driveAutoAim", ScoreCommands.autonAutoTurn(new SwerveRequest.FieldCentric())
@@ -105,6 +103,9 @@ public class Autos extends Command {
                 new InstantCommand(() -> aiming.updateSetpoint(29.75)));
         NamedCommands.registerCommand("updateShot5Piece3Red",
                 new InstantCommand(() -> aiming.updateSetpoint(38)));
+        NamedCommands.registerCommand("updateShot5PieceFarBlue",
+                new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
+                        .andThen(() -> aiming.updateSetpoint(23.75)));
 
         NamedCommands.registerCommand("updateShotExtended1Red",
                 new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))

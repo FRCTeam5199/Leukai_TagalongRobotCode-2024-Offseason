@@ -59,23 +59,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "updateShot",
-      "waypointRelativePos": 0,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "updateShotExtended2Red"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
