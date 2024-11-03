@@ -41,16 +41,27 @@ public class TunerConstants {
     // This needs to be tuned to your individual robot
     private static final double kSlipCurrentA = 70.0;
 
+    private static final double SupplyCurrentLimit = 90;
+
     // Initial configs for the drive and steer motors and the CANcoder; these cannot be null.
     // Some configs will be overwritten; check the `with*InitialConfigs()` API documentation.
-    private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration();
+    private static final TalonFXConfiguration driveInitialConfigs = new TalonFXConfiguration()
+             .withCurrentLimits(
+                new CurrentLimitsConfigs()
+                .withSupplyCurrentLimit(SupplyCurrentLimit)
+                .withStatorCurrentLimit(kSlipCurrentA)
+                .withSupplyCurrentLimitEnable(true)
+                .withStatorCurrentLimitEnable(true)
+             );
     private static final TalonFXConfiguration steerInitialConfigs = new TalonFXConfiguration()
             .withCurrentLimits(
                     new CurrentLimitsConfigs()
                             // Swerve azimuth does not require much torque output, so we can set a relatively low
                             // stator current limit to help avoid brownouts without impacting performance.
-                            .withStatorCurrentLimit(60)
+                            .withSupplyCurrentLimit(SupplyCurrentLimit)
+                            .withStatorCurrentLimit(70)
                             .withStatorCurrentLimitEnable(true)
+                            .withSupplyCurrentLimitEnable(true)
             );
     private static final CANcoderConfiguration cancoderInitialConfigs = new CANcoderConfiguration();
     // Configs for the Pigeon 2; leave this null to skip applying Pigeon 2 configs
@@ -94,6 +105,8 @@ public class TunerConstants {
             .withSteerMotorGains(steerGains)
             .withDriveMotorGains(driveGains)
             .withSteerMotorClosedLoopOutput(steerClosedLoopOutput)
+            .withDriveMotorInitialConfigs(driveInitialConfigs)
+            .withSteerMotorInitialConfigs(steerInitialConfigs)
             .withDriveMotorClosedLoopOutput(driveClosedLoopOutput)
             .withSpeedAt12VoltsMps(kSpeedAt12VoltsMps)
             .withSteerInertia(kSteerInertia)
@@ -102,6 +115,7 @@ public class TunerConstants {
             .withDriveFrictionVoltage(kDriveFrictionVoltage)
             .withFeedbackSource(SteerFeedbackType.FusedCANcoder)
             .withCouplingGearRatio(kCoupleRatio);
+            
 
 
     // Front Left
