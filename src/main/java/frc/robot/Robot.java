@@ -4,36 +4,25 @@
 
 package frc.robot;
 
-import java.sql.Driver;
 import java.util.Optional;
 
 import frc.robot.commands.Autos;
-import frc.robot.commands.ScoreCommands;
 import frc.robot.generated.TunerConstants;
 
 import org.littletonrobotics.junction.LoggedRobot;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.constants.Constants;
 import frc.robot.subsystems.ApriltagSubsystem;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.LED.LEDSubsystem;
 import frc.robot.subsystems.LED.LEDSubsystem.LEDMode;
-
-import org.littletonrobotics.junction.inputs.LoggableInputs;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
-import org.littletonrobotics.junction.Logger;
-import org.littletonrobotics.junction.LoggedRobot;
 
 public class Robot extends LoggedRobot {
     private final UserInterface userInterface = UserInterface.getInstance();
