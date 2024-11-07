@@ -11,23 +11,10 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.AmpTrap;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class TrapCommands{
+public class TrapCommands {
     public static AmpTrap noteElevator;
     public static ShooterSubsystem shooter;
     public static Climber climber;
-
-    public static Command trapPrep() {
-        return new SequentialCommandGroup(
-                new ElevatorRaiseToCommand<>(noteElevator, ElevatorHeights.TRAP),
-                new ClimberCommands().climberAscendCommand(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT)
-        );
-    }
-
-    public Command trapClimb(IndexerSubsystem indexer, ShooterSubsystem shooter, Climber climber) {
-        return new SequentialCommandGroup(
-                new ClimberCommands().climberDescendCommand(ClimberHeights.UP_LEFT, ClimberHeights.UP_RIGHT)
-        );
-    }
 
 
 }

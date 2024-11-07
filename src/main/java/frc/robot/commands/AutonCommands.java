@@ -16,11 +16,11 @@ public class AutonCommands {
     private static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     private static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     private static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
-    
 
-    private AutonCommands() {}
 
-    
+    private AutonCommands() {
+    }
+
 
     public AutonCommands getInstance() {
         if (autonCommands == null) {
@@ -29,8 +29,5 @@ public class AutonCommands {
         return autonCommands;
     }
 
-    public Command sixPieceRed(){
-        return AutoBuilder.buildAuto("6 Piece Red shoot");
-        }
 
 }
