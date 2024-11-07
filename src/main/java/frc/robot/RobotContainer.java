@@ -42,6 +42,7 @@ public class RobotContainer {
     public static double armAutoAimAngle;
     private static Mode mode = Mode.SHOOTER;
     public double prevArmAngle = 0;
+ 
 
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -57,6 +58,7 @@ public class RobotContainer {
     private double distance;
     private double angleOffset;
     public static double driveAngleOffset;
+
 
 
     public RobotContainer() {
@@ -89,6 +91,10 @@ public class RobotContainer {
 
     private void configureBindings() {
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
+        commandXboxController.x().onTrue(new InstantCommand(() -> setMode(Mode.CLIMB)));
+        commandXboxController.a().onTrue(new InstantCommand(() -> setMode(Mode.AMP)));
+        commandXboxController.b().onTrue(new InstantCommand(() -> setMode(Mode.SHOOTER)));
+        commandXboxController.y().onTrue(new InstantCommand(() -> setMode(Mode.SHUTTLE)));
     }
 
     public Command getAutonomousCommand() {
