@@ -105,7 +105,7 @@ public class Autos extends Command {
                 new InstantCommand(() -> aiming.updateSetpoint(38)));
         NamedCommands.registerCommand("updateShot5PieceFarBlue",
                 new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
-                        .andThen(() -> aiming.updateSetpoint(23.75)));
+                        .andThen(() -> aiming.updateSetpoint(24.25)));
 
         NamedCommands.registerCommand("updateShotExtended1Red",
                 new InstantCommand(() -> RobotContainer.shooterSubsystem.setShooterSpeeds(70))
