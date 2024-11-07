@@ -6,7 +6,7 @@ package frc.robot;
 
 import java.util.Optional;
 
-import frc.robot.commands.Autos;
+// import frc.robot.commands.Autos;
 import frc.robot.generated.TunerConstants;
 
 import org.littletonrobotics.junction.LoggedRobot;
@@ -135,7 +135,7 @@ public class Robot extends LoggedRobot {
             commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
         }
 
-        Autos.aiming.execute();
+        // Autos.aiming.execute();
     }
 
 

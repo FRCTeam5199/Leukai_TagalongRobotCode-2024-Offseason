@@ -36,7 +36,7 @@ public class RobotContainer {
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final AmpTrap ampTrap = AmpTrap.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
-    public static final Autos autos = new Autos(commandSwerveDrivetrain);
+//     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     public static double armAutoAimAngle;
@@ -92,12 +92,13 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        var alliance = DriverStation.getAlliance();
-        if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
-            return Autos.autonChooserRed.getSelected();
-        } else {
-            return Autos.autonChooserBlue.getSelected();
-        }
+        // var alliance = DriverStation.getAlliance();
+        // if (alliance.isPresent() && alliance.get() == DriverStation.Alliance.Red) {
+        //     return Autos.autonChooserRed.getSelected();
+        // } else {
+        //     return Autos.autonChooserBlue.getSelected();
+        // }
+        return null;
     }
 
     public void periodic() {
