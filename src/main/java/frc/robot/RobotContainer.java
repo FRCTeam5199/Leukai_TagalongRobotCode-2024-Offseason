@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
-import frc.robot.commands.base.ClimberCommands;
 import frc.robot.commands.base.ElevatorHeights;
 import frc.robot.commands.base.PivotToCommand;
 import frc.robot.constants.Constants;
@@ -26,6 +25,8 @@ import frc.robot.utility.Mode;
 
 import java.util.Map;
 
+import static frc.robot.utility.Mode.CLIMB;
+
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
             Ports.DRIVER_XBOX_USB_PORT);
@@ -33,6 +34,7 @@ public class RobotContainer {
     public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
+    public static final ClimberCommands climber = new ClimberCommands();
     public static final AmpTrap ampTrap = AmpTrap.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
 //     public static final Autos autos = new Autos(commandSwerveDrivetrain);
@@ -69,7 +71,7 @@ public class RobotContainer {
         Shuffleboard.getTab("Shooter Tuning").addNumber("Shooter 1 Speed", () -> shooterSubsystem.getFlywheel(0).getFlywheelVelocity());
         Shuffleboard.getTab("Shooter Tuning").addNumber("Shooter 2 Speed", () -> shooterSubsystem.getFlywheel(1).getFlywheelVelocity());
 
-        Shuffleboard.getTab("Drive Info").addBoolean("Climb Mode", () -> mode == Mode.CLIMB);
+        Shuffleboard.getTab("Drive Info").addBoolean("Climb Mode", () -> mode == CLIMB);
         Shuffleboard.getTab("Drive Info").addBoolean("Shoot Mode", () -> mode == Mode.SHOOTER);
         Shuffleboard.getTab("Drive Info").addBoolean("Shuttle Mode", () -> mode == Mode.SHUTTLE);
 
@@ -90,10 +92,16 @@ public class RobotContainer {
 
     private void configureBindings() {
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
-        commandXboxController.x().onTrue(new InstantCommand(() -> setMode(Mode.CLIMB)));
+        commandXboxController.x().onTrue(new InstantCommand(() -> setMode(CLIMB)));
         commandXboxController.a().onTrue(new InstantCommand(() -> setMode(Mode.AMP)));
         commandXboxController.b().onTrue(new InstantCommand(() -> setMode(Mode.SHOOTER)));
         commandXboxController.y().onTrue(new InstantCommand(() -> setMode(Mode.SHUTTLE)));
+        if(getMode() == CLIMB) {
+            commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> climber.climbUp()));
+            commandXboxController.rightTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
+            commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> climber.climbDown()));
+            commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
+        }
     }
 
     public Command getAutonomousCommand() {
