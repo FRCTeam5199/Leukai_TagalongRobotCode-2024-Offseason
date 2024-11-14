@@ -3,30 +3,31 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.Command;
-
-public class IntakeCommands extends Command {
-  /** Creates a new IntakeCommands. */
-  public IntakeCommands() {
-    // Use addRequirements() here to declare subsystem dependencies.
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.IndexerSubsystem;
+public class IntakeCommands{
+  IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+  public Command Intake() {
+    //TODO: tune?!
+    return indexerSubsystem.runOnce(
+        () -> {
+          indexerSubsystem.setRollerSpeeds(10,0,0);
+        });
+  }
+  public Command Amp() {
+    //TODO: tune?!
+    return indexerSubsystem.runOnce(
+        () -> {
+          indexerSubsystem.setRollerSpeeds(0,10,0);
+        });
+  }
+  public Command Indexer() {
+    //TODO: tune?!
+    return indexerSubsystem.runOnce(
+        () -> {
+          indexerSubsystem.setRollerSpeeds(0,0,10);
+        });
   }
 
-  // Called when the command is initially scheduled.
-  @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
 }
