@@ -13,7 +13,11 @@ public class IntakeCommands{
     return indexerSubsystem.runOnce(
         () -> {
           indexerSubsystem.setRollerSpeeds(10,0,0);
-        });
+        }).andThen(
+          () -> {
+            indexerSubsystem.setRollerSpeeds(0,0,0);
+          }
+        );
   }
   public Command stopIntake() {
       return indexerSubsystem.runOnce(() -> {
@@ -25,14 +29,22 @@ public class IntakeCommands{
     return indexerSubsystem.runOnce(
         () -> {
           indexerSubsystem.setRollerSpeeds(0,10,0);
-        });
+        }).andThen(
+          () -> {
+            indexerSubsystem.setRollerSpeeds(0,0,0);
+          }
+        );
   }
   public Command Indexer() {
     //TODO: tune?!
     return indexerSubsystem.runOnce(
         () -> {
           indexerSubsystem.setRollerSpeeds(0,0,10);
-        });
+        }).andThen(
+          () -> {
+            indexerSubsystem.setRollerSpeeds(0,0,0);
+          }
+        );
   }
   public Command stopIndexer() {
       return indexerSubsystem.runOnce(
