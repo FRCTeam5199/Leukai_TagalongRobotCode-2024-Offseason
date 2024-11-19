@@ -37,13 +37,15 @@ public class RobotContainer {
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final ClimberCommands climber = new ClimberCommands();
     public static final IntakeCommands intaketh = new IntakeCommands();
+    public static final ShooterCommands shooter = new ShooterCommands();
+    public static final IntakeCommands intake = new IntakeCommands();
     public static final AmpTrap ampTrap = AmpTrap.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
 //     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
     public static double armAutoAimAngle;
-    private static Mode mode = Mode.SHOOTER;
+    public static Mode mode = Mode.SHOOTER;
     public double prevArmAngle = 0;
  
 
@@ -94,10 +96,10 @@ public class RobotContainer {
 
     private void configureBindings() {
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
-        commandXboxController.x().onTrue(new InstantCommand(() -> setMode(CLIMB)));
-        commandXboxController.a().onTrue(new InstantCommand(() -> setMode(Mode.AMP)));
-        commandXboxController.b().onTrue(new InstantCommand(() -> setMode(Mode.SHOOTER)));
-        commandXboxController.y().onTrue(new InstantCommand(() -> setMode(Mode.SHUTTLE)));
+        commandXboxController.x().onTrue((new InstantCommand(() -> setMode(CLIMB))).andThen(new InstantCommand(() -> System.out.println("It's Climbing Time"))));
+        commandXboxController.a().onTrue((new InstantCommand(() -> setMode(AMP))).andThen(new InstantCommand(() -> System.out.println("It's Amping Time"))));
+        commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER))).andThen(new InstantCommand(() -> System.out.println("It's Shooting Time"))));
+        commandXboxController.y().onTrue((new InstantCommand(() -> setMode(SHUTTLE))).andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time"))));
         if(getMode() == CLIMB) 
         {
             commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> climber.climbUp()));
@@ -110,6 +112,19 @@ public class RobotContainer {
         // commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> intaketh.Indexer() ));
         // commandXboxController.leftBumper().onTrue(new InstantCommand(() -> intaketh.Intake() ));
     
+        if(getMode() == SHOOTER) {
+            commandXboxController.leftTrigger().onTrue((shooter.blankShoot()).andThen(new InstantCommand(() -> System.out.println("shooting"))))
+                                               .onFalse(shooter.stopShooter());
+
+            commandXboxController.rightTrigger().onTrue((intake.Intake()).andThen(new InstantCommand(() -> System.out.println("intaking"))))
+                                                .onFalse(intake.stopIntake());
+
+            commandXboxController.rightBumper().and(() -> shooterSubsystem.reachedShootingConditions(20))
+                                               .onTrue((intake.Indexer()).andThen(new InstantCommand(() -> System.out.println("indexing"))))
+                                               .onFalse(intake.stopIndexer());
+
+            commandXboxController.leftBumper().onTrue((shooter.aimShooterMax()).andThen(new InstantCommand(() -> System.out.println("aiming"))));
+        }
     }
 
     public Command getAutonomousCommand() {

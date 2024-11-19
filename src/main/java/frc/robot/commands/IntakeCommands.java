@@ -21,6 +21,11 @@ public class IntakeCommands{
           }
         );
   }
+  public Command stopIntake() {
+      return indexerSubsystem.runOnce(() -> {
+          indexerSubsystem.setRollerSpeeds(0, 0, 0);
+      });
+  }
   public Command Amp() {
     //TODO: tune?!
     return indexerSubsystem.run(
@@ -46,6 +51,12 @@ public class IntakeCommands{
             indexerSubsystem.setRollerSpeeds(0,0,0);
           }
         );
+  }
+  public Command stopIndexer() {
+      return indexerSubsystem.runOnce(
+              () -> {
+                  indexerSubsystem.setRollerSpeeds(0, 0, 0);
+              });
   }
 
 }
