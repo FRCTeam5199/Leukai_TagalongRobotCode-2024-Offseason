@@ -25,6 +25,7 @@ import frc.robot.utility.Mode;
 
 import java.util.Map;
 
+import static frc.robot.utility.Mode.AMP;
 import static frc.robot.utility.Mode.CLIMB;
 
 public class RobotContainer {
@@ -35,6 +36,7 @@ public class RobotContainer {
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final ClimberCommands climber = new ClimberCommands();
+    public static final IntakeCommands intaketh = new IntakeCommands();
     public static final AmpTrap ampTrap = AmpTrap.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
 //     public static final Autos autos = new Autos(commandSwerveDrivetrain);
@@ -96,12 +98,18 @@ public class RobotContainer {
         commandXboxController.a().onTrue(new InstantCommand(() -> setMode(Mode.AMP)));
         commandXboxController.b().onTrue(new InstantCommand(() -> setMode(Mode.SHOOTER)));
         commandXboxController.y().onTrue(new InstantCommand(() -> setMode(Mode.SHUTTLE)));
-        if(getMode() == CLIMB) {
+        if(getMode() == CLIMB) 
+        {
             commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> climber.climbUp()));
             commandXboxController.rightTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
             commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> climber.climbDown()));
             commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
         }
+        // System.out.println("IT WORKS");
+        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> {if(getMode() == AMP){intaketh.Amp();System.out.println("Your'eue code no work idot");}}));
+        // commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> intaketh.Indexer() ));
+        // commandXboxController.leftBumper().onTrue(new InstantCommand(() -> intaketh.Intake() ));
+    
     }
 
     public Command getAutonomousCommand() {
