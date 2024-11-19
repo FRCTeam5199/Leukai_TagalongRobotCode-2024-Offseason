@@ -13,4 +13,14 @@ public class ShooterCommands {
             shooterSubsystem.setShooterSpeeds(20);
         });
     }
+    public Command stopShooter() {
+        return shooterSubsystem.runOnce(() -> {
+            shooterSubsystem.setShooterSpeeds(0);
+        });
+    }
+    public Command aimShooterMax() {
+        return shooterSubsystem.runOnce(() -> {
+            shooterSubsystem.moveShooterToSetpoint(ShooterPivotAngles.MAX.getDegrees());
+        });
+    }
 }
