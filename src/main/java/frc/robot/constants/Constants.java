@@ -62,14 +62,8 @@ public class Constants {
         public static final double STICK_DEADBAND = 0.04; // TODO: tune
         public static final double STICK_NET_DEADBAND = 0.06; // TODO: tune
         public static final boolean IS_OPEN_LOOP = false; // swerve
-
     }
 
-    public static final class Amp {
-        public static final int AMP_TOP_POSITiON = 5; 
-        public static final int AMP_START_POSITiON = 1; 
-    }
-    
     public static class LEDs {
         public static final int LED_PORT = 1;
         public static final int LED_LENGTH = 25;
