@@ -13,7 +13,7 @@ public class IntakeCommands{
     return indexerSubsystem.run(
         () -> {
           System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(10,0,0);
+          indexerSubsystem.setRollerSpeeds(100,60,0);
         }).andThen(
           () -> {
             System.out.println("IT WORKS");
@@ -31,7 +31,7 @@ public class IntakeCommands{
     return indexerSubsystem.run(
         () -> {
           System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(0,10,0);
+          indexerSubsystem.setRollerSpeeds(10,0,0);
         }).andThen(
           () -> {
             System.out.println("IT WORKS");
@@ -39,12 +39,13 @@ public class IntakeCommands{
           }
         );
   }
+  //FOR INTAKING INTO SHOOTER,    100, -60, 10
   public Command Indexer() {
     //TODO: tune?!
     return indexerSubsystem.run(
         () -> {
           System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(0,0,10);
+          indexerSubsystem.setRollerSpeeds(50,-75,50);
         }).andThen(
           () -> {
             System.out.println("IT WORKS");
