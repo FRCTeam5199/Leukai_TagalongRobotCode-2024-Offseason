@@ -9,6 +9,8 @@ import frc.robot.tagalong.FlywheelAugment;
 import frc.robot.tagalong.PivotAugment;
 import frc.robot.tagalong.TagalongSubsystemBase;
 
+import java.util.function.BooleanSupplier;
+
 public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugment, FlywheelAugment {
     private static ShooterSubsystem shooterSubsystem;
     public final ShooterParser shooterParser;
@@ -144,6 +146,11 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
                 && arm.checkInitStatus();
     }
 
+    public void moveShooterToSetpoint(double setpoint) {
+        arm.setPivotProfile(Rotation2d.fromDegrees(setpoint).getDegrees());
+        ;
+    }
+
     public void moveShooterToSetpointAndSpeed(double setpoint, double targetSpeed) {
         arm.setPivotProfile(Rotation2d.fromDegrees(setpoint).getDegrees());
 
@@ -159,7 +166,7 @@ public class ShooterSubsystem extends TagalongSubsystemBase implements PivotAugm
         arm.followLastProfile();
     }
 
-    public boolean reachedShootingCondtions(double targetSpeed) {
+    public boolean reachedShootingConditions(double targetSpeed) {
         double percentageOfMaxSpeed = .97;
 
         return shooterLeft.getFlywheelMotor().getVelocity().getValueAsDouble() >= targetSpeed * percentageOfMaxSpeed

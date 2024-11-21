@@ -9,7 +9,9 @@ import java.util.Optional;
 // import frc.robot.commands.Autos;
 import frc.robot.generated.TunerConstants;
 
+import frc.robot.utility.Mode;
 import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 
 import edu.wpi.first.math.Pair;
