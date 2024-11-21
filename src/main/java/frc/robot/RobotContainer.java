@@ -108,7 +108,7 @@ public class RobotContainer {
         //     commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
         // }
         // System.out.println("IT WORKS");
-        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> IntakeCommands.functionalAmp()).onlyIf(() -> getMode() == AMP) );
+        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> IntakeCommands.functionalAmp()).onlyIf(() -> true) );
         // commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> intaketh.Indexer() ));
         // commandXboxController.leftBumper().onTrue(new InstantCommand(() -> intaketh.Intake() ));
     
