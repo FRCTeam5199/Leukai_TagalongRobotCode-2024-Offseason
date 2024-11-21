@@ -3,15 +3,22 @@
 // the WPILib BSD license file in the root directory of this project.
 
 package frc.robot.commands;
+import org.opencv.features2d.FlannBasedMatcher;
+
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 /** Add your docs here. */
 public class ShooterCommands {
     ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    public Command blankShoot() {
-        return shooterSubsystem.runOnce(() -> {
+    public static Command blankShoot() {
+        return new FunctionalCommand(
             //TODO: tune?
-            shooterSubsystem.setShooterSpeeds(20);
-        });
+            ()->{},
+            ()->ShooterSubsystem.getInstance().setShooterSpeeds(20), 
+            (something)->{},
+            ()->false,
+            ShooterSubsystem.getInstance()
+        );
     }
 }
