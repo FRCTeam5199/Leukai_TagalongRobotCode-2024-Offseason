@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.IndexerSubsystem;
 public class IntakeCommands{
@@ -14,12 +15,7 @@ public class IntakeCommands{
         () -> {
           System.out.println("IT WORKS");
           indexerSubsystem.setRollerSpeeds(10,0,0);
-        }).andThen(
-          () -> {
-            System.out.println("IT WORKS");
-            indexerSubsystem.setRollerSpeeds(0,0,0);
-          }
-        );
+        });
   }
   public Command stopIntake() {
       return indexerSubsystem.runOnce(() -> {
@@ -28,16 +24,11 @@ public class IntakeCommands{
   }
   public Command Amp() {
     //TODO: tune?!
-    return indexerSubsystem.run(
+    return indexerSubsystem.runOnce(
         () -> {
           System.out.println("IT WORKS");
           indexerSubsystem.setRollerSpeeds(0,10,0);
-        }).andThen(
-          () -> {
-            System.out.println("IT WORKS");
-            indexerSubsystem.setRollerSpeeds(0,0,0);
-          }
-        );
+        });
   }
   public Command Indexer() {
     //TODO: tune?!
@@ -45,18 +36,24 @@ public class IntakeCommands{
         () -> {
           System.out.println("IT WORKS");
           indexerSubsystem.setRollerSpeeds(0,0,10);
-        }).andThen(
-          () -> {
-            System.out.println("IT WORKS");
-            indexerSubsystem.setRollerSpeeds(0,0,0);
-          }
-        );
+        });
   }
   public Command stopIndexer() {
       return indexerSubsystem.runOnce(
-              () -> {
-                  indexerSubsystem.setRollerSpeeds(0, 0, 0);
-              });
+         () -> {
+            indexerSubsystem.setRollerSpeeds(0, 0, 0);
+          });
+  }
+  public static Command functionalAmp()
+  {
+    return new FunctionalCommand
+    (
+      ()->{},
+     () -> IndexerSubsystem.getInstance().setRollerSpeeds(0,10,0), 
+     null, 
+     null,
+     IndexerSubsystem.getInstance()
+    );
   }
 
 }

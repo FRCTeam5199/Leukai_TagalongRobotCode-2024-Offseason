@@ -27,7 +27,8 @@ import java.util.Map;
 
 import static frc.robot.utility.Mode.AMP;
 import static frc.robot.utility.Mode.CLIMB;
-
+import static frc.robot.utility.Mode.SHOOTER;
+import static frc.robot.utility.Mode.SHUTTLE;
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
             Ports.DRIVER_XBOX_USB_PORT);
@@ -36,7 +37,6 @@ public class RobotContainer {
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final ClimberCommands climber = new ClimberCommands();
-    public static final IntakeCommands intaketh = new IntakeCommands();
     public static final ShooterCommands shooter = new ShooterCommands();
     public static final IntakeCommands intake = new IntakeCommands();
     public static final AmpTrap ampTrap = AmpTrap.getInstance();
@@ -100,31 +100,31 @@ public class RobotContainer {
         commandXboxController.a().onTrue((new InstantCommand(() -> setMode(AMP))).andThen(new InstantCommand(() -> System.out.println("It's Amping Time"))));
         commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER))).andThen(new InstantCommand(() -> System.out.println("It's Shooting Time"))));
         commandXboxController.y().onTrue((new InstantCommand(() -> setMode(SHUTTLE))).andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time"))));
-        if(getMode() == CLIMB) 
-        {
-            commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> climber.climbUp()));
-            commandXboxController.rightTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
-            commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> climber.climbDown()));
-            commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
-        }
+        // if(getMode() == CLIMB) 
+        // {
+        //     commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> climber.climbUp()));
+        //     commandXboxController.rightTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
+        //     commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> climber.climbDown()));
+        //     commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
+        // }
         // System.out.println("IT WORKS");
-        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> {if(getMode() == AMP){intaketh.Amp();System.out.println("Your'eue code no work idot");}}));
+        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> IntakeCommands.functionalAmp()).onlyIf(() -> getMode() == AMP) );
         // commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> intaketh.Indexer() ));
         // commandXboxController.leftBumper().onTrue(new InstantCommand(() -> intaketh.Intake() ));
     
-        if(getMode() == SHOOTER) {
-            commandXboxController.leftTrigger().onTrue((shooter.blankShoot()).andThen(new InstantCommand(() -> System.out.println("shooting"))))
-                                               .onFalse(shooter.stopShooter());
+        // if(getMode() == SHOOTER) {
+        //     commandXboxController.leftTrigger().onTrue((shooter.blankShoot()).andThen(new InstantCommand(() -> System.out.println("shooting"))))
+        //                                        .onFalse(shooter.stopShooter());
 
-            commandXboxController.rightTrigger().onTrue((intake.Intake()).andThen(new InstantCommand(() -> System.out.println("intaking"))))
-                                                .onFalse(intake.stopIntake());
+        //     commandXboxController.rightTrigger().onTrue((intake.Intake()).andThen(new InstantCommand(() -> System.out.println("intaking"))))
+        //                                         .onFalse(intake.stopIntake());
 
-            commandXboxController.rightBumper().and(() -> shooterSubsystem.reachedShootingConditions(20))
-                                               .onTrue((intake.Indexer()).andThen(new InstantCommand(() -> System.out.println("indexing"))))
-                                               .onFalse(intake.stopIndexer());
+        //     commandXboxController.rightBumper().and(() -> shooterSubsystem.reachedShootingConditions(20))
+        //                                        .onTrue((intake.Indexer()).andThen(new InstantCommand(() -> System.out.println("indexing"))))
+        //                                        .onFalse(intake.stopIndexer());
 
-            commandXboxController.leftBumper().onTrue((shooter.aimShooterMax()).andThen(new InstantCommand(() -> System.out.println("aiming"))));
-        }
+        //     commandXboxController.leftBumper().onTrue((shooter.aimShooterMax()).andThen(new InstantCommand(() -> System.out.println("aiming"))));
+        // }
     }
 
     public Command getAutonomousCommand() {
