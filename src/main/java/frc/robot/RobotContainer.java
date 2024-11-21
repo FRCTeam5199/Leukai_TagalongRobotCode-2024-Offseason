@@ -7,13 +7,20 @@ package frc.robot;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.*;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.*;
+import frc.robot.commands.base.ElevatorHeights;
+import frc.robot.commands.base.PivotToCommand;
+import frc.robot.constants.Constants;
 import frc.robot.generated.TunerConstants;
 import frc.robot.subsystems.*;
+import frc.robot.utility.LookUpTable;
 import frc.robot.utility.Mode;
 
 import static frc.robot.utility.Mode.*;
@@ -97,7 +104,7 @@ public class RobotContainer {
 //            commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
 //        }
         // System.out.println("IT WORKS");
-        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> {if(getMode() == AMP){intaketh.Amp();System.out.println("Your'eue code no work idot");}}));
+        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> IntakeCommands.functionalAmp()).onlyIf(() -> getMode() == AMP) );
         // commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> intaketh.Indexer() ));
         // commandXboxController.leftBumper().onTrue(new InstantCommand(() -> intaketh.Intake() ));
     
@@ -117,7 +124,6 @@ public class RobotContainer {
             commandXboxController.leftBumper().onTrue((ShooterCommands.aimShooterMid(true)).onlyIf(() -> getMode() == SHOOTER)
                                               .andThen(new InstantCommand(() -> System.out.println("aiming"))));
     }
-
 
     public Command getAutonomousCommand() {
         // var alliance = DriverStation.getAlliance();

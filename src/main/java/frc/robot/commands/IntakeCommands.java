@@ -4,6 +4,7 @@
 
 package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.IndexerSubsystem;
 public class IntakeCommands{
@@ -13,13 +14,8 @@ public class IntakeCommands{
     return indexerSubsystem.run(
         () -> {
           System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(100,60,0);
-        }).andThen(
-          () -> {
-            System.out.println("IT WORKS");
-            indexerSubsystem.setRollerSpeeds(0,0,0);
-          }
-        );
+          indexerSubsystem.setRollerSpeeds(10,0,0);
+        });
   }
   public Command stopIntake() {
       return indexerSubsystem.runOnce(() -> {
@@ -28,16 +24,11 @@ public class IntakeCommands{
   }
   public Command Amp() {
     //TODO: tune?!
-    return indexerSubsystem.run(
+    return indexerSubsystem.runOnce(
         () -> {
           System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(10,0,0);
-        }).andThen(
-          () -> {
-            System.out.println("IT WORKS");
-            indexerSubsystem.setRollerSpeeds(0,0,0);
-          }
-        );
+          indexerSubsystem.setRollerSpeeds(0,10,0);
+        });
   }
   //FOR INTAKING INTO SHOOTER,    100, -60, 10
   public Command Indexer() {
@@ -45,19 +36,25 @@ public class IntakeCommands{
     return indexerSubsystem.run(
         () -> {
           System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(50,-75,50);
-        }).andThen(
-          () -> {
-            System.out.println("IT WORKS");
-            indexerSubsystem.setRollerSpeeds(0,0,0);
-          }
-        );
+          indexerSubsystem.setRollerSpeeds(0,0,10);
+        });
   }
   public Command stopIndexer() {
       return indexerSubsystem.runOnce(
-              () -> {
-                  indexerSubsystem.setRollerSpeeds(0, 0, 0);
-              });
+         () -> {
+            indexerSubsystem.setRollerSpeeds(0, 0, 0);
+          });
+  }
+  public static Command functionalAmp()
+  {
+    return new FunctionalCommand
+    (
+      ()->{},
+     () -> IndexerSubsystem.getInstance().setRollerSpeeds(0,10,0),
+     null,
+     null,
+     IndexerSubsystem.getInstance()
+    );
   }
 
 }
