@@ -49,10 +49,10 @@ public class IntakeCommands{
   {
     return new FunctionalCommand
     (
-      ()->{},
-     () -> IndexerSubsystem.getInstance().setRollerSpeeds(0,10,0),
-     null,
-     null,
+     () -> {IndexerSubsystem.getInstance().setRollerSpeeds(100,60,0); System.out.println("work");},
+     () -> {},
+     (wasnotexplained) -> IndexerSubsystem.getInstance().setRollerSpeeds(0,0,0),
+     () -> false,
      IndexerSubsystem.getInstance()
     );
   }
