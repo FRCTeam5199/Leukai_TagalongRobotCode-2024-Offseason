@@ -23,8 +23,7 @@ public class ShooterCommands {
             ()->{}, 
             (something)->shooterSubsystem.setShooterSpeeds(0),
             ()->false,
-            shooterSubsystem
-        );
+            shooterSubsystem);
     }
     public static Command stablizeShooter() {
         return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
@@ -48,8 +47,7 @@ public class ShooterCommands {
             () -> {},
             (interrupted) -> indexersubsystem.setRollerSpeeds(0, 0, 0),
             () -> false,
-            indexersubsystem
-            );
+            indexersubsystem);
     }
 
     public static Command aimShooterClimb() {
