@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import frc.robot.commands.AmpTrapCommands;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
@@ -133,7 +134,10 @@ public class RobotContainer {
         commandXboxController.rightBumper();
 
         //Elevator
-
+        commandXboxController.leftBumper()
+                .onTrue(AmpTrapCommands.aimAndIndexTrap())
+                .onFalse(AmpTrapCommands.resetElevatorAndIndex());
+        
 
 
         // Index to amp
