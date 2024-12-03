@@ -53,6 +53,6 @@ public class ShooterCommands {
     }
 
     public static Command aimShooterClimb() {
-        return new PivotToCommand<>(ShooterSubsystem.getInstance(), ShooterPivotAngles.MAX.getDegrees(), true);
+        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MID.getRotations(), true);
     }
 }
