@@ -4,26 +4,30 @@
 
 package frc.robot;
 
+import static frc.robot.utility.Mode.AMP;
+import static frc.robot.utility.Mode.CLIMB;
+import static frc.robot.utility.Mode.SHOOTER;
+import static frc.robot.utility.Mode.SHUTTLE;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
-import edu.wpi.first.wpilibj2.command.*;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import frc.robot.commands.*;
-import frc.robot.commands.base.ElevatorHeights;
-import frc.robot.commands.base.PivotToCommand;
-import frc.robot.constants.Constants;
+import frc.robot.commands.ClimberCommands;
+import frc.robot.commands.IntakeCommands;
+import frc.robot.commands.ShooterCommands;
 import frc.robot.generated.TunerConstants;
-import frc.robot.subsystems.*;
-import frc.robot.utility.LookUpTable;
+import frc.robot.subsystems.AmpTrap;
+import frc.robot.subsystems.Climber;
+import frc.robot.subsystems.CommandSwerveDrivetrain;
+import frc.robot.subsystems.IndexerSubsystem;
+import frc.robot.subsystems.ObjectDetectionSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.Mode;
-
-import static frc.robot.utility.Mode.*;
 
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
