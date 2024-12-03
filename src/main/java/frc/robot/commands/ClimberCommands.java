@@ -3,27 +3,30 @@ package frc.robot.commands;
 import com.ctre.phoenix6.hardware.TalonFX;
 import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.Climber;
+import frc.robot.RobotContainer;
 
 
 public class ClimberCommands {
 
     Climber climber;
 
-    public ClimberCommands() {
 
+
+    public ClimberCommands() {
+        climber = Climber.getInstance();
     }
 
     public Command climbUp(){
-        return this.climber.runOnce(() -> climber.setClimberPowers(50));
+        return new InstantCommand(() -> climber.setClimberPowers(.2));
     }
 
     public Command climbDown() {
-        return this.climber.runOnce(() -> climber.setClimberPowers(-15));
+        return new InstantCommand(() -> climber.setClimberPowers(-.2));
     }
-
     public Command climbStop() {
-        return this.climber.runOnce(() -> climber.setClimberPowers(0));
+        return new InstantCommand(() -> climber.setClimberPowers(0));
     }
 
 }

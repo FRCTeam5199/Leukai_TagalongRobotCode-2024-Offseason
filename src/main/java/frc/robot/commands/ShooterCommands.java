@@ -36,4 +36,8 @@ public class ShooterCommands {
     public static Command aimShooterMid(boolean holdPos) {
         return new PivotToCommand<>(ShooterSubsystem.getInstance(), ShooterPivotAngles.MID.getRotations(), holdPos);
     }
+
+    public static Command aimShooterClimb() {
+        return new PivotToCommand<>(ShooterSubsystem.getInstance(), ShooterPivotAngles.MAX.getDegrees(), true);
+    }
 }
