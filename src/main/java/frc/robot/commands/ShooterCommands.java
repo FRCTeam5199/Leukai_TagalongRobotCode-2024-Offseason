@@ -10,6 +10,7 @@ import frc.robot.commands.base.PivotToCommand;
 import frc.robot.subsystems.ShooterSubsystem;
 /** Add your docs here. */
 public class ShooterCommands {
+    static ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
     public static Command blankShoot() {
         return new FunctionalCommand(
             //TODO: tune?
@@ -31,13 +32,13 @@ public class ShooterCommands {
         );
     }
     public static Command unAimShooter() {
-        return new PivotToCommand<>(ShooterSubsystem.getInstance(), ShooterPivotAngles.LOW.getRotations(), false);
+        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.LOW.getRotations(), false);
     }
     public static Command aimShooterMid(boolean holdPos) {
-        return new PivotToCommand<>(ShooterSubsystem.getInstance(), ShooterPivotAngles.MID.getRotations(), holdPos);
+        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MID.getRotations(), holdPos);
     }
 
     public static Command aimShooterClimb() {
-        return new PivotToCommand<>(ShooterSubsystem.getInstance(), ShooterPivotAngles.MAX.getDegrees(), true);
+        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MID.getRotations(), true);
     }
 }
