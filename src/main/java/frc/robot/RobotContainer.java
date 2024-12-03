@@ -92,17 +92,46 @@ public class RobotContainer {
 
     private void configureBindings() {
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
-        commandXboxController.x().onTrue((new InstantCommand(() -> setMode(CLIMB))).andThen(new InstantCommand(() -> System.out.println("It's Climbing Time"))));
-        commandXboxController.a().onTrue((new InstantCommand(() -> setMode(AMP))).andThen(new InstantCommand(() -> System.out.println("It's Amping Time"))));
-        commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER))).andThen(new InstantCommand(() -> System.out.println("It's Shooting Time"))));
-        commandXboxController.y().onTrue((new InstantCommand(() -> setMode(SHUTTLE))).andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time"))));
-//        if(getMode() == CLIMB)
-//        {
-//            commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> climber.climbUp()));
-//            commandXboxController.rightTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
-//            commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> climber.climbDown()));
-//            commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
-//        }
+        commandXboxController.x().onTrue((new InstantCommand(() -> setMode(CLIMB)))
+                .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time")))
+                .andThen((ShooterCommands.aimShooterClimb())));
+        commandXboxController.a().onTrue((new InstantCommand(() -> setMode(AMP)))
+                .andThen(new InstantCommand(() -> System.out.println("It's Amping Time"))));
+        commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER)))
+                .andThen(new InstantCommand(() -> System.out.println("It's Shooting Time"))));
+        commandXboxController.y().onTrue((new InstantCommand(() -> setMode(SHUTTLE)))
+                .andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time"))));
+
+
+        //CLIMB MODE
+
+        //Climb up
+        commandXboxController.rightTrigger()
+                .onTrue(climber.climbUp()
+                .andThen(new InstantCommand(() -> System.out.println("Climb Up"))
+                .onlyIf(()-> getMode() == CLIMB)));
+        commandXboxController.rightTrigger()
+                .onFalse(climber.climbStop()
+                .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
+                .onlyIf(()-> getMode() == CLIMB)));
+
+        //Climb down
+        commandXboxController.leftTrigger()
+                .onTrue(climber.climbDown()
+                .andThen(new InstantCommand(() -> System.out.println("Climb Down"))
+                .onlyIf(()-> getMode() == CLIMB)));
+        commandXboxController.leftTrigger()
+                .onFalse(climber.climbStop()
+                .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
+                .onlyIf(()-> getMode() == CLIMB)));
+
+        //Shoot amp
+        commandXboxController.rightBumper();
+
+        //Elevator
+
+
+
         // Index to amp
         commandXboxController.rightTrigger()
         .onTrue(IntakeCommands.IntakeToAmp())
