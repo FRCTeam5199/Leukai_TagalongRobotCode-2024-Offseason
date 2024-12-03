@@ -37,11 +37,7 @@ public class IntakeCommands{
      indexerSubsystem
     );
   }
-    /**
-     * the speeds are currently not correct
-     * TODO: tune
-     * @return
-     */
+  
     public static Command IntakeToShooter()
   {
     return new FunctionalCommand
@@ -61,7 +57,7 @@ public class IntakeCommands{
      () -> {indexerSubsystem.setRollerSpeeds(0,50,0); },
      () -> {}, 
      (interrupted) -> indexerSubsystem.setRollerSpeeds(0,0,0), 
-     () -> indexerSubsystem.isNoteInIndexer(),
+     () -> false,
      indexerSubsystem
     );
   }
@@ -73,7 +69,7 @@ public class IntakeCommands{
      () -> {indexerSubsystem.setRollerSpeeds(0,100,0); },
      () -> {}, 
      (interrupted) -> indexerSubsystem.setRollerSpeeds(0,0,0), 
-     () -> indexerSubsystem.isNoteInIndexer(),
+     () -> false,
      indexerSubsystem
     );
   }
