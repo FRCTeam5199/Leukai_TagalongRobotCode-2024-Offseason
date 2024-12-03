@@ -8,52 +8,73 @@ import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.subsystems.IndexerSubsystem;
 public class IntakeCommands{
-  IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
-  public Command Intake() {
-    //TODO: tune?!
-    return indexerSubsystem.run(
-        () -> {
-          System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(10,0,0);
-        });
-  }
-  public Command stopIntake() {
-      return indexerSubsystem.runOnce(() -> {
-          indexerSubsystem.setRollerSpeeds(0, 0, 0);
-      });
-  }
-  public Command Amp() {
-    //TODO: tune?!
-    return indexerSubsystem.runOnce(
-        () -> {
-          System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(0,10,0);
-        });
-  }
-  //FOR INTAKING INTO SHOOTER,    100, -60, 10
-  public Command Indexer() {
-    //TODO: tune?!
-    return indexerSubsystem.run(
-        () -> {
-          System.out.println("IT WORKS");
-          indexerSubsystem.setRollerSpeeds(0,0,10);
-        });
-  }
-  public Command stopIndexer() {
-      return indexerSubsystem.runOnce(
-         () -> {
-            indexerSubsystem.setRollerSpeeds(0, 0, 0);
-          });
-  }
-  public static Command functionalAmp()
+  static IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
+
+  /**
+   * intakes into amp
+   * @return
+   */
+  public static Command IntakeToAmp()
   {
     return new FunctionalCommand
     (
-     () -> {IndexerSubsystem.getInstance().setRollerSpeeds(100,60,0); System.out.println("work");},
-     () -> {},
-     (wasnotexplained) -> IndexerSubsystem.getInstance().setRollerSpeeds(0,0,0),
+     () -> {indexerSubsystem.setRollerSpeeds(100,60,0); },
+     () -> {}, 
+     (interrupted) -> indexerSubsystem.setRollerSpeeds(0,0,0), 
+     () -> indexerSubsystem.isNoteInAmpTrap(),
+     indexerSubsystem
+    );
+  }
+
+    public static Command IndexerOff()
+  {
+    return new FunctionalCommand
+    (
+     () -> {indexerSubsystem.setRollerSpeeds(0,0,0); },
+     () -> {}, 
+     (interrupted) -> indexerSubsystem.setRollerSpeeds(0,0,0), 
      () -> false,
-     IndexerSubsystem.getInstance()
+     indexerSubsystem
+    );
+  }
+    /**
+     * the speeds are currently not correct
+     * TODO: tune
+     * @return
+     */
+    public static Command IntakeToShooter()
+  {
+    return new FunctionalCommand
+    (
+     () -> {indexerSubsystem.setRollerSpeeds(100,-60,10); },
+     () -> {}, 
+     (interrupted) -> indexerSubsystem.setRollerSpeeds(0,0,0), 
+     () -> indexerSubsystem.isNoteInIndexer(),
+     indexerSubsystem
+    );
+  }
+
+    public static Command AmpScore()
+  {
+    return new FunctionalCommand
+    (
+     () -> {indexerSubsystem.setRollerSpeeds(0,50,0); },
+     () -> {}, 
+     (interrupted) -> indexerSubsystem.setRollerSpeeds(0,0,0), 
+     () -> indexerSubsystem.isNoteInIndexer(),
+     indexerSubsystem
+    );
+  }
+
+    public static Command TrapScore()
+  {
+    return new FunctionalCommand
+    (
+     () -> {indexerSubsystem.setRollerSpeeds(0,100,0); },
+     () -> {}, 
+     (interrupted) -> indexerSubsystem.setRollerSpeeds(0,0,0), 
+     () -> indexerSubsystem.isNoteInIndexer(),
+     indexerSubsystem
     );
   }
 

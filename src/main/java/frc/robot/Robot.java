@@ -94,17 +94,17 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void disabledPeriodic() {
-        alliance = DriverStation.getAlliance();
-        estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
-        if (alliance != null && alliance.isPresent() && estimatePose.getFirst().isPresent()) {
-            EstimatedRobotPose robotPose = estimatePose.getFirst().get();
+        // alliance = DriverStation.getAlliance();
+        // estimatePose = aprilTagSubsystem.getEstimatedGlobalPose();
+        // if (alliance != null && alliance.isPresent() && estimatePose.getFirst().isPresent()) {
+        //     EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
-            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
-                    Rotation2d.fromDegrees(alliance.get() == DriverStation.Alliance.Red ? 180 : 0));
+        //     Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+        //     Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(),
+        //             Rotation2d.fromDegrees(alliance.get() == DriverStation.Alliance.Red ? 180 : 0));
 
-            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
-        }
+        //     commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
+        // }
     }
 
     @Override
@@ -161,15 +161,15 @@ public class Robot extends LoggedRobot {
 
     @Override
     public void teleopPeriodic() {
-        if (estimatePose.getFirst().isPresent()) {
-            EstimatedRobotPose robotPose = estimatePose.getFirst().get();
+        // if (estimatePose.getFirst().isPresent()) {
+        //     EstimatedRobotPose robotPose = estimatePose.getFirst().get();
 
-            Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
+        //     Pose2d robotPose2d = robotPose.estimatedPose.toPose2d();
 
-            Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), commandSwerveDrivetrain.getPose().getRotation());
+        //     Pose2d modify = new Pose2d(robotPose2d.getX(), robotPose2d.getY(), commandSwerveDrivetrain.getPose().getRotation());
 
-            commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
-        }
+        //     commandSwerveDrivetrain.addVisionMeasurement(modify, estimatePose.getSecond());
+        // }
 
         RobotContainer.teleopPeriodic();
         commandSwerveDrivetrain.getPigeon2().getAngle();

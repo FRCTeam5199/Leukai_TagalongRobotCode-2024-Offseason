@@ -103,26 +103,16 @@ public class RobotContainer {
 //            commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> climber.climbDown()));
 //            commandXboxController.leftTrigger().onFalse(new InstantCommand(() -> climber.climbStop()));
 //        }
-        // System.out.println("IT WORKS");
-        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> IntakeCommands.functionalAmp()).onlyIf(() -> true) );
-        // commandXboxController.leftTrigger().onTrue(new InstantCommand(() -> intaketh.Indexer() ));
-        // commandXboxController.leftBumper().onTrue(new InstantCommand(() -> intaketh.Intake() ));
-    
-        //   SHOOTER MODE
-            commandXboxController.leftTrigger().onTrue(Commands.parallel(ShooterCommands.blankShoot(), ShooterCommands.aimShooterMid(false)).onlyIf(() -> getMode() == SHOOTER)
-                                               .andThen(new InstantCommand(() -> System.out.println("shooting"))))
-                                               .onFalse(Commands.parallel(ShooterCommands.stopShooter(), ShooterCommands.unAimShooter()));
-
-            commandXboxController.rightTrigger().onTrue((intake.Intake()).onlyIf(() -> getMode() == SHOOTER)
-                                                .andThen(new InstantCommand(() -> System.out.println("intaking"))))
-                                                .onFalse(intake.stopIntake());
-
-            commandXboxController.rightBumper().onTrue((intake.Indexer()).onlyIf(() -> getMode() == SHOOTER).onlyIf(() -> shooterSubsystem.reachedShootingConditions(20))
-                                               .andThen(new InstantCommand(() -> System.out.println("indexing"))))
-                                               .onFalse(intake.stopIndexer());
-
-            commandXboxController.leftBumper().onTrue((ShooterCommands.aimShooterMid(true)).onlyIf(() -> getMode() == SHOOTER)
-                                              .andThen(new InstantCommand(() -> System.out.println("aiming"))));
+        // Index to amp
+        commandXboxController.rightTrigger()
+        .onTrue(IntakeCommands.IntakeToAmp())
+        .onFalse(IntakeCommands.IndexerOff())
+        ;
+        // Index/Intake  to shooter
+        commandXboxController.leftTrigger()
+        .onTrue(IntakeCommands.IntakeToShooter())
+        .onFalse(IntakeCommands.IndexerOff())
+        ;
     }
 
     public Command getAutonomousCommand() {
