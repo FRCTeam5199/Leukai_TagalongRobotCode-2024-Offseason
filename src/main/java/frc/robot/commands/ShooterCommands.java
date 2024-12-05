@@ -25,6 +25,16 @@ public class ShooterCommands {
             ()->false,
             shooterSubsystem);
     }
+
+    public static Command stopShoot() {
+        return new FunctionalCommand(
+            //TODO: don't tune?
+            ()->shooterSubsystem.setShooterSpeeds(0),
+            ()->{}, 
+            (something)->shooterSubsystem.setShooterSpeeds(0),
+            ()->false,
+            shooterSubsystem);
+    }
     public static Command stablizeShooter() {
         return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.STABLE.getRotations(), true);
     }
@@ -36,6 +46,9 @@ public class ShooterCommands {
     }
     public static Command aimShooterMid() {
         return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.MID.getRotations(), true);
+    }
+    public static Command aimShooterSub() {
+        return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.SUB.getRotations(), true);
     }
     public static Command aimShooterHighShuttle() {
         return new PivotToCommand<>(shooterSubsystem, ShooterPivotAngles.HIGH_SHUTTLE.getRotations(), true);
