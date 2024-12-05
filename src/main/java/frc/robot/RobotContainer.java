@@ -121,8 +121,9 @@ public class RobotContainer {
         commandXboxController.rightTrigger().onTrue(CommandSelections.rightTriggerCommand);
         commandXboxController.leftTrigger().onTrue(CommandSelections.leftTriggerCommand);
         commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand);
-        commandXboxController.leftBumper().onTrue(CommandSelections.leftBumperCommand);
-        commandXboxController.leftBumper().onFalse(CommandSelections.leftBumperFalseCommand);
+        commandXboxController.leftBumper()
+            .onTrue(CommandSelections.leftBumperCommand)
+            .onFalse(CommandSelections.leftBumperFalseCommand);
 
     }
 
