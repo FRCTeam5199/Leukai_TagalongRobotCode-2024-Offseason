@@ -9,9 +9,13 @@ import static frc.robot.utility.Mode.CLIMB;
 import static frc.robot.utility.Mode.SHOOTER;
 import static frc.robot.utility.Mode.SHUTTLE;
 
+import com.ctre.phoenix6.Orchestra;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -29,6 +33,7 @@ import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.utility.Mode;
+import frc.robot.utility.hii;
 
 public class RobotContainer {
     public static final CommandXboxController commandXboxController = new CommandXboxController(
@@ -42,13 +47,15 @@ public class RobotContainer {
     public static final IntakeCommands intake = new IntakeCommands();
     public static final AmpTrap ampTrap = AmpTrap.getInstance();
     public final static ObjectDetectionSubsystem objectDetection = ObjectDetectionSubsystem.getInstance();
-//     public static final Autos autos = new Autos(commandSwerveDrivetrain);
+    //     public static final Autos autos = new Autos(commandSwerveDrivetrain);
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
+
+    public static final hii orchestraPlayer = new hii();
     public static double armAutoAimAngle;
     public static Mode mode = Mode.SHOOTER;
     public double prevArmAngle = 0;
- 
+
 
     // The robot's subsystems and commands are defined here...
     private double MaxSpeed = TunerConstants.kSpeedAt12VoltsMps; // kSpeedAt12VoltsMps desired top speed
@@ -64,7 +71,6 @@ public class RobotContainer {
     private double distance;
     private double angleOffset;
     public static double driveAngleOffset;
-
 
 
     public RobotContainer() {
@@ -96,6 +102,20 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
+                commandSwerveDrivetrain.applyRequest(
+                        () -> {
+                            return
+                                    // Drive forward with negative Y (forward)
+                                    fieldCentricSwerveDrive.withVelocityX(-commandXboxController.getLeftY() * MaxSpeed)
+                                            // Drive left with negative X (left)
+                                            .withVelocityY(-commandXboxController.getLeftX() * MaxSpeed)
+                                            // Drive counterclockwise with negative X (left)
+                                            .withRotationalRate(-commandXboxController.getRightX() * MaxAngularRate);
+                        }
+                )
+        );
+
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
         commandXboxController.x().onTrue((new InstantCommand(() -> setMode(CLIMB)))
                 .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time")))
@@ -105,30 +125,37 @@ public class RobotContainer {
         commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER)))
                 .andThen(new InstantCommand(() -> System.out.println("It's Shooting Time"))));
         commandXboxController.y().onTrue((new InstantCommand(() -> setMode(SHUTTLE)))
-                .andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time"))));
+                .andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time!"))));
 
+        // orchestra commands
+        commandXboxController.povDown().onTrue((new InstantCommand(hii::playMegolovania))
+                .andThen(new InstantCommand(() -> System.out.println("Playing Megolovania"))));
+        commandXboxController.povLeft().onTrue((new InstantCommand(hii::playTotikfr))
+                .andThen(new InstantCommand(() -> System.out.println("Playing Totikfr"))));
+        commandXboxController.povRight().onTrue((new InstantCommand(hii::playCarelessWhisper))
+                .andThen(new InstantCommand(() -> System.out.println("Playing CarelessWhisper"))));
 
         //CLIMB MODE
 
         //Climb up
         commandXboxController.rightTrigger()
                 .onTrue(climber.climbUp()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Up"))
-                .onlyIf(()-> getMode() == CLIMB)));
+                        .andThen(new InstantCommand(() -> System.out.println("Climb Up"))
+                                .onlyIf(() -> getMode() == CLIMB)));
         commandXboxController.rightTrigger()
                 .onFalse(climber.climbStop()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
-                .onlyIf(()-> getMode() == CLIMB)));
+                        .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
+                                .onlyIf(() -> getMode() == CLIMB)));
 
         //Climb down
         commandXboxController.leftTrigger()
                 .onTrue(climber.climbDown()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Down"))
-                .onlyIf(()-> getMode() == CLIMB)));
+                        .andThen(new InstantCommand(() -> System.out.println("Climb Down"))
+                                .onlyIf(() -> getMode() == CLIMB)));
         commandXboxController.leftTrigger()
                 .onFalse(climber.climbStop()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
-                .onlyIf(()-> getMode() == CLIMB)));
+                        .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
+                                .onlyIf(() -> getMode() == CLIMB)));
 
         //Shoot amp
         commandXboxController.rightBumper();
@@ -137,19 +164,33 @@ public class RobotContainer {
         commandXboxController.leftBumper()
                 .onTrue(AmpTrapCommands.aimAndIndexTrap())
                 .onFalse(AmpTrapCommands.resetElevatorAndIndex());
-        
 
 
         // Index to amp
         commandXboxController.rightTrigger()
-        .onTrue(IntakeCommands.IntakeToAmp())
-        .onFalse(IntakeCommands.IndexerOff())
+                .onTrue(IntakeCommands.IntakeToAmp())
+                .onFalse(IntakeCommands.IndexerOff())
         ;
         // Index/Intake  to shooter
         commandXboxController.leftTrigger()
-        .onTrue(IntakeCommands.IntakeToShooter())
-        .onFalse(IntakeCommands.IndexerOff())
+                .onTrue(IntakeCommands.IntakeToShooter())
+                .onFalse(IntakeCommands.IndexerOff())
         ;
+
+        commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
+            // Seed field relative pose that is alliance dependent
+            var current = commandSwerveDrivetrain.getPose();
+            commandSwerveDrivetrain.seedFieldRelative(
+                    new Pose2d(
+                            current.getX(),
+                            current.getY(),
+                            Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)));
+//            commandSwerveDrivetrain.getPigeon2().setYaw(new Pose2d(
+//                    current.getX(),
+//                    current.getY(),
+//                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)).getRotation().getDegrees());
+
+        }));
     }
 
     public Command getAutonomousCommand() {
