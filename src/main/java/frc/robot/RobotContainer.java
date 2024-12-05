@@ -41,6 +41,7 @@ public class RobotContainer {
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
     public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    public static final ShooterCommands shooter = new ShooterCommands();
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final ClimberCommands climber = new ClimberCommands();
     public static final IntakeCommands intaketh = new IntakeCommands();
@@ -109,7 +110,7 @@ public class RobotContainer {
     private void configureBindings() {
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
         commandXboxController.x().onTrue((new InstantCommand(() -> setMode(CLIMB)))
-                .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time"))));
+                .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time"))).andThen(shooter.aimShooterClimb()));
         commandXboxController.a().onTrue((new InstantCommand(() -> setMode(AMP)))
                 .andThen(new InstantCommand(() -> System.out.println("It's Amping Time"))));
         commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER)))
@@ -122,6 +123,8 @@ public class RobotContainer {
         commandXboxController.leftTrigger().onTrue(CommandSelections.leftTriggerCommand);
         commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand);
         commandXboxController.leftBumper().onTrue(CommandSelections.leftBumperCommand);
+
+        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperFalseCommand);
 
     }
 
