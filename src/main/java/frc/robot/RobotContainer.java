@@ -10,6 +10,8 @@ import static frc.robot.utility.Mode.SHOOTER;
 import static frc.robot.utility.Mode.SHUTTLE;
 
 import com.ctre.phoenix6.Orchestra;
+import java.util.Map;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
@@ -20,6 +22,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AmpTrapCommands;
 import frc.robot.commands.ClimberCommands;
@@ -32,6 +36,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.CommandSelections;
 import frc.robot.utility.Mode;
 import frc.robot.utility.hii;
 
@@ -41,6 +46,7 @@ public class RobotContainer {
     public final static CommandSwerveDrivetrain commandSwerveDrivetrain = TunerConstants.DriveTrain; // My drivetrain
     public static final IndexerSubsystem indexerSubsystem = IndexerSubsystem.getInstance();
     public static final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
+    public static final ShooterCommands shooter = new ShooterCommands();
     public static final Climber climberSubsystem = Climber.getInstance();
     public static final ClimberCommands climber = new ClimberCommands();
     public static final IntakeCommands intaketh = new IntakeCommands();
@@ -101,6 +107,12 @@ public class RobotContainer {
         RobotContainer.mode = mode;
     }
 
+    public static Mode select() {
+        return RobotContainer.mode;
+    }
+
+
+
     private void configureBindings() {
         commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 commandSwerveDrivetrain.applyRequest(
@@ -118,8 +130,7 @@ public class RobotContainer {
 
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
         commandXboxController.x().onTrue((new InstantCommand(() -> setMode(CLIMB)))
-                .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time")))
-                .andThen((ShooterCommands.aimShooterClimb())));
+                .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time"))).andThen(shooter.aimShooterClimb()));
         commandXboxController.a().onTrue((new InstantCommand(() -> setMode(AMP)))
                 .andThen(new InstantCommand(() -> System.out.println("It's Amping Time"))));
         commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER)))
@@ -135,6 +146,9 @@ public class RobotContainer {
 //        commandXboxController.povRight().onTrue((new InstantCommand(hii::playCarelessWhisper))
 //                .andThen(new InstantCommand(() -> System.out.println("Playing CarelessWhisper"))));
 
+        commandXboxController.rightTrigger().onTrue(CommandSelections.rightTriggerCommand).onFalse(CommandSelections.rightTriggerCommandFalse);
+        commandXboxController.leftTrigger().onTrue(CommandSelections.leftTriggerCommand).onFalse(CommandSelections.leftTriggerCommandFalse);
+        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand);
         //CLIMB MODE
 
         //Climb up
@@ -162,35 +176,11 @@ public class RobotContainer {
 
         //Elevator
         commandXboxController.leftBumper()
-                .onTrue(AmpTrapCommands.aimAndIndexTrap())
-                .onFalse(AmpTrapCommands.resetElevatorAndIndex());
+            .onTrue(CommandSelections.leftBumperCommand)
+            .onFalse(CommandSelections.leftBumperFalseCommand);
 
+        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperFalseCommand);
 
-        // Index to amp
-        commandXboxController.rightTrigger()
-                .onTrue(IntakeCommands.IntakeToAmp())
-                .onFalse(IntakeCommands.IndexerOff())
-        ;
-        // Index/Intake  to shooter
-        commandXboxController.leftTrigger()
-                .onTrue(IntakeCommands.IntakeToShooter())
-                .onFalse(IntakeCommands.IndexerOff())
-        ;
-
-        commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
-            // Seed field relative pose that is alliance dependent
-            var current = commandSwerveDrivetrain.getPose();
-            commandSwerveDrivetrain.seedFieldRelative(
-                    new Pose2d(
-                            current.getX(),
-                            current.getY(),
-                            Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)));
-//            commandSwerveDrivetrain.getPigeon2().setYaw(new Pose2d(
-//                    current.getX(),
-//                    current.getY(),
-//                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)).getRotation().getDegrees());
-
-        }));
     }
 
     public Command getAutonomousCommand() {

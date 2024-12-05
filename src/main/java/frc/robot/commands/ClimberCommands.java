@@ -10,7 +10,7 @@ import frc.robot.RobotContainer;
 
 public class ClimberCommands {
 
-    Climber climber;
+    static Climber climber;
 
 
 
@@ -18,14 +18,14 @@ public class ClimberCommands {
         climber = Climber.getInstance();
     }
 
-    public Command climbUp(){
-        return new InstantCommand(() -> climber.setClimberPowers(.2));
-    }
-
-    public Command climbDown() {
+    public static Command climbUp(){
         return new InstantCommand(() -> climber.setClimberPowers(-.2));
     }
-    public Command climbStop() {
+
+    public static Command climbDown() {
+        return new InstantCommand(() -> climber.setClimberPowers(.2));
+    }
+    public static Command climbStop() {
         return new InstantCommand(() -> climber.setClimberPowers(0));
     }
 

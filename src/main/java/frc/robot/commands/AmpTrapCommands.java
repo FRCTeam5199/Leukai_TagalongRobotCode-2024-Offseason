@@ -27,4 +27,12 @@ public class AmpTrapCommands {
     public static Command resetElevatorAndIndex() {
         return aimElevatorStable().andThen(IntakeCommands.IndexerOff());
     }
+
+    public static Command shootTrap() {
+        return IntakeCommands.TrapScore();
+    }
+
+    public static Command shootAmp() {
+        return IntakeCommands.AmpScore();
+    }
 }
