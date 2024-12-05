@@ -9,6 +9,8 @@ import java.util.Map;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.SelectCommand;
 import frc.robot.Robot;
@@ -17,6 +19,8 @@ import frc.robot.commands.AmpTrapCommands;
 import frc.robot.commands.ClimberCommands;
 import frc.robot.commands.IntakeCommands;
 import frc.robot.commands.ShooterCommands;
+import frc.robot.commands.ShooterCommands;
+import frc.robot.subsystems.AmpTrap;
 
 /** Add your docs here. */
 public class CommandSelections {
@@ -85,12 +89,43 @@ public class CommandSelections {
         new SelectCommand<>(
             // Maps selector values to commands
             Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new PrintCommand("Mid shot rev and aim")),
-                Map.entry(Mode.AMP, new PrintCommand("do nothing")),
-                Map.entry(Mode.CLIMB, new PrintCommand("elevator aim")),
-                Map.entry(Mode.SHUTTLE, new PrintCommand("low shooter"))
+                Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
+                    ShooterCommands.aimShooterMid()
+                        .andThen(ShooterCommands.blankShoot()),
+                    new PrintCommand("Mid shot aim and rev"))),
+                Map.entry(Mode.AMP, new ParallelCommandGroup(
+                    new PrintCommand("do nothing"))),
+                Map.entry(Mode.CLIMB, new ParallelCommandGroup(
+                    new PrintCommand("elevator aim"),
+                    AmpTrapCommands.aimElevatorTrap()
+                    )
+                ),
+                Map.entry(Mode.SHUTTLE, new ParallelCommandGroup(
+                    new PrintCommand("low shooter"),
+                    ShooterCommands.stablizeShooter()
+                ))
             ),
                 RobotContainer::select
         );
-
+    public static final Command leftBumperFalseCommand =
+        new SelectCommand<>(
+            // Maps selector values to commands
+            Map.ofEntries(
+                Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
+                    ShooterCommands.stablizeShooter(),
+                    new PrintCommand("Mid shot aim and rev"))),
+                Map.entry(Mode.AMP, new ParallelCommandGroup(
+                    new PrintCommand("do nothing"))),
+                Map.entry(Mode.CLIMB, new ParallelCommandGroup(
+                    new PrintCommand("elevator aim"),
+                    AmpTrapCommands.aimElevatorStable()
+                    )
+                ),
+                Map.entry(Mode.SHUTTLE, new ParallelCommandGroup(
+                    new PrintCommand("low shooter"),
+                    ShooterCommands.stablizeShooter()
+                ))
+            ),
+                RobotContainer::select
+        );
 }
