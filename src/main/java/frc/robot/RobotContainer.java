@@ -51,7 +51,7 @@ public class RobotContainer {
     // driving in open loop
     private static final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
 
-    public static final hii orchestraPlayer = new hii();
+    //    public static final hii orchestraPlayer = new hii();
     public static double armAutoAimAngle;
     public static Mode mode = Mode.SHOOTER;
     public double prevArmAngle = 0;
@@ -125,15 +125,15 @@ public class RobotContainer {
         commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER)))
                 .andThen(new InstantCommand(() -> System.out.println("It's Shooting Time"))));
         commandXboxController.y().onTrue((new InstantCommand(() -> setMode(SHUTTLE)))
-                .andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time!"))));
+                .andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time"))));
 
         // orchestra commands
-        commandXboxController.povDown().onTrue((new InstantCommand(hii::playMegolovania))
-                .andThen(new InstantCommand(() -> System.out.println("Playing Megolovania"))));
-        commandXboxController.povLeft().onTrue((new InstantCommand(hii::playTotikfr))
-                .andThen(new InstantCommand(() -> System.out.println("Playing Totikfr"))));
-        commandXboxController.povRight().onTrue((new InstantCommand(hii::playCarelessWhisper))
-                .andThen(new InstantCommand(() -> System.out.println("Playing CarelessWhisper"))));
+//        commandXboxController.povDown().onTrue((new InstantCommand(hii::playMegolovania))
+//                .andThen(new InstantCommand(() -> System.out.println("Playing Megolovania"))));
+//        commandXboxController.povLeft().onTrue((new InstantCommand(hii::playTotikfr))
+//                .andThen(new InstantCommand(() -> System.out.println("Playing Totikfr"))));
+//        commandXboxController.povRight().onTrue((new InstantCommand(hii::playCarelessWhisper))
+//                .andThen(new InstantCommand(() -> System.out.println("Playing CarelessWhisper"))));
 
         //CLIMB MODE
 
