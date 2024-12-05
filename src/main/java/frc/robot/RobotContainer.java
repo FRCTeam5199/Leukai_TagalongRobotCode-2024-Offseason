@@ -10,6 +10,7 @@ import static frc.robot.utility.Mode.SHOOTER;
 import static frc.robot.utility.Mode.SHUTTLE;
 
 import com.ctre.phoenix6.Orchestra;
+
 import java.util.Map;
 
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
@@ -112,7 +113,6 @@ public class RobotContainer {
     }
 
 
-
     private void configureBindings() {
         commandSwerveDrivetrain.setDefaultCommand( // Drivetrain will execute this command periodically
                 commandSwerveDrivetrain.applyRequest(
@@ -161,23 +161,13 @@ public class RobotContainer {
                         .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
                                 .onlyIf(() -> getMode() == CLIMB)));
 
-        //Climb down
-        commandXboxController.leftTrigger()
-                .onTrue(climber.climbDown()
-                        .andThen(new InstantCommand(() -> System.out.println("Climb Down"))
-                                .onlyIf(() -> getMode() == CLIMB)));
-        commandXboxController.leftTrigger()
-                .onFalse(climber.climbStop()
-                        .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
-                                .onlyIf(() -> getMode() == CLIMB)));
-
         //Shoot amp
         commandXboxController.rightBumper();
 
         //Elevator
         commandXboxController.leftBumper()
-            .onTrue(CommandSelections.leftBumperCommand)
-            .onFalse(CommandSelections.leftBumperFalseCommand);
+                .onTrue(CommandSelections.leftBumperCommand)
+                .onFalse(CommandSelections.leftBumperFalseCommand);
 
         commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperFalseCommand);
 
