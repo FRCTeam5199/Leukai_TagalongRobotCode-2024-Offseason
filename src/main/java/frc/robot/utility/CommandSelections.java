@@ -25,122 +25,125 @@ import frc.robot.commands.ShooterCommands;
 import frc.robot.commands.ShooterCommands;
 import frc.robot.subsystems.AmpTrap;
 
-/** Add your docs here. */
+/**
+ * Add your docs here.
+ */
 public class CommandSelections {
 
-       public static final Command rightTriggerCommand =
-        new SelectCommand<>(
-            // Maps selector values to commands
-            Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IntakeToShooter())),
-                Map.entry(Mode.AMP, new PrintCommand("Intake into amp").andThen(IntakeCommands.IntakeToAmp())),
-                Map.entry(Mode.CLIMB, new PrintCommand("Climb down").andThen(ClimberCommands.climbDown())),
-                Map.entry(Mode.SHUTTLE, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IntakeToShooter()))
-            ),
-                RobotContainer::select
-        );
+    public static final Command rightTriggerCommand =
+            new SelectCommand<>(
+                    // Maps selector values to commands
+                    Map.ofEntries(
+                            Map.entry(Mode.SHOOTER, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IntakeToShooter())),
+                            Map.entry(Mode.AMP, new PrintCommand("Intake into amp").andThen(IntakeCommands.IntakeToAmp())),
+                            Map.entry(Mode.CLIMB, new PrintCommand("Climb down").andThen(ClimberCommands.climbDown())),
+                            Map.entry(Mode.SHUTTLE, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IntakeToShooter()))
+                    ),
+                    RobotContainer::select
+            );
 
-        public static final Command rightTriggerCommandFalse =
-        new SelectCommand<>(
-            // Maps selector values to commands
-            Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IndexerOff())),
-                Map.entry(Mode.AMP, new PrintCommand("Intake into amp").andThen(IntakeCommands.IndexerOff())),
-                Map.entry(Mode.CLIMB, new PrintCommand("Climb down").andThen(ClimberCommands.climbStop())),
-                Map.entry(Mode.SHUTTLE, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IndexerOff()))
-            ),
-                RobotContainer::select
-        );
+    public static final Command rightTriggerCommandFalse =
+            new SelectCommand<>(
+                    // Maps selector values to commands
+                    Map.ofEntries(
+                            Map.entry(Mode.SHOOTER, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IndexerOff())),
+                            Map.entry(Mode.AMP, new PrintCommand("Intake into amp").andThen(IntakeCommands.IndexerOff())),
+                            Map.entry(Mode.CLIMB, new PrintCommand("Climb down").andThen(ClimberCommands.climbStop())),
+                            Map.entry(Mode.SHUTTLE, new PrintCommand("Intake into shooter").andThen(IntakeCommands.IndexerOff()))
+                    ),
+                    RobotContainer::select
+            );
 
-        public static final Command leftTriggerCommand =
-        new SelectCommand<>(
-            // Maps selector values to commands
-            Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new PrintCommand("Sub rev and aim").andThen(ShooterCommands.aimShooterSub()).andThen(ShooterCommands.blankShoot())),
-                Map.entry(Mode.AMP, new PrintCommand("Elevator aim").andThen(AmpTrapCommands.aimElevatorAmp())),
-                Map.entry(Mode.CLIMB, new PrintCommand("Climb up").andThen(ClimberCommands.climbUp())),
-                Map.entry(Mode.SHUTTLE, new PrintCommand("Hi shuttle setpoint and rev").andThen(ShooterCommands.aimShooterHighShuttle().andThen(ShooterCommands.blankShoot())))
-            ),
-                RobotContainer::select
-        );
+    public static final Command leftTriggerCommand =
+            new SelectCommand<>(
+                    // Maps selector values to commands
+                    Map.ofEntries(
+                            Map.entry(Mode.SHOOTER, new PrintCommand("Sub rev and aim").andThen(ShooterCommands.aimShooterSub()).andThen(ShooterCommands.blankShoot())),
+                            Map.entry(Mode.AMP, new PrintCommand("Elevator aim").andThen(AmpTrapCommands.aimElevatorAmp())),
+                            Map.entry(Mode.CLIMB, new PrintCommand("Climb up").andThen(ClimberCommands.climbUp())),
+                            Map.entry(Mode.SHUTTLE, new PrintCommand("Hi shuttle setpoint and rev").andThen(ShooterCommands.aimShooterHighShuttle().andThen(ShooterCommands.blankShoot())))
+                    ),
+                    RobotContainer::select
+            );
 
-        public static final Command leftTriggerCommandFalse =
-        new SelectCommand<>(
-            // Maps selector values to commands
-            Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new PrintCommand("Sub rev and aim").andThen(ShooterCommands.stablizeShooter()).andThen(ShooterCommands.stopShoot())),
-                Map.entry(Mode.AMP, new PrintCommand("Elevator aim").andThen(AmpTrapCommands.aimElevatorStable())),
-                Map.entry(Mode.CLIMB, new PrintCommand("Climb up").andThen(ClimberCommands.climbStop())),
-                Map.entry(Mode.SHUTTLE, new PrintCommand("Hi shuttle setpoint and rev").andThen(ShooterCommands.stablizeShooter().andThen(ShooterCommands.stopShoot())))
-            ),
-                RobotContainer::select
-        );
+    public static final Command leftTriggerCommandFalse =
+            new SelectCommand<>(
+                    // Maps selector values to commands
+                    Map.ofEntries(
+                            Map.entry(Mode.SHOOTER, new PrintCommand("Sub rev and aim").andThen(ShooterCommands.stablizeShooter()).andThen(ShooterCommands.stopShoot())),
+                            Map.entry(Mode.AMP, new PrintCommand("Elevator aim").andThen(AmpTrapCommands.aimElevatorStable())),
+                            Map.entry(Mode.CLIMB, new PrintCommand("Climb up").andThen(ClimberCommands.climbStop())),
+                            Map.entry(Mode.SHUTTLE, new PrintCommand("Hi shuttle setpoint and rev").andThen(ShooterCommands.stablizeShooter().andThen(ShooterCommands.stopShoot())))
+                    ),
+                    RobotContainer::select
+            );
 
-        public static final Command rightBumperFalseCommand =
-        new SelectCommand<>(
-            // Maps selector values to commands
-            Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new PrintCommand("shoot shooter").andThen(ShooterCommands.stablizeShooter())),
-                Map.entry(Mode.AMP, new PrintCommand("shoot amp").andThen(AmpTrapCommands.resetElevatorAndIndex())),
-                Map.entry(Mode.CLIMB, new PrintCommand("shoot amp").andThen(AmpTrapCommands.resetElevatorAndIndex())),
-                Map.entry(Mode.SHUTTLE, new PrintCommand("shoot shooter").andThen(ShooterCommands.stablizeShooter()))
-            ),
-                RobotContainer::select
-        );
+    public static final Command rightBumperFalseCommand =
+            new SelectCommand<>(
+                    // Maps selector values to commands
+                    Map.ofEntries(
+                            Map.entry(Mode.SHOOTER, new PrintCommand("shoot shooter").andThen(ShooterCommands.stablizeShooter())),
+                            Map.entry(Mode.AMP, new PrintCommand("shoot amp").andThen(AmpTrapCommands.resetElevatorAndIndex())),
+                            Map.entry(Mode.CLIMB, new PrintCommand("shoot amp").andThen(AmpTrapCommands.resetElevatorAndIndex())),
+                            Map.entry(Mode.SHUTTLE, new PrintCommand("shoot shooter").andThen(ShooterCommands.stablizeShooter()))
+                    ),
+                    RobotContainer::select
+            );
 
     public static final Command rightBumperCommand =
             new SelectCommand<>(
                     // Maps selector values to commands
                     Map.ofEntries(
-                            Map.entry(Mode.SHOOTER, new PrintCommand("shoot shooter").andThen(ShooterCommands.blankShoot())),
+                            Map.entry(Mode.SHOOTER, new PrintCommand("shoot shooter").andThen(ShooterCommands.moveIntoShooter())),
                             Map.entry(Mode.AMP, new PrintCommand("shoot amp").andThen(AmpTrapCommands.shootAmp())),
                             Map.entry(Mode.CLIMB, new PrintCommand("shoot amp").andThen(AmpTrapCommands.shootTrap())),
-                            Map.entry(Mode.SHUTTLE, new PrintCommand("shoot shooter").andThen(ShooterCommands.blankShoot()))
+                            Map.entry(Mode.SHUTTLE, new PrintCommand("shoot shooter").andThen(ShooterCommands.moveIntoShooter()))
                     ),
                     RobotContainer::select
             );
 
-        public static final Command leftBumperCommand =
-        new SelectCommand<>(
-            // Maps selector values to commands
-            Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
-                    ShooterCommands.aimShooterMid()
-                        .andThen(ShooterCommands.blankShoot()),
-                    new PrintCommand("Mid shot aim and rev"))),
-                Map.entry(Mode.AMP, new ParallelCommandGroup(
-                    new PrintCommand("do nothing"))),
-                Map.entry(Mode.CLIMB, new ParallelCommandGroup(
-                    new PrintCommand("elevator aim"),
-                    AmpTrapCommands.aimElevatorTrap()
-                    )
-                ),
-                Map.entry(Mode.SHUTTLE, new ParallelCommandGroup(
-                    new PrintCommand("low shooter"),
-                    ShooterCommands.stablizeShooter()
-                ))
-            ),
-                RobotContainer::select
-        );
+    public static final Command leftBumperCommand =
+            new SelectCommand<>(
+                    // Maps selector values to commands
+                    Map.ofEntries(
+                            Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
+                                    ShooterCommands.aimShooterMid()
+                                            .andThen(ShooterCommands.blankShoot()),
+                                    new PrintCommand("Mid shot aim and rev"))),
+                            Map.entry(Mode.AMP, new ParallelCommandGroup(
+                                    new PrintCommand("do nothing"))),
+                            Map.entry(Mode.CLIMB, new ParallelCommandGroup(
+                                            new PrintCommand("elevator aim"),
+                                            AmpTrapCommands.aimElevatorTrap()
+                                    )
+                            ),
+                            Map.entry(Mode.SHUTTLE, new ParallelCommandGroup(
+                                    new PrintCommand("low shooter"),
+                                    ShooterCommands.stablizeShooter()
+                                            .andThen(ShooterCommands.blankShoot())
+                            ))
+                    ),
+                    RobotContainer::select
+            );
     public static final Command leftBumperFalseCommand =
-        new SelectCommand<>(
-            // Maps selector values to commands
-            Map.ofEntries(
-                Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
-                    ShooterCommands.stablizeShooter(),
-                    new PrintCommand("Mid shot aim and rev"))),
-                Map.entry(Mode.AMP, new ParallelCommandGroup(
-                    new PrintCommand("do nothing"))),
-                Map.entry(Mode.CLIMB, new ParallelCommandGroup(
-                    new PrintCommand("elevator aim"),
-                    AmpTrapCommands.aimElevatorStable()
-                    )
-                ),
-                Map.entry(Mode.SHUTTLE, new ParallelCommandGroup(
-                    new PrintCommand("low shooter"),
-                    ShooterCommands.stablizeShooter()
-                ))
-            ),
-                RobotContainer::select
-        );
+            new SelectCommand<>(
+                    // Maps selector values to commands
+                    Map.ofEntries(
+                            Map.entry(Mode.SHOOTER, new ParallelCommandGroup(
+                                    ShooterCommands.stablizeShooter(),
+                                    new PrintCommand("Mid shot aim and rev"))),
+                            Map.entry(Mode.AMP, new ParallelCommandGroup(
+                                    new PrintCommand("do nothing"))),
+                            Map.entry(Mode.CLIMB, new ParallelCommandGroup(
+                                            new PrintCommand("elevator aim"),
+                                            AmpTrapCommands.aimElevatorStable()
+                                    )
+                            ),
+                            Map.entry(Mode.SHUTTLE, new ParallelCommandGroup(
+                                    new PrintCommand("low shooter"),
+                                    ShooterCommands.stablizeShooter()
+                            ))
+                    ),
+                    RobotContainer::select
+            );
 }

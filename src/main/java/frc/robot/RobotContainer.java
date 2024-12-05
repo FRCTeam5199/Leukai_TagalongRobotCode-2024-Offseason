@@ -148,28 +148,28 @@ public class RobotContainer {
 
         commandXboxController.rightTrigger().onTrue(CommandSelections.rightTriggerCommand).onFalse(CommandSelections.rightTriggerCommandFalse);
         commandXboxController.leftTrigger().onTrue(CommandSelections.leftTriggerCommand).onFalse(CommandSelections.leftTriggerCommandFalse);
-        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand);
+        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand).onFalse(CommandSelections.rightBumperFalseCommand);
         //CLIMB MODE
-
-        //Climb up
-        commandXboxController.rightTrigger()
-                .onTrue(climber.climbUp()
-                        .andThen(new InstantCommand(() -> System.out.println("Climb Up"))
-                                .onlyIf(() -> getMode() == CLIMB)));
-        commandXboxController.rightTrigger()
-                .onFalse(climber.climbStop()
-                        .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
-                                .onlyIf(() -> getMode() == CLIMB)));
-
-        //Shoot amp
-        commandXboxController.rightBumper();
 
         //Elevator
         commandXboxController.leftBumper()
                 .onTrue(CommandSelections.leftBumperCommand)
                 .onFalse(CommandSelections.leftBumperFalseCommand);
 
-        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperFalseCommand);
+        commandXboxController.button(8).onTrue(commandSwerveDrivetrain.runOnce(() -> {
+            // Seed field relative pose that is alliance dependent
+            var current = commandSwerveDrivetrain.getPose();
+            commandSwerveDrivetrain.seedFieldRelative(
+                    new Pose2d(
+                            current.getX(),
+                            current.getY(),
+                            Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)));
+//            commandSwerveDrivetrain.getPigeon2().setYaw(new Pose2d(
+//                    current.getX(),
+//                    current.getY(),
+//                    Rotation2d.fromDegrees(DriverStation.getAlliance().get() == DriverStation.Alliance.Red ? 180.0d : 0)).getRotation().getDegrees());
+
+        }));
 
     }
 
