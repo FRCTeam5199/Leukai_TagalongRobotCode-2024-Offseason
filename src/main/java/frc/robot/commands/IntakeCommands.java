@@ -25,7 +25,10 @@ public class IntakeCommands{
      indexerSubsystem
     );
   }
-
+   /**
+    * Make sure to use this with .onfalse after EVERY intake command
+    * @return
+    */
     public static Command IndexerOff()
   {
     return new FunctionalCommand
