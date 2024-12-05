@@ -9,6 +9,8 @@ import static frc.robot.utility.Mode.CLIMB;
 import static frc.robot.utility.Mode.SHOOTER;
 import static frc.robot.utility.Mode.SHUTTLE;
 
+import java.util.Map;
+
 import com.ctre.phoenix6.mechanisms.swerve.SwerveModule;
 import com.ctre.phoenix6.mechanisms.swerve.SwerveRequest;
 
@@ -16,6 +18,8 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.SelectCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.commands.AmpTrapCommands;
 import frc.robot.commands.ClimberCommands;
@@ -28,6 +32,7 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.IndexerSubsystem;
 import frc.robot.subsystems.ObjectDetectionSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.utility.CommandSelections;
 import frc.robot.utility.Mode;
 
 public class RobotContainer {
@@ -95,11 +100,16 @@ public class RobotContainer {
         RobotContainer.mode = mode;
     }
 
+    public static Mode select() {
+        return RobotContainer.mode;
+    }
+
+ 
+
     private void configureBindings() {
         commandSwerveDrivetrain.registerTelemetry(logger::telemeterize);
         commandXboxController.x().onTrue((new InstantCommand(() -> setMode(CLIMB)))
-                .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time")))
-                .andThen((ShooterCommands.aimShooterClimb())));
+                .andThen(new InstantCommand(() -> System.out.println("It's Climbing Time"))));
         commandXboxController.a().onTrue((new InstantCommand(() -> setMode(AMP)))
                 .andThen(new InstantCommand(() -> System.out.println("It's Amping Time"))));
         commandXboxController.b().onTrue((new InstantCommand(() -> setMode(SHOOTER)))
@@ -108,48 +118,11 @@ public class RobotContainer {
                 .andThen(new InstantCommand(() -> System.out.println("It's Shuttling Time"))));
 
 
-        //CLIMB MODE
+        commandXboxController.rightTrigger().onTrue(CommandSelections.rightTriggerCommand);
+        commandXboxController.leftTrigger().onTrue(CommandSelections.leftTriggerCommand);
+        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand);
+        commandXboxController.leftBumper().onTrue(CommandSelections.leftBumperCommand);
 
-        //Climb up
-        commandXboxController.rightTrigger()
-                .onTrue(climber.climbUp()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Up"))
-                .onlyIf(()-> getMode() == CLIMB)));
-        commandXboxController.rightTrigger()
-                .onFalse(climber.climbStop()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
-                .onlyIf(()-> getMode() == CLIMB)));
-
-        //Climb down
-        commandXboxController.leftTrigger()
-                .onTrue(climber.climbDown()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Down"))
-                .onlyIf(()-> getMode() == CLIMB)));
-        commandXboxController.leftTrigger()
-                .onFalse(climber.climbStop()
-                .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
-                .onlyIf(()-> getMode() == CLIMB)));
-
-        //Shoot amp
-        commandXboxController.rightBumper();
-
-        //Elevator
-        commandXboxController.leftBumper()
-                .onTrue(AmpTrapCommands.aimAndIndexTrap())
-                .onFalse(AmpTrapCommands.resetElevatorAndIndex());
-        
-
-
-        // Index to amp
-        commandXboxController.rightTrigger()
-        .onTrue(IntakeCommands.IntakeToAmp())
-        .onFalse(IntakeCommands.IndexerOff())
-        ;
-        // Index/Intake  to shooter
-        commandXboxController.leftTrigger()
-        .onTrue(IntakeCommands.IntakeToShooter())
-        .onFalse(IntakeCommands.IndexerOff())
-        ;
     }
 
     public Command getAutonomousCommand() {
