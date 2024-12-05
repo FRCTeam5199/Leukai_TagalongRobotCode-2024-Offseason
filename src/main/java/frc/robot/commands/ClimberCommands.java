@@ -19,11 +19,11 @@ public class ClimberCommands {
     }
 
     public Command climbUp(){
-        return new InstantCommand(() -> climber.setClimberPowers(.25));
+        return new InstantCommand(() -> climber.setClimberPowers(.2));
     }
 
     public Command climbDown() {
-        return new InstantCommand(() -> climber.setClimberPowers(-.25));
+        return new InstantCommand(() -> climber.setClimberPowers(-.2));
     }
     public Command climbStop() {
         return new InstantCommand(() -> climber.setClimberPowers(0));
