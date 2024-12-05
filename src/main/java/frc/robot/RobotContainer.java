@@ -121,13 +121,10 @@ public class RobotContainer {
 
         commandXboxController.rightTrigger().onTrue(CommandSelections.rightTriggerCommand).onFalse(CommandSelections.rightTriggerCommandFalse);
         commandXboxController.leftTrigger().onTrue(CommandSelections.leftTriggerCommand).onFalse(CommandSelections.leftTriggerCommandFalse);
-        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand);
+        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperCommand).onFalse(CommandSelections.rightBumperFalseCommand);
         commandXboxController.leftBumper()
             .onTrue(CommandSelections.leftBumperCommand)
             .onFalse(CommandSelections.leftBumperFalseCommand);
-
-        commandXboxController.rightBumper().onTrue(CommandSelections.rightBumperFalseCommand);
-
     }
 
     public Command getAutonomousCommand() {
