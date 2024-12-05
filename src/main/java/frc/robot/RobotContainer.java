@@ -112,43 +112,49 @@ public class RobotContainer {
 
         //Climb up
         commandXboxController.rightTrigger()
-                .onTrue(climber.climbUp()
+                .onTrue(climber.climbUp().onlyIf(() -> getMode() == CLIMB)
                 .andThen(new InstantCommand(() -> System.out.println("Climb Up"))
                 .onlyIf(()-> getMode() == CLIMB)));
         commandXboxController.rightTrigger()
-                .onFalse(climber.climbStop()
+                .onFalse(climber.climbStop().onlyIf(() -> getMode() == CLIMB)
                 .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
                 .onlyIf(()-> getMode() == CLIMB)));
 
         //Climb down
         commandXboxController.leftTrigger()
-                .onTrue(climber.climbDown()
+                .onTrue(climber.climbDown().onlyIf(() -> getMode() == CLIMB)
                 .andThen(new InstantCommand(() -> System.out.println("Climb Down"))
                 .onlyIf(()-> getMode() == CLIMB)));
         commandXboxController.leftTrigger()
-                .onFalse(climber.climbStop()
+                .onFalse(climber.climbStop().onlyIf(() -> getMode() == CLIMB)
                 .andThen(new InstantCommand(() -> System.out.println("Climb Stop"))
                 .onlyIf(()-> getMode() == CLIMB)));
 
         //Shoot amp
-        commandXboxController.rightBumper();
+        commandXboxController.rightBumper()
+                .onTrue(AmpTrapCommands.shootTrap()
+                        .onlyIf(() -> getMode() == CLIMB))
+                .onFalse(AmpTrapCommands.resetElevatorAndIndex()
+                        .onlyIf(() -> getMode() == CLIMB));
 
         //Elevator
         commandXboxController.leftBumper()
-                .onTrue(AmpTrapCommands.aimAndIndexTrap())
-                .onFalse(AmpTrapCommands.resetElevatorAndIndex());
-        
+                .onTrue(AmpTrapCommands.aimAndIndexTrap()
+                        .onlyIf(() -> getMode() == CLIMB));
 
 
         // Index to amp
         commandXboxController.rightTrigger()
-        .onTrue(IntakeCommands.IntakeToAmp())
-        .onFalse(IntakeCommands.IndexerOff())
+        .onTrue(IntakeCommands.IntakeToAmp()
+                .onlyIf(() -> getMode() == AMP))
+        .onFalse(IntakeCommands.IndexerOff()
+                .onlyIf(() -> getMode() == AMP))
         ;
         // Index/Intake  to shooter
         commandXboxController.leftTrigger()
-        .onTrue(IntakeCommands.IntakeToShooter())
-        .onFalse(IntakeCommands.IndexerOff())
+        .onTrue(IntakeCommands.IntakeToShooter()
+                .onlyIf(() -> getMode() == SHOOTER))
+        .onFalse(IntakeCommands.IndexerOff().onlyIf(() -> getMode() == SHOOTER))
         ;
     }
 
