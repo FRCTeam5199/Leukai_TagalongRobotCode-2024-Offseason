@@ -111,7 +111,6 @@ public class TemplateSubsystem extends SubsystemBase {
 
     }
 
-
     //Unit Conversions
     public double getMechDegrees() {
         return motor.getPosition().getValueAsDouble() * gearRatio / 360d;
@@ -182,7 +181,7 @@ public class TemplateSubsystem extends SubsystemBase {
         return getMechRotFromMotorRot(motor.getVelocity().getValueAsDouble());
     }
 
-    public void setMotorPower(double percent) {
+    public void setPercent(double percent) {
         motor.set(percent);
     }
 
@@ -192,9 +191,13 @@ public class TemplateSubsystem extends SubsystemBase {
         this.goal = rps;
         followLastMechProfile = false;
         motor.setNeutralMode(NeutralModeValue.Coast);
-        motor.setControl(velocityVoltage.withVelocity(rps).withFeedForward(
-                calculateFF(rps, 0)
-        ));
+        if (type == Type.ROLLER)
+            motor.setControl(velocityVoltage.withVelocity(rps)
+                    .withFeedForward(calculateFF(rps, 0)));
+        else
+            motor.setControl(velocityVoltage.withOverrideBrakeDurNeutral(true)
+                    .withVelocity(rps)
+                    .withFeedForward(calculateFF(rps, 0)));
     }
 
     private double calculateFF(double rps, double acceleration) {
@@ -203,7 +206,8 @@ public class TemplateSubsystem extends SubsystemBase {
                 return linearFF.calculate(rps, acceleration);
             }
             case PIVOT -> {
-                return pivotFF.calculate(rps, acceleration);
+                return pivotFF.calculate(Math.toRadians(getMechDegrees()),
+                        rps * 2 * Math.PI, acceleration * 2 * Math.PI);
             }
             default -> {
                 return simpleMotorFF.calculate(rps, acceleration);
@@ -211,10 +215,12 @@ public class TemplateSubsystem extends SubsystemBase {
         }
     }
 
-    public void setMechProfile(double goal, double goalVelocity) {
+    public void setPosition(double goal) {
         if (type == Type.FLYWHEEL) return;
 
-        this.goal = goal;
+        if (type == Type.LINEAR && goal < mechMin) goal = mechMin;
+        else if (type == Type.LINEAR && goal > mechMax) goal = mechMax;
+
         followLastMechProfile = true;
 
         switch (type) {
@@ -222,7 +228,8 @@ public class TemplateSubsystem extends SubsystemBase {
             case PIVOT -> goalState.position = getMotorRotFromDegrees(goal);
             default -> goalState.position = getMotorRotFromMechRot(goal);
         }
-        goalState.velocity = goalVelocity;
+        goalState.velocity = 0;
+        this.goal = type == Type.ROLLER ? getMechRotFromMotorRot(motor.getPosition().getValueAsDouble()) + goal : goal;
 
         currentState = profile.calculate(0, currentState, goalState);
         switch (type) {
@@ -233,8 +240,7 @@ public class TemplateSubsystem extends SubsystemBase {
         timer.restart();
     }
 
-    //TODO: add pivot code
-    public void followLastMechProfile() {
+    private void followLastMechProfile() {
         if (type == Type.FLYWHEEL) return;
 
         TrapezoidProfile.State nextState = profile.calculate(timer.get(), currentState, goalState);
@@ -273,8 +279,8 @@ public class TemplateSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (followLastMechProfile) followLastMechProfile();
-        if (type == Type.ROLLER && getMotorVelocity() == 0 && getMotorRot() != 0) {
-            motor.setPosition(0d);
-        }
+//        if (type == Type.ROLLER && getMotorVelocity() == 0 && getMotorRot() != 0) {
+//            motor.setPosition(0d);
+//        }
     }
 }
