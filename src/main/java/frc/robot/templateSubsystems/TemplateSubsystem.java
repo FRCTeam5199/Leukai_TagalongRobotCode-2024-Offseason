@@ -2,6 +2,7 @@ package frc.robot.templateSubsystems;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.controls.Follower;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -18,7 +19,9 @@ import frc.robot.utility.PID;
 
 public class TemplateSubsystem extends SubsystemBase {
     private final TalonFX motor;
+    private TalonFX followerMotor;
     private final TalonFXConfiguration motorConfig;
+    private Follower follower;
     private final TrapezoidProfile profile;
     private final PositionVoltage positionVoltage;
     private final VelocityVoltage velocityVoltage;
@@ -103,8 +106,10 @@ public class TemplateSubsystem extends SubsystemBase {
         this.mechMax = mechMaxDegrees;
     }
 
-    public void configureFollowerMotor() {
-
+    public void configureFollowerMotor(int followerMotorId) {
+        followerMotor = new TalonFX(followerMotorId);
+        follower = new Follower(motor.getDeviceID(), true);
+        followerMotor.setControl(follower);
     }
 
     public void configureEncoder() {
