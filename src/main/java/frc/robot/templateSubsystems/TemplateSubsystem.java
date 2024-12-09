@@ -49,6 +49,7 @@ public class TemplateSubsystem extends SubsystemBase {
 
     private double gearRatio = 1d;
     private double drumCircumference;
+    private double ffOffset;
 
     private final Timer timer;
     private final Type type;
@@ -71,11 +72,11 @@ public class TemplateSubsystem extends SubsystemBase {
 
         switch (type) {
             case ROLLER, FLYWHEEL -> simpleMotorFF = new SimpleMotorFeedforward(
-                    feedForward.getkS(), feedForward.getkV(), feedForward.getkA());
+                    feedForward.getkS(), feedForward.getkV());
             case LINEAR -> linearFF = new ElevatorFeedforward(
-                    feedForward.getkS(), feedForward.getkG(), feedForward.getkV(), feedForward.getkA());
+                    feedForward.getkS(), feedForward.getkG(), feedForward.getkV());
             case PIVOT -> pivotFF = new ArmFeedforward(
-                    feedForward.getkS(), feedForward.getkG(), feedForward.getkV(), feedForward.getkA());
+                    feedForward.getkS(), feedForward.getkG(), feedForward.getkV());
         }
 
         positionVoltage = new PositionVoltage(0).withSlot(0).withEnableFOC(true);
@@ -108,9 +109,10 @@ public class TemplateSubsystem extends SubsystemBase {
         this.mechMax = mechMaxM;
     }
 
-    public void configurePivot(double mechMinDegrees, double mechMaxDegrees) {
+    public void configurePivot(double mechMinDegrees, double mechMaxDegrees, double ffOffset) {
         this.mechMin = mechMinDegrees;
         this.mechMax = mechMaxDegrees;
+        this.ffOffset = ffOffset;
     }
 
     public void configureFollowerMotor(int followerMotorId) {
@@ -233,7 +235,7 @@ public class TemplateSubsystem extends SubsystemBase {
                 return linearFF.calculate(rps, acceleration);
             }
             case PIVOT -> {
-                return pivotFF.calculate(Math.toRadians(getMechDegrees()),
+                return pivotFF.calculate(Math.toRadians(getMechDegrees() + ffOffset),
                         rps * 2 * Math.PI, acceleration * 2 * Math.PI);
             }
             default -> {
