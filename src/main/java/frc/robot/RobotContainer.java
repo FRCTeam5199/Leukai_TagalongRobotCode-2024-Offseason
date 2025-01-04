@@ -72,8 +72,8 @@ public class RobotContainer {
     private double angleOffset;
     public static double driveAngleOffset;
 
-    RollerTestSubsystem rollerTestSubsystem = new RollerTestSubsystem();
-    FlywheelTestSubsystem flywheelTestSubsystem = new FlywheelTestSubsystem();
+    //    RollerTestSubsystem rollerTestSubsystem = new RollerTestSubsystem();
+//    FlywheelTestSubsystem flywheelTestSubsystem = new FlywheelTestSubsystem();
     LinearTestSubsystem linearTestSubsystem = new LinearTestSubsystem();
     PivotTestSubsystem pivotTestSubsystem = new PivotTestSubsystem();
 
@@ -236,15 +236,15 @@ public class RobotContainer {
 //
 //        commandXboxController.povDown().onTrue(IntakeCommands.spinRollersForOuttake()).onFalse(IntakeCommands.stopRollers());
 
-        commandXboxController.a().onTrue(new InstantCommand(() -> rollerTestSubsystem.setVelocity(30)))
-                .onFalse(new InstantCommand(() -> rollerTestSubsystem.setPercent(0)));
-        commandXboxController.b().onTrue(new InstantCommand(() -> rollerTestSubsystem.setPosition(1)));
-
-        commandXboxController.x().onTrue(new InstantCommand(() -> flywheelTestSubsystem.setVelocity(30)))
-                .onFalse(new InstantCommand(() -> flywheelTestSubsystem.setPercent(0)));
-        commandXboxController.y().onTrue(new InstantCommand(() -> linearTestSubsystem.setPosition(.25)))
+//        commandXboxController.a().onTrue(new InstantCommand(() -> rollerTestSubsystem.setVelocity(30)))
+//                .onFalse(new InstantCommand(() -> rollerTestSubsystem.setPercent(0)));
+//        commandXboxController.b().onTrue(new InstantCommand(() -> rollerTestSubsystem.setPosition(10.5)));
+//
+//        commandXboxController.x().onTrue(new InstantCommand(() -> flywheelTestSubsystem.setVelocity(30)))
+//                .onFalse(new InstantCommand(() -> flywheelTestSubsystem.setPercent(0)));
+        commandXboxController.y().onTrue(new InstantCommand(() -> linearTestSubsystem.setPosition(2)))
                 .onFalse(new InstantCommand(() -> linearTestSubsystem.setPosition(0)));
-        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> pivotTestSubsystem.setPosition(25)))
+        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> pivotTestSubsystem.setPosition(10)))
                 .onFalse(new InstantCommand(() -> pivotTestSubsystem.setPosition(0)));
 
         //Testing shooter pivot and speeds

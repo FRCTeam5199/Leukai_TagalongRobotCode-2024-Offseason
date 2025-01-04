@@ -3,12 +3,12 @@
   "fusedDevices": {
     "motor": {
       "type": "kraken",
-      "id": 24,
+      "id": 100,
       "canbus": "rio"
     },
     "encoder": {
       "type": "cancoder",
-      "id": 30,
+      "id": 101,
       "canbus": "rio"
     }
   },

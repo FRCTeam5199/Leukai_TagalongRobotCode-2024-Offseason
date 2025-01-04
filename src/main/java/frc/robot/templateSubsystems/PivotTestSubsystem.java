@@ -7,8 +7,8 @@ import frc.robot.utility.PID;
 public class PivotTestSubsystem extends TemplateSubsystem {
     public PivotTestSubsystem() {
         super(Type.PIVOT, 24,
-                new TrapezoidProfile.Constraints(500, 750),
-                new PID(135, 0, 0), new FeedForward(.175, .707, 2.5),
+                new TrapezoidProfile.Constraints(1, 2),
+                new PID(50, 0, 0), new FeedForward(.175, .707, 2.5),
                 .75, .75, new double[][]{{42.4286, 1}});
         configureMotor(true, true, 80, 80);
         configurePivot(0, 57, 13.5);

@@ -13,4 +13,11 @@ public class RollerTestSubsystem extends TemplateSubsystem {
                 3, 3, new double[][]{{1, 1}});
         configureMotor(true, false, 80, 80);
     }
+
+//    public void periodic() {
+//        System.out.println("is profile finished: " + isProfileFinished());
+//        System.out.println("goal: " + goalState.position);
+//        System.out.println("current: " + currentState.position);
+//        System.out.println("followLastMechProfile: " + followLastMechProfile);
+//    }
 }

@@ -19,8 +19,8 @@ import frc.robot.utility.FeedForward;
 import frc.robot.utility.PID;
 
 public class TemplateSubsystem extends SubsystemBase {
-    private final TalonFX motor;
-    private final TalonFXConfiguration motorConfig;
+    private TalonFX motor;
+    private TalonFXConfiguration motorConfig;
 
     private TalonFX followerMotor;
     private Follower follower;
@@ -28,22 +28,22 @@ public class TemplateSubsystem extends SubsystemBase {
     private CANcoder encoder;
     private CANcoderConfiguration encoderConfig;
 
-    private final TrapezoidProfile profile;
-    private TrapezoidProfile.State currentState;
-    private TrapezoidProfile.State goalState;
-    private double goal;
-    private boolean followLastMechProfile = false;
+    private TrapezoidProfile profile;
+    public TrapezoidProfile.State currentState;
+    public TrapezoidProfile.State goalState;
+    public double goal;
+    public boolean followLastMechProfile = false;
 
-    private final PositionVoltage positionVoltage;
-    private final VelocityVoltage velocityVoltage;
-    private final Slot0Configs slot0Configs;
+    private PositionVoltage positionVoltage;
+    private VelocityVoltage velocityVoltage;
+    private Slot0Configs slot0Configs;
 
     private SimpleMotorFeedforward simpleMotorFF;
     private ElevatorFeedforward linearFF;
     private ArmFeedforward pivotFF;
 
-    private final double lowerTolerance;
-    private final double upperTolerance;
+    private double lowerTolerance;
+    private double upperTolerance;
     private double mechMin;
     private double mechMax;
 
@@ -51,8 +51,8 @@ public class TemplateSubsystem extends SubsystemBase {
     private double drumCircumference;
     private double ffOffset;
 
-    private final Timer timer;
-    private final Type type;
+    private Timer timer;
+    private Type type;
 
     public TemplateSubsystem(Type type, int id, TrapezoidProfile.Constraints constraints,
                              PID pid, FeedForward feedForward,
@@ -258,18 +258,14 @@ public class TemplateSubsystem extends SubsystemBase {
             default -> goalState.position = getMotorRotFromMechRot(goal);
         }
         goalState.velocity = 0;
-        this.goal = type == Type.ROLLER ? getMechRotFromMotorRot(motor.getPosition().getValueAsDouble()) + goal : goal;
+        this.goal = goal;
 
         currentState = profile.calculate(0, currentState, goalState);
-        switch (type) {
-            case LINEAR -> currentState.position = getMotorRotFromMechM(goal);
-            case PIVOT -> currentState.position = getMotorRotFromDegrees(goal);
-            default -> currentState.position = getMotorRotFromMechRot(goal);
-        }
         timer.restart();
     }
 
-    private void followLastMechProfile() {
+    public void followLastMechProfile() {
+        System.out.println("hi");
         if (type == Type.FLYWHEEL) return;
 
         TrapezoidProfile.State nextState = profile.calculate(timer.get(), currentState, goalState);
@@ -300,7 +296,7 @@ public class TemplateSubsystem extends SubsystemBase {
                 if (isVelocity) return getMechVelocity() >= goal - lowerTolerance
                         && getMechVelocity() <= goal - upperTolerance;
                 else return getMechRot() >= goal - lowerTolerance
-                        && getMechRot() <= goal - lowerTolerance;
+                        && getMechRot() <= goal + upperTolerance;
             }
         }
     }
@@ -308,8 +304,10 @@ public class TemplateSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         if (followLastMechProfile) followLastMechProfile();
-//        if (type == Type.ROLLER && getMotorVelocity() == 0 && getMotorRot() != 0) {
-//            motor.setPosition(0d);
-//        }
+        if (type == Type.ROLLER && getMotorVelocity() == 0 && getMotorRot() != 0) {
+            motor.setPosition(0d);
+            currentState.position = 0;
+            currentState.velocity = 0;
+        }
     }
 }
