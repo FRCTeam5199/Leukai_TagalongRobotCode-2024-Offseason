@@ -141,76 +141,6 @@ public class TemplateSubsystem extends SubsystemBase {
         gearRatio = sensorToMechRatio;
     }
 
-    //Unit Conversions
-    public double getMechDegrees() {
-        return motor.getPosition().getValueAsDouble() * gearRatio * 360d;
-    }
-
-    public double getMotorRot() {
-        return motor.getPosition().getValueAsDouble();
-    }
-
-    public double getMechRot() {
-        return motor.getPosition().getValueAsDouble() * gearRatio;
-    }
-
-    public double getDegreesFromMechRot(double mechRot) {
-        return mechRot * gearRatio * 360d;
-    }
-
-    public double getDegreesFromMotorRot(double motorRot) {
-        return motorRot * 360d;
-    }
-
-    public double getMechRotFromDegrees(double degrees) {
-        return degrees / 360d / gearRatio;
-    }
-
-    public double getMotorRotFromDegrees(double degrees) {
-        return degrees / 360d;
-    }
-
-    public double getMechRotFromMotorRot(double motorRot) {
-        return motorRot * gearRatio;
-    }
-
-    public double getMotorRotFromMechRot(double mechRot) {
-        return mechRot / gearRatio;
-    }
-
-    public double getMechM() {
-        if (type != Type.LINEAR) return 0;
-        return motor.getPosition().getValueAsDouble() * drumCircumference / gearRatio;
-    }
-
-    public double getMechMFromMotorRot(double motorRot) {
-        if (type != Type.LINEAR) return 0;
-        return motorRot * drumCircumference / gearRatio;
-    }
-
-    public double getMotorRotFromMechM(double mechM) {
-        if (type != Type.LINEAR) return 0;
-        return mechM / drumCircumference * gearRatio;
-    }
-
-    //Motor Values
-    public double getMotorVelocity() {
-        return motor.getVelocity().getValueAsDouble();
-    }
-
-    public double getMotorVoltage() {
-        return motor.getMotorVoltage().getValueAsDouble();
-    }
-
-    public double getSupplyVoltage() {
-        return motor.getSupplyVoltage().getValueAsDouble();
-    }
-
-    public double getMechVelocity() {
-        return getMechRotFromMotorRot(motor.getVelocity().getValueAsDouble());
-    }
-
-
     public void setPercent(double percent) {
         motor.set(percent);
     }
@@ -301,6 +231,76 @@ public class TemplateSubsystem extends SubsystemBase {
                         && getMechRot() <= goal + upperTolerance;
             }
         }
+    }
+
+
+    //Unit Conversions
+    public double getMechDegrees() {
+        return motor.getPosition().getValueAsDouble() * gearRatio * 360d;
+    }
+
+    public double getMotorRot() {
+        return motor.getPosition().getValueAsDouble();
+    }
+
+    public double getMechRot() {
+        return motor.getPosition().getValueAsDouble() * gearRatio;
+    }
+
+    public double getDegreesFromMechRot(double mechRot) {
+        return mechRot * gearRatio * 360d;
+    }
+
+    public double getDegreesFromMotorRot(double motorRot) {
+        return motorRot * 360d;
+    }
+
+    public double getMechRotFromDegrees(double degrees) {
+        return degrees / 360d / gearRatio;
+    }
+
+    public double getMotorRotFromDegrees(double degrees) {
+        return degrees / 360d;
+    }
+
+    public double getMechRotFromMotorRot(double motorRot) {
+        return motorRot * gearRatio;
+    }
+
+    public double getMotorRotFromMechRot(double mechRot) {
+        return mechRot / gearRatio;
+    }
+
+    public double getMechM() {
+        if (type != Type.LINEAR) return 0;
+        return motor.getPosition().getValueAsDouble() * drumCircumference / gearRatio;
+    }
+
+    public double getMechMFromMotorRot(double motorRot) {
+        if (type != Type.LINEAR) return 0;
+        return motorRot * drumCircumference / gearRatio;
+    }
+
+    public double getMotorRotFromMechM(double mechM) {
+        if (type != Type.LINEAR) return 0;
+        return mechM / drumCircumference * gearRatio;
+    }
+
+    //Motor Values
+    public double getMotorVelocity() {
+        return motor.getVelocity().getValueAsDouble();
+    }
+
+    public double getMotorVoltage() {
+        return motor.getMotorVoltage().getValueAsDouble();
+    }
+
+    public double getSupplyVoltage() {
+        return motor.getSupplyVoltage().getValueAsDouble();
+    }
+
+    public double getMechVelocity() {
+        return getMechRotFromMotorRot(motor.getVelocity().getValueAsDouble());
     }
 
     @Override
