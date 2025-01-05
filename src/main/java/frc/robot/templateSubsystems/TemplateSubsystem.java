@@ -138,11 +138,12 @@ public class TemplateSubsystem extends SubsystemBase {
         motorConfig.Feedback.RotorToSensorRatio = motorToSensorRatio;
 
         motor.getConfigurator().apply(motorConfig);
+        gearRatio = sensorToMechRatio;
     }
 
     //Unit Conversions
     public double getMechDegrees() {
-        return motor.getPosition().getValueAsDouble() * gearRatio / 360d;
+        return motor.getPosition().getValueAsDouble() * gearRatio * 360d;
     }
 
     public double getMotorRot() {
@@ -257,6 +258,7 @@ public class TemplateSubsystem extends SubsystemBase {
             case PIVOT -> goalState.position = getMotorRotFromDegrees(goal);
             default -> goalState.position = getMotorRotFromMechRot(goal);
         }
+
         goalState.velocity = 0;
         this.goal = goal;
 
@@ -265,7 +267,6 @@ public class TemplateSubsystem extends SubsystemBase {
     }
 
     public void followLastMechProfile() {
-        System.out.println("hi");
         if (type == Type.FLYWHEEL) return;
 
         TrapezoidProfile.State nextState = profile.calculate(timer.get(), currentState, goalState);
@@ -274,6 +275,7 @@ public class TemplateSubsystem extends SubsystemBase {
                         .withFeedForward(calculateFF(nextState.velocity,
                                 (nextState.velocity - currentState.velocity) / timer.get())));
 
+        if (isProfileFinished()) followLastMechProfile = false;
         currentState = nextState;
         timer.restart();
     }

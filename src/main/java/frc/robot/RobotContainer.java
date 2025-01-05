@@ -74,7 +74,7 @@ public class RobotContainer {
 
     //    RollerTestSubsystem rollerTestSubsystem = new RollerTestSubsystem();
 //    FlywheelTestSubsystem flywheelTestSubsystem = new FlywheelTestSubsystem();
-    LinearTestSubsystem linearTestSubsystem = new LinearTestSubsystem();
+//    LinearTestSubsystem linearTestSubsystem = new LinearTestSubsystem();
     PivotTestSubsystem pivotTestSubsystem = new PivotTestSubsystem();
 
     public RobotContainer() {
@@ -231,8 +231,8 @@ public class RobotContainer {
 //                )
 //        ).onFalse(
 //                IntakeCommands.stopRollers().alongWith(new InstantCommand(() -> hasUpdatedAutoAimShot = false))
-//                        .alongWith(new InstantCommand(() -> timer.restart()))
 //        );
+//                        .alongWith(new InstantCommand(() -> timer.restart()))
 //
 //        commandXboxController.povDown().onTrue(IntakeCommands.spinRollersForOuttake()).onFalse(IntakeCommands.stopRollers());
 
@@ -242,9 +242,9 @@ public class RobotContainer {
 //
 //        commandXboxController.x().onTrue(new InstantCommand(() -> flywheelTestSubsystem.setVelocity(30)))
 //                .onFalse(new InstantCommand(() -> flywheelTestSubsystem.setPercent(0)));
-        commandXboxController.y().onTrue(new InstantCommand(() -> linearTestSubsystem.setPosition(2)))
-                .onFalse(new InstantCommand(() -> linearTestSubsystem.setPosition(0)));
-        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> pivotTestSubsystem.setPosition(10)))
+//        commandXboxController.y().onTrue(new InstantCommand(() -> linearTestSubsystem.setPosition(2)))
+//                .onFalse(new InstantCommand(() -> linearTestSubsystem.setPosition(0)));
+        commandXboxController.rightTrigger().onTrue(new InstantCommand(() -> pivotTestSubsystem.setPosition(0)))
                 .onFalse(new InstantCommand(() -> pivotTestSubsystem.setPosition(0)));
 
         //Testing shooter pivot and speeds
