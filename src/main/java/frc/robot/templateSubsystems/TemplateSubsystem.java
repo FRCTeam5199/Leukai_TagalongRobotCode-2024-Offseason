@@ -275,7 +275,6 @@ public class TemplateSubsystem extends SubsystemBase {
                         .withFeedForward(calculateFF(nextState.velocity,
                                 (nextState.velocity - currentState.velocity) / timer.get())));
 
-        if (isProfileFinished()) followLastMechProfile = false;
         currentState = nextState;
         timer.restart();
     }
