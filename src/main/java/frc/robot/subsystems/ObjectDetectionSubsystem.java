@@ -53,7 +53,6 @@ public class ObjectDetectionSubsystem extends SubsystemBase {
 
     public LimelightTarget_Detector[] getObjects() {
         return getLimelightResults().targetingResults.targets_Detector;
-
     }
 
     public LimelightTarget_Detector getNearestNote() {
@@ -96,11 +95,7 @@ public class ObjectDetectionSubsystem extends SubsystemBase {
     }
 
     public boolean notePresent() {
-        if (x == 0 && y == 0 && area == 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return x != 0 || y != 0 || area != 0;
     }
 
 
